@@ -146,6 +146,43 @@ def solved(pos, verbose=False):
     print_pos(pos)
     return True
 
+def read_file(file):
+    with open(file, "rb") as input:
+        lines = [line.strip("\r\n") for line in input]
+    size = int(lines[0])
+    hex = make_hex(size)
+    linei = 1
+    tiles = { -1: 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
+    for y in xrange(size):
+        line = lines[linei][size - y - 1:]
+        p = 0
+        for x in xrange(size + y):
+            tile = line[p:p + 2];
+            p += 2
+            if tile == " .":
+                inctile = -1
+            else:
+                inctile = int(tile)
+            tiles[inctile] += 1
+        linei += 1
+    for y in xrange(1, size):
+        ry = size - 1 + y
+        line = lines[linei][y:]
+        p = 0
+        for x in xrange(y, size * 2 - 1):
+            tile = line[p:p + 2];
+            p += 2
+            if tile == " .":
+                inctile = -1
+            else:
+                inctile = int(tile)
+            tiles[inctile] += 1
+        linei += 1
+    return (hex, tiles, [])
+
+def solve_file(file):
+    (hex, tiles, done) = read_file(file)
+    solve(hex, tiles)
 
 if __name__ == "__main__":
     main()
