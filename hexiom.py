@@ -127,22 +127,19 @@ def find_moves(pos):
         return []
     
     moves = []
+    cells_around = None
     for i in xrange(-1, 7):
         if tiles[i] > 0:
             valid = True
             if i >= 0:
-                valid = False
-                cells_around = hex.get_by_id(cell_id).links
-                min_possible = sum(1 if (done.already_done(j) and (done[j] >= 0)) else 0
-                                   for j in cells_around)
-                if i >= min_possible:
+                if cells_around is None:
+                    cells_around = hex.get_by_id(cell_id).links
+                    min_possible = sum(1 if (done.already_done(j) and (done[j] >= 0)) else 0
+                                       for j in cells_around)
                     max_possible = len(cells_around)
-                    if i <= max_possible:
-                        valid = True
-                    #else:
-                    #    print("Max possible at %d is %d" % (cell_id, max_possible))
-                #else:
-                #    print("Min possible at %d is %d" % (cell_id, min_possible))
+                    
+                valid = min_possible <= i <= max_possible
+
             if valid:
                 moves.append((cell_id, i))
     return moves
@@ -224,7 +221,7 @@ def solved(pos, verbose=False):
         node = hex.get_by_id(i)
         (x, y) = node.pos
         num = done[i] if done.already_done(i) else -1
-        if num > 0:
+        if num >= 0:
             for dir in DIRS:
                 npos = (x + dir.x, y + dir.y)
                 if hex.contains_pos(npos):
@@ -240,6 +237,9 @@ def solved(pos, verbose=False):
                 return False
     print_pos(pos)
     return True
+
+# TODO Write an 'iterator' to go over all x,y positions
+# TODO change the tiles structure to a simple array (-1 => 7)
 
 def read_file(file):
     with open(file, "rb") as input:
