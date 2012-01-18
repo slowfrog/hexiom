@@ -131,13 +131,10 @@ def find_moves(pos):
     return moves
 
 def play_move(pos, move):
-    hex = pos.hex
-    tiles = pos.tiles
-    done = pos.done
-    ntiles = dict(tiles)
+    ntiles = dict(pos.tiles)
     (j, v) = move
     ntiles[v] -= 1
-    return Pos(hex, ntiles, done.add_done(j, v))
+    return Pos(pos.hex, ntiles, pos.done.add_done(j, v))
 
 def solve_step(pos):
     moves = find_moves(pos)
