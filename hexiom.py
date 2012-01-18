@@ -56,9 +56,25 @@ def make_pos(hex, tiles):
 def find_moves(pos):
     (hex, tiles, done) = pos
     moves = []
+    cell_id = len(done)
     for i in xrange(-1, 7):
         if tiles[i] > 0:
-            moves.append(i)
+            valid = True
+            if i >= 0:
+                valid = False
+                cells_around = hex[cell_id]["links"]
+                min_possible = sum(1 if ((j < len(done)) and (done[j] >= 0)) else 0
+                                   for j in cells_around)
+                if i >= min_possible:
+                    max_possible = len(cells_around)
+                    if i <= max_possible:
+                        valid = True
+                    #else:
+                    #    print("Max possible at %d is %d" % (cell_id, max_possible))
+                #else:
+                #    print("Min possible at %d is %d" % (cell_id, min_possible))
+            if valid:
+                moves.append(i)
     return moves
 
 def play_move(pos, move):
@@ -178,6 +194,7 @@ def read_file(file):
                 inctile = int(tile)
             tiles[inctile] += 1
         linei += 1
+    link_nodes(hex)
     return (hex, tiles, [])
 
 def solve_file(file):
