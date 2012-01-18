@@ -51,19 +51,48 @@ def link_nodes(hex):
                 node["links"].append(hex[(nx, ny)]["id"])
 
 def make_pos(hex, tiles):
-    return (hex, tiles, [])
+    return (hex, tiles, { "done": 0 })
+#    return (hex, tiles, { "done": 0 })
+
+#def next_cell(hex, done):
+#    return len(done)
+
+#def already_done(done, j):
+#    return j < len(done)
+
+#def add_done(done, j, v):
+#    return done + [v]
+
+def next_cell(hex, done):
+    for i in xrange(done["done"], hex["count"]):
+        if i not in done:
+            return i
+    return -1
+    #print_pos((hex, None, done))
+    #raise Exception("No more next cell")
+
+def already_done(done, j):
+    return j in done
+
+def add_done(done, j, v):
+    ret = dict(done)
+    ret[j] = v
+    return ret
 
 def find_moves(pos):
     (hex, tiles, done) = pos
+    cell_id = next_cell(hex, done)
+    if cell_id < 0:
+        return []
+    
     moves = []
-    cell_id = len(done)
     for i in xrange(-1, 7):
         if tiles[i] > 0:
             valid = True
             if i >= 0:
                 valid = False
                 cells_around = hex[cell_id]["links"]
-                min_possible = sum(1 if ((j < len(done)) and (done[j] >= 0)) else 0
+                min_possible = sum(1 if (already_done(done, j) and (done[j] >= 0)) else 0
                                    for j in cells_around)
                 if i >= min_possible:
                     max_possible = len(cells_around)
@@ -74,14 +103,15 @@ def find_moves(pos):
                 #else:
                 #    print("Min possible at %d is %d" % (cell_id, min_possible))
             if valid:
-                moves.append(i)
+                moves.append((cell_id, i))
     return moves
 
 def play_move(pos, move):
     (hex, tiles, done) = pos
     ntiles = dict(tiles)
-    ntiles[move] -= 1
-    return (hex, ntiles, done + [move])
+    (j, v) = move
+    ntiles[v] -= 1
+    return (hex, ntiles, add_done(done, j, v))
 
 def play_moves(pos, moves):
     ret = pos
@@ -123,7 +153,8 @@ def print_pos(pos):
         for x in xrange(size + y):
             pos = (x, y)
             id = hex[pos]["id"]
-            print("%s " % (str(done[id]) if (id < len(done)) and (done[id] >= 0) else "."), end="")
+            print("%s " % (str(done[id]) if (already_done(done, id) and (done[id] >= 0)) else "."),
+                  end="")
         print()
     for y in xrange(1, size):
         print(" " * y, end="")
@@ -131,7 +162,8 @@ def print_pos(pos):
             ry = size + y - 1
             pos = (x, ry)
             id = hex[pos]["id"]
-            print("%s " % (str(done[id]) if (id < len(done)) and (done[id] >= 0) else "."), end="")
+            print("%s " % (str(done[id]) if (already_done(done, id) and (done[id] >= 0)) else "."),
+                  end="")
         print()
         
 
@@ -142,7 +174,7 @@ def solved(pos, verbose=False):
     for i in xrange(hex["count"]):
         node = hex[i]
         (x, y) = node["pos"]
-        num = done[i] if i < len(done) else -1
+        num = done[i] if already_done(done, i) else -1
         if num > 0:
             for dir in DIRS:
                 nx = x + dir["x"]
@@ -150,7 +182,7 @@ def solved(pos, verbose=False):
                 npos = (nx, ny)
                 if npos in hex:
                     nid = hex[(nx, ny)]["id"]
-                    if (nid < len(done)) and (done[nid] >= 0):
+                    if already_done(done, nid) and (done[nid] >= 0):
                         num -= 1
             if num != 0:
                 if verbose:
