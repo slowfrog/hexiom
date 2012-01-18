@@ -1,12 +1,18 @@
 from __future__ import division, print_function
 import sys
 
-DIRS = [ { "x":  1, "y": 0 },
-         { "x": -1, "y": 0 },
-         { "x":  0, "y": 1 },
-         { "x":  0, "y": -1 },
-         { "x":  1, "y":  1 },
-         { "x": -1, "y": -1 } ]
+##################################
+class Dir(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        
+DIRS = [ Dir(1, 0),
+         Dir(-1, 0),
+         Dir(0, 1),
+         Dir(0, -1),
+         Dir(1, 1),
+         Dir(-1, -1) ]
 
 ##################################
 class Done(object):
@@ -72,8 +78,8 @@ class Hex(object):
         for node in self.nodes_by_id:
             (x, y) = node.pos
             for dir in DIRS:
-                nx = x + dir["x"]
-                ny = y + dir["y"]
+                nx = x + dir.x
+                ny = y + dir.y
                 if self.contains_pos((nx, ny)):
                     node.links.append(self.nodes_by_pos[(nx, ny)].id)
 
@@ -88,11 +94,17 @@ class Hex(object):
 
         
 ##################################
-def make_pos(hex, tiles):
-    return (hex, tiles, Done(hex.count))
-
+class Pos(object):
+    def __init__(self, hex, tiles, done = None):
+        self.hex = hex
+        self.tiles = tiles
+        self.done = Done(hex.count) if done is None else done
+    
+##################################
 def find_moves(pos):
-    (hex, tiles, done) = pos
+    hex = pos.hex
+    tiles = pos.tiles
+    done = pos.done
     cell_id = done.next_cell()
     if cell_id < 0:
         return []
@@ -119,17 +131,13 @@ def find_moves(pos):
     return moves
 
 def play_move(pos, move):
-    (hex, tiles, done) = pos
+    hex = pos.hex
+    tiles = pos.tiles
+    done = pos.done
     ntiles = dict(tiles)
     (j, v) = move
     ntiles[v] -= 1
-    return (hex, ntiles, done.add_done(j, v))
-
-def play_moves(pos, moves):
-    ret = pos
-    for move in moves:
-        ret = play_move(ret, move)
-    return ret
+    return Pos(hex, ntiles, done.add_done(j, v))
 
 def solve_step(pos):
     moves = find_moves(pos)
@@ -155,10 +163,13 @@ def check_valid(hex, tiles):
 
 def solve(hex, tiles):
     check_valid(hex, tiles)
-    return solve_step(make_pos(hex, tiles))
+    return solve_step(Pos(hex, tiles))
 
 def print_pos(pos):
-    (hex, tiles, done) = pos
+    hex = pos.hex
+    tiles = pos.tiles
+    done = pos.done
+    #(hex, tiles, done) = pos
     size = hex.size
     for y in xrange(size):
         print(" " * (size - y - 1), end="")
@@ -180,7 +191,10 @@ def print_pos(pos):
         
 
 def solved(pos, verbose=False):
-    (hex, tiles, done) = pos
+    hex = pos.hex
+    tiles = pos.tiles
+    done = pos.done
+    #(hex, tiles, done) = pos
     if sum(tiles[i] for i in xrange(0, 7)) > 0:
         return False
     for i in xrange(hex.count):
@@ -189,8 +203,8 @@ def solved(pos, verbose=False):
         num = done[i] if done.already_done(i) else -1
         if num > 0:
             for dir in DIRS:
-                nx = x + dir["x"]
-                ny = y + dir["y"]
+                nx = x + dir.x
+                ny = y + dir.y
                 npos = (nx, ny)
                 if hex.contains_pos(npos):
                     nid = hex.get_by_pos((nx, ny)).id
@@ -239,11 +253,11 @@ def read_file(file):
             tiles[inctile] += 1
         linei += 1
     hex.link_nodes()
-    return (hex, tiles, [])
+    return Pos(hex, tiles)
 
 def solve_file(file):
-    (hex, tiles, done) = read_file(file)
-    solve(hex, tiles)
+    pos = read_file(file)
+    solve(pos.hex, pos.tiles)
 
 def main():
     for f in sys.argv[1:]:
