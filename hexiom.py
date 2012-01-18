@@ -201,5 +201,11 @@ def solve_file(file):
     (hex, tiles, done) = read_file(file)
     solve(hex, tiles)
 
+def main():
+    for f in sys.argv[1:]:
+        print(" File : %s" % f)
+        solve_file(f)
+        print("-------------------")
+    
 if __name__ == "__main__":
     main()
