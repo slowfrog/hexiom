@@ -34,14 +34,24 @@ class Done(object):
     def __getitem__(self, i):
         return self.cells[i]
 
+    def adjust_done(self, ascend):
+        if ascend:
+            for i in xrange(self.done, self.count):
+                if self.cells[i] is None:
+                    self.done = i
+            else:
+                self.done = -1
+        elif descend:
+            
+    
     def add_done(self, i, v):
-        ret = Done(self.count)
-        ret.done = self.done
-        ret.cells = self.cells[:]
-        ret.cells[i] = v
-        if i == ret.done + 1:
-            ret.done += 1
-        return ret
+        self.cells[i] = v
+        self.adjust_done(True)
+
+    def remove_done(self, i):
+        self.cells[i] = None
+        self.adjust_done(False)
+
 
 ##################################
 class Node(object):
@@ -131,10 +141,7 @@ def find_moves(pos):
     return moves
 
 def play_move(pos, move):
-    ntiles = dict(pos.tiles)
-    (j, v) = move
-    ntiles[v] -= 1
-    return Pos(pos.hex, ntiles, pos.done.add_done(j, v))
+    pos.done.add_done(j, v)
 
 def solve_step(pos):
     moves = find_moves(pos)
