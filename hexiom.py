@@ -134,9 +134,15 @@ def find_moves(pos):
             if i >= 0:
                 if cells_around is None:
                     cells_around = hex.get_by_id(cell_id).links
-                    min_possible = sum(1 if (done.already_done(j) and (done[j] >= 0)) else 0
-                                       for j in cells_around)
                     max_possible = len(cells_around)
+                    min_possible = 0
+                    for j in cells_around:
+                        if done.already_done(j):
+                            if done[j] > 0:
+                                min_possible += 1
+                            elif done[j] == 0:
+                                max_possible = 0
+                                min_possible += 1
                     
                 valid = min_possible <= i <= max_possible
 
