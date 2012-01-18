@@ -38,74 +38,58 @@ class Done(object):
         return ret
 
 ##################################
-# class Hex:
-#     def __init__(self, size):
-#         self.size = size
-#         self.nodes = {}
-#         id = 0
-#         for y in xrange(size):
-#             for x in xrange(size + y):
-#                 pos = (x, y)
-#                 node = make_node(pos, id, [])
-#                 self.nodes[pos] = node
-#                 self.nodes[node["id"]] = node
-#                 id += 1
-#         for y in xrange(1, size):
-#             for x in xrange(y, size * 2 - 1):
-#                 ry = size + y - 1
-#                 pos = (x, ry)
-#                 node = make_node(pos, id, [])
-#                 self.nodes[pos] = node
-#                 self.nodes[node["id"]] = node
-#                 id += 1
-#         self.count = id
-
-##################################
 class Node(object):
     def __init__(self, pos, id, links):
         self.pos = pos
         self.id = id
         self.links = links
 
+##################################
+class Hex(object):
+    def __init__(self, size):
+        self.size = size
+        self.count = 3 * size * (size - 1) + 1
+        self.nodes_by_id = self.count * [None]
+        self.nodes_by_pos = {}
+        id = 0
+        for y in xrange(size):
+            for x in xrange(size + y):
+                pos = (x, y)
+                node = Node(pos, id, [])
+                self.nodes_by_pos[pos] = node
+                self.nodes_by_id[node.id] = node
+                id += 1
+        for y in xrange(1, size):
+            for x in xrange(y, size * 2 - 1):
+                ry = size + y - 1
+                pos = (x, ry)
+                node = Node(pos, id, [])
+                self.nodes_by_pos[pos] = node
+                self.nodes_by_id[node.id] = node
+                id += 1
+
+    def link_nodes(self):
+        for node in self.nodes_by_id:
+            (x, y) = node.pos
+            for dir in DIRS:
+                nx = x + dir["x"]
+                ny = y + dir["y"]
+                if self.contains_pos((nx, ny)):
+                    node.links.append(self.nodes_by_pos[(nx, ny)].id)
+
+    def contains_pos(self, pos):
+        return pos in self.nodes_by_pos
+                    
+    def get_by_pos(self, pos):
+        return self.nodes_by_pos[pos]
+
+    def get_by_id(self, id):
+        return self.nodes_by_id[id]
+
         
-def make_hex(size):
-    ret = { "size": size }
-    id = 0
-    for y in xrange(size):
-        for x in xrange(size + y):
-            pos = (x, y)
-            node = Node(pos, id, [])
-            ret[pos] = node
-            ret[node.id] = node
-            id += 1
-    for y in xrange(1, size):
-        for x in xrange(y, size * 2 - 1):
-            ry = size + y - 1
-            pos = (x, ry)
-            node = Node(pos, id, [])
-            ret[pos] = node
-            ret[node.id] = node
-            id += 1
-    ret["count"] = id
-    return ret
-
-def make_linked_hex(size):
-    ret = make_hex(size)
-    link_nodes(ret)
-    return ret
-
-def link_nodes(hex):
-    for i in xrange(hex["count"]):
-        node = hex[i]
-        (x, y) = node.pos
-        for dir in DIRS:
-            nx = x + dir["x"]
-            ny = y + dir["y"]
-            if (nx, ny) in hex:
-                node.links.append(hex[(nx, ny)].id)
-
+##################################
 def make_pos(hex, tiles):
-    return (hex, tiles, Done(hex["count"]))
+    return (hex, tiles, Done(hex.count))
 
 def find_moves(pos):
     (hex, tiles, done) = pos
@@ -119,7 +103,7 @@ def find_moves(pos):
             valid = True
             if i >= 0:
                 valid = False
-                cells_around = hex[cell_id].links
+                cells_around = hex.get_by_id(cell_id).links
                 min_possible = sum(1 if (done.already_done(j) and (done[j] >= 0)) else 0
                                    for j in cells_around)
                 if i >= min_possible:
@@ -166,8 +150,8 @@ def check_valid(hex, tiles):
         else:
             tiles[i] = 0
     # check total
-    if tot != hex["count"]:
-        raise Exception("Invalid input. Expected %d tiles, got %d." % (hex["count"], tot))
+    if tot != hex.count:
+        raise Exception("Invalid input. Expected %d tiles, got %d." % (hex.count, tot))
 
 def solve(hex, tiles):
     check_valid(hex, tiles)
@@ -175,12 +159,12 @@ def solve(hex, tiles):
 
 def print_pos(pos):
     (hex, tiles, done) = pos
-    size = hex["size"]
+    size = hex.size
     for y in xrange(size):
         print(" " * (size - y - 1), end="")
         for x in xrange(size + y):
             pos = (x, y)
-            id = hex[pos].id
+            id = hex.get_by_pos(pos).id
             print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
                   end="")
         print()
@@ -189,7 +173,7 @@ def print_pos(pos):
         for x in xrange(y, size * 2 - 1):
             ry = size + y - 1
             pos = (x, ry)
-            id = hex[pos].id
+            id = hex.get_by_pos(pos).id
             print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
                   end="")
         print()
@@ -199,8 +183,8 @@ def solved(pos, verbose=False):
     (hex, tiles, done) = pos
     if sum(tiles[i] for i in xrange(0, 7)) > 0:
         return False
-    for i in xrange(hex["count"]):
-        node = hex[i]
+    for i in xrange(hex.count):
+        node = hex.get_by_id(i)
         (x, y) = node.pos
         num = done[i] if done.already_done(i) else -1
         if num > 0:
@@ -208,8 +192,8 @@ def solved(pos, verbose=False):
                 nx = x + dir["x"]
                 ny = y + dir["y"]
                 npos = (nx, ny)
-                if npos in hex:
-                    nid = hex[(nx, ny)].id
+                if hex.contains_pos(npos):
+                    nid = hex.get_by_pos((nx, ny)).id
                     if done.already_done(nid) and (done[nid] >= 0):
                         num -= 1
             if num != 0:
@@ -226,7 +210,7 @@ def read_file(file):
     with open(file, "rb") as input:
         lines = [line.strip("\r\n") for line in input]
     size = int(lines[0])
-    hex = make_hex(size)
+    hex = Hex(size)
     linei = 1
     tiles = { -1: 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
     for y in xrange(size):
@@ -254,7 +238,7 @@ def read_file(file):
                 inctile = int(tile)
             tiles[inctile] += 1
         linei += 1
-    link_nodes(hex)
+    hex.link_nodes()
     return (hex, tiles, [])
 
 def solve_file(file):
