@@ -25,11 +25,7 @@ class Done(object):
         return self.cells[i] is not None
 
     def next_cell(self):
-        for i in xrange(self.done, self.count):
-            if self.cells[i] is None:
-                self.done = i
-                return i
-        return -1
+        return self.done
 
     def __getitem__(self, i):
         return self.cells[i]
@@ -39,10 +35,17 @@ class Done(object):
             for i in xrange(self.done, self.count):
                 if self.cells[i] is None:
                     self.done = i
+                    return
             else:
                 self.done = -1
-        elif descend:
-            
+        else:
+            start = self.count - 1 if self.done == -1 else self.done
+            for i in xrange(start, -1, -1):
+                if self.cells[i] is not None:
+                    self.done = i + 1
+                    return
+            else:
+                self.done = 0
     
     def add_done(self, i, v):
         self.cells[i] = v
@@ -50,7 +53,8 @@ class Done(object):
 
     def remove_done(self, i):
         self.cells[i] = None
-        self.adjust_done(False)
+        if (self.done < 0) or (i < self.done):
+            self.done = i
 
 
 ##################################
@@ -141,16 +145,27 @@ def find_moves(pos):
     return moves
 
 def play_move(pos, move):
-    pos.done.add_done(j, v)
+    (cell_id, i) = move
+    pos.tiles[i] -= 1
+    pos.done.add_done(cell_id, i)
+
+def undo_move(pos, move):
+    (cell_id, i) = move
+    pos.tiles[i] += 1
+    pos.done.remove_done(cell_id)
 
 def solve_step(pos):
     moves = find_moves(pos)
     for move in moves:
-        next = play_move(pos, move)
-        if solved(next):
-            return True
-        if solve_step(next):
-            return True
+        ret = False
+        play_move(pos, move)
+        if solved(pos):
+            ret = True
+        elif solve_step(pos):
+            ret = True
+        undo_move(pos, move)
+        if ret:
+            return ret
     return False
 
 def check_valid(hex, tiles):
@@ -173,7 +188,6 @@ def print_pos(pos):
     hex = pos.hex
     tiles = pos.tiles
     done = pos.done
-    #(hex, tiles, done) = pos
     size = hex.size
     for y in xrange(size):
         print(" " * (size - y - 1), end="")
@@ -198,7 +212,6 @@ def solved(pos, verbose=False):
     hex = pos.hex
     tiles = pos.tiles
     done = pos.done
-    #(hex, tiles, done) = pos
     if sum(tiles[i] for i in xrange(0, 7)) > 0:
         return False
     for i in xrange(hex.count):
