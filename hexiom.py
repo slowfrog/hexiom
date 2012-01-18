@@ -203,11 +203,9 @@ def solved(pos, verbose=False):
         num = done[i] if done.already_done(i) else -1
         if num > 0:
             for dir in DIRS:
-                nx = x + dir.x
-                ny = y + dir.y
-                npos = (nx, ny)
+                npos = (x + dir.x, y + dir.y)
                 if hex.contains_pos(npos):
-                    nid = hex.get_by_pos((nx, ny)).id
+                    nid = hex.get_by_pos(npos).id
                     if done.already_done(nid) and (done[nid] >= 0):
                         num -= 1
             if num != 0:
