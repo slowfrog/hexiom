@@ -8,7 +8,8 @@ DIRS = [ { "x":  1, "y": 0 },
          { "x":  1, "y":  1 },
          { "x": -1, "y": -1 } ]
 
-class Done:
+##################################
+class Done(object):
     def __init__(self, count):
         self.count = count
         self.done = 0
@@ -36,30 +37,54 @@ class Done:
             ret.done += 1
         return ret
 
-            
+##################################
+# class Hex:
+#     def __init__(self, size):
+#         self.size = size
+#         self.nodes = {}
+#         id = 0
+#         for y in xrange(size):
+#             for x in xrange(size + y):
+#                 pos = (x, y)
+#                 node = make_node(pos, id, [])
+#                 self.nodes[pos] = node
+#                 self.nodes[node["id"]] = node
+#                 id += 1
+#         for y in xrange(1, size):
+#             for x in xrange(y, size * 2 - 1):
+#                 ry = size + y - 1
+#                 pos = (x, ry)
+#                 node = make_node(pos, id, [])
+#                 self.nodes[pos] = node
+#                 self.nodes[node["id"]] = node
+#                 id += 1
+#         self.count = id
 
-def make_node(pos, id, links):
-    return { "pos":  pos,
-             "id":    id,
-             "links": links }
+##################################
+class Node(object):
+    def __init__(self, pos, id, links):
+        self.pos = pos
+        self.id = id
+        self.links = links
 
+        
 def make_hex(size):
     ret = { "size": size }
     id = 0
     for y in xrange(size):
         for x in xrange(size + y):
             pos = (x, y)
-            node = make_node(pos, id, [])
+            node = Node(pos, id, [])
             ret[pos] = node
-            ret[node["id"]] = node
+            ret[node.id] = node
             id += 1
     for y in xrange(1, size):
         for x in xrange(y, size * 2 - 1):
             ry = size + y - 1
             pos = (x, ry)
-            node = make_node(pos, id, [])
+            node = Node(pos, id, [])
             ret[pos] = node
-            ret[node["id"]] = node
+            ret[node.id] = node
             id += 1
     ret["count"] = id
     return ret
@@ -72,12 +97,12 @@ def make_linked_hex(size):
 def link_nodes(hex):
     for i in xrange(hex["count"]):
         node = hex[i]
-        (x, y) = node["pos"]
+        (x, y) = node.pos
         for dir in DIRS:
             nx = x + dir["x"]
             ny = y + dir["y"]
             if (nx, ny) in hex:
-                node["links"].append(hex[(nx, ny)]["id"])
+                node.links.append(hex[(nx, ny)].id)
 
 def make_pos(hex, tiles):
     return (hex, tiles, Done(hex["count"]))
@@ -94,7 +119,7 @@ def find_moves(pos):
             valid = True
             if i >= 0:
                 valid = False
-                cells_around = hex[cell_id]["links"]
+                cells_around = hex[cell_id].links
                 min_possible = sum(1 if (done.already_done(j) and (done[j] >= 0)) else 0
                                    for j in cells_around)
                 if i >= min_possible:
@@ -155,7 +180,7 @@ def print_pos(pos):
         print(" " * (size - y - 1), end="")
         for x in xrange(size + y):
             pos = (x, y)
-            id = hex[pos]["id"]
+            id = hex[pos].id
             print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
                   end="")
         print()
@@ -164,7 +189,7 @@ def print_pos(pos):
         for x in xrange(y, size * 2 - 1):
             ry = size + y - 1
             pos = (x, ry)
-            id = hex[pos]["id"]
+            id = hex[pos].id
             print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
                   end="")
         print()
@@ -176,7 +201,7 @@ def solved(pos, verbose=False):
         return False
     for i in xrange(hex["count"]):
         node = hex[i]
-        (x, y) = node["pos"]
+        (x, y) = node.pos
         num = done[i] if done.already_done(i) else -1
         if num > 0:
             for dir in DIRS:
@@ -184,7 +209,7 @@ def solved(pos, verbose=False):
                 ny = y + dir["y"]
                 npos = (nx, ny)
                 if npos in hex:
-                    nid = hex[(nx, ny)]["id"]
+                    nid = hex[(nx, ny)].id
                     if done.already_done(nid) and (done[nid] >= 0):
                         num -= 1
             if num != 0:
