@@ -7,7 +7,36 @@ DIRS = [ { "x":  1, "y": 0 },
          { "x":  0, "y": -1 },
          { "x":  1, "y":  1 },
          { "x": -1, "y": -1 } ]
-         
+
+class Done:
+    def __init__(self, count):
+        self.count = count
+        self.done = 0
+        self.cells = count * [None]
+
+    def already_done(self, i):
+        return self.cells[i] is not None
+
+    def next_cell(self):
+        for i in xrange(self.done, self.count):
+            if self.cells[i] is None:
+                self.done = i
+                return i
+        return -1
+
+    def __getitem__(self, i):
+        return self.cells[i]
+
+    def add_done(self, i, v):
+        ret = Done(self.count)
+        ret.done = self.done
+        ret.cells = self.cells[:]
+        ret.cells[i] = v
+        if i == ret.done + 1:
+            ret.done += 1
+        return ret
+
+            
 
 def make_node(pos, id, links):
     return { "pos":  pos,
@@ -51,37 +80,11 @@ def link_nodes(hex):
                 node["links"].append(hex[(nx, ny)]["id"])
 
 def make_pos(hex, tiles):
-    return (hex, tiles, { "done": 0 })
-#    return (hex, tiles, { "done": 0 })
-
-#def next_cell(hex, done):
-#    return len(done)
-
-#def already_done(done, j):
-#    return j < len(done)
-
-#def add_done(done, j, v):
-#    return done + [v]
-
-def next_cell(hex, done):
-    for i in xrange(done["done"], hex["count"]):
-        if i not in done:
-            return i
-    return -1
-    #print_pos((hex, None, done))
-    #raise Exception("No more next cell")
-
-def already_done(done, j):
-    return j in done
-
-def add_done(done, j, v):
-    ret = dict(done)
-    ret[j] = v
-    return ret
+    return (hex, tiles, Done(hex["count"]))
 
 def find_moves(pos):
     (hex, tiles, done) = pos
-    cell_id = next_cell(hex, done)
+    cell_id = done.next_cell()
     if cell_id < 0:
         return []
     
@@ -92,7 +95,7 @@ def find_moves(pos):
             if i >= 0:
                 valid = False
                 cells_around = hex[cell_id]["links"]
-                min_possible = sum(1 if (already_done(done, j) and (done[j] >= 0)) else 0
+                min_possible = sum(1 if (done.already_done(j) and (done[j] >= 0)) else 0
                                    for j in cells_around)
                 if i >= min_possible:
                     max_possible = len(cells_around)
@@ -111,7 +114,7 @@ def play_move(pos, move):
     ntiles = dict(tiles)
     (j, v) = move
     ntiles[v] -= 1
-    return (hex, ntiles, add_done(done, j, v))
+    return (hex, ntiles, done.add_done(j, v))
 
 def play_moves(pos, moves):
     ret = pos
@@ -153,7 +156,7 @@ def print_pos(pos):
         for x in xrange(size + y):
             pos = (x, y)
             id = hex[pos]["id"]
-            print("%s " % (str(done[id]) if (already_done(done, id) and (done[id] >= 0)) else "."),
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
                   end="")
         print()
     for y in xrange(1, size):
@@ -162,7 +165,7 @@ def print_pos(pos):
             ry = size + y - 1
             pos = (x, ry)
             id = hex[pos]["id"]
-            print("%s " % (str(done[id]) if (already_done(done, id) and (done[id] >= 0)) else "."),
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
                   end="")
         print()
         
@@ -174,7 +177,7 @@ def solved(pos, verbose=False):
     for i in xrange(hex["count"]):
         node = hex[i]
         (x, y) = node["pos"]
-        num = done[i] if already_done(done, i) else -1
+        num = done[i] if done.already_done(i) else -1
         if num > 0:
             for dir in DIRS:
                 nx = x + dir["x"]
@@ -182,7 +185,7 @@ def solved(pos, verbose=False):
                 npos = (nx, ny)
                 if npos in hex:
                     nid = hex[(nx, ny)]["id"]
-                    if already_done(done, nid) and (done[nid] >= 0):
+                    if done.already_done(nid) and (done[nid] >= 0):
                         num -= 1
             if num != 0:
                 if verbose:
