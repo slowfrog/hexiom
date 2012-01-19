@@ -31,27 +31,18 @@ class Done(object):
     def __getitem__(self, i):
         return self.cells[i]
 
-    def adjust_done(self, ascend):
-        if ascend:
-            for i in xrange(self.done, self.count):
-                if self.cells[i] is None:
-                    self.done = i
-                    return
-            else:
-                self.done = -1
+    def adjust_done(self):
+        for i in xrange(self.done, self.count):
+            if self.cells[i] is None:
+                self.done = i
+                return
         else:
-            start = self.count - 1 if self.done == -1 else self.done
-            for i in xrange(start, -1, -1):
-                if self.cells[i] is not None:
-                    self.done = i + 1
-                    return
-            else:
-                self.done = 0
+            self.done = -1
     
     def add_done(self, i, v):
         self.cells[i] = v
         self.used += 1
-        self.adjust_done(True)
+        self.adjust_done()
 
     def remove_done(self, i):
         self.cells[i] = None
@@ -160,6 +151,55 @@ def undo_move(pos, move):
     pos.tiles[i] += 1
     pos.done.remove_done(cell_id)
 
+def print_pos(pos):
+    hex = pos.hex
+    done = pos.done
+    size = hex.size
+    for y in xrange(size):
+        print(" " * (size - y - 1), end="")
+        for x in xrange(size + y):
+            pos2 = (x, y)
+            id = hex.get_by_pos(pos2).id
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
+                  end="")
+        print()
+    for y in xrange(1, size):
+        print(" " * y, end="")
+        for x in xrange(y, size * 2 - 1):
+            ry = size + y - 1
+            pos2 = (x, ry)
+            id = hex.get_by_pos(pos2).id
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
+                  end="")
+        print()
+        
+def solved(pos, verbose=False):
+    hex = pos.hex
+    tiles = pos.tiles
+    done = pos.done
+    if sum(tiles[i] for i in xrange(0, 7)) > 0:
+        return False
+    for i in xrange(hex.count):
+        node = hex.get_by_id(i)
+        (x, y) = node.pos
+        num = done[i] if done.already_done(i) else -1
+        if num >= 0:
+            for dir in DIRS:
+                npos = (x + dir.x, y + dir.y)
+                if hex.contains_pos(npos):
+                    nid = hex.get_by_pos(npos).id
+                    if done.already_done(nid) and (done[nid] >= 0):
+                        num -= 1
+            if num != 0:
+                if verbose:
+                    print("At pos %d,%d: %s, expected %d but was %d" %
+                          (x, y,
+                           "too many links" if num < 0 else "missing links",
+                           done[i], num - done[i]))
+                return False
+    print_pos(pos)
+    return True
+
 def solve_step(pos):
     moves = find_moves(pos)
     for move in moves:
@@ -193,56 +233,6 @@ def solve(pos):
     check_valid(pos)
     return solve_step(pos)
 
-def print_pos(pos):
-    hex = pos.hex
-    tiles = pos.tiles
-    done = pos.done
-    size = hex.size
-    for y in xrange(size):
-        print(" " * (size - y - 1), end="")
-        for x in xrange(size + y):
-            pos = (x, y)
-            id = hex.get_by_pos(pos).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
-                  end="")
-        print()
-    for y in xrange(1, size):
-        print(" " * y, end="")
-        for x in xrange(y, size * 2 - 1):
-            ry = size + y - 1
-            pos = (x, ry)
-            id = hex.get_by_pos(pos).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
-                  end="")
-        print()
-        
-
-def solved(pos, verbose=False):
-    hex = pos.hex
-    tiles = pos.tiles
-    done = pos.done
-    if sum(tiles[i] for i in xrange(0, 7)) > 0:
-        return False
-    for i in xrange(hex.count):
-        node = hex.get_by_id(i)
-        (x, y) = node.pos
-        num = done[i] if done.already_done(i) else -1
-        if num >= 0:
-            for dir in DIRS:
-                npos = (x + dir.x, y + dir.y)
-                if hex.contains_pos(npos):
-                    nid = hex.get_by_pos(npos).id
-                    if done.already_done(nid) and (done[nid] >= 0):
-                        num -= 1
-            if num != 0:
-                if verbose:
-                    print("At pos %d,%d: %s, expected %d but was %d" %
-                          (x, y,
-                           "too many links" if num < 0 else "missing links",
-                           done[i], num - done[i]))
-                return False
-    print_pos(pos)
-    return True
 
 # TODO Write an 'iterator' to go over all x,y positions
 # TODO change the tiles structure to a simple array (-1 => 7)
