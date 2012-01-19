@@ -319,18 +319,13 @@ public class Main {
       return false;
     }
     for (int i = 0; i < hex.count; ++i) {
-      Node node = hex.getById(i);
-      int x = pointX(node.pos);
-      int y = pointY(node.pos);
       int num = (done.alreadyDone(i) ? done.get(i) : 7);
       if (num < 7) {
-        for (int d = 0; d < DIRS.length; ++d) {
-          int npos = makePoint(x + DIRS[d][0], y + DIRS[d][1]);
-          if (hex.containsPos(npos)) {
-            int nid = hex.getByPos(npos).id;
-            if (done.alreadyDone(nid) && (done.get(nid) < 7)) {
-              num -= 1;
-            }
+        int[] cellsAround = hex.getById(i).links;
+        for (int d = 0; d < cellsAround.length; ++d) {
+          int nid = cellsAround[d];
+          if (done.alreadyDone(nid) && (done.get(nid) < 7)) {
+            num -= 1;
           }
         }
         if (num != 0) {

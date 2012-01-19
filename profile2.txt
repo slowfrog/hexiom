@@ -1,0 +1,959 @@
++----------------------------------------------------------------------
+|  File: profile.txt
+|  Date: 2012.01.19 16:12:44 PM
++----------------------------------------------------------------------
+
++------------------------------
+| Thread depth limit: Unlimited
++------------------------------
++------------------------------
+| Thread: 1
++------------------------------
+              Time            Percent    
+       ----------------- ---------------
+ Count    Total      Net   Total     Net  Location
+ =====    =====      ===   =====     ===  =========
+     1 397326.9      4.1   100.0          +--Main:main	(com.slowfrog.hexiom)
+    20 397322.8      0.1   100.0          | +--Main:solveFile	(com.slowfrog.hexiom)
+    20     55.8     36.2     0.0          | | +--Main:readFile	(com.slowfrog.hexiom)
+    20      2.3      2.1     0.0          | | | +--Main$Hex:<init>	(com.slowfrog.hexiom)
+   356      0.1      0.1     0.0          | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+   356      0.1      0.1     0.0          | | | | +--Main$Node:<init>	(com.slowfrog.hexiom)
+    20      0.0      0.0     0.0          | | | +--Main:makeTiles	(com.slowfrog.hexiom)
+    20      0.1      0.1     0.0          | | | +--Main$Done:<init>	(com.slowfrog.hexiom)
+    20     16.9     14.4     0.0          | | | +--Main$Hex:linkNodes	(com.slowfrog.hexiom)
+  2136      0.4      0.4     0.0          | | | | +--Main:pointX	(com.slowfrog.hexiom)
+  2136      0.4      0.4     0.0          | | | | +--Main:pointY	(com.slowfrog.hexiom)
+  2136      0.6      0.6     0.0          | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+  2136      0.4      0.4     0.0          | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+  1560      0.7      0.7     0.0          | | | | +--Main$Node:appendLink	(com.slowfrog.hexiom)
+    20      0.2      0.1     0.0          | | | +--Main$Pos:<init>	(com.slowfrog.hexiom)
+    20      0.1      0.1     0.0          | | | | +--Main:sumTiles	(com.slowfrog.hexiom)
+    86      0.1      0.1     0.0          | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    86      0.0      0.0     0.0          | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    43      0.1      0.0     0.0          | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+    43      0.0      0.0     0.0          | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+    20 397266.8      0.1   100.0          | | +--Main:solve	(com.slowfrog.hexiom)
+    20      0.1      0.1     0.0          | | | +--Main:checkValid	(com.slowfrog.hexiom)
+    20 397266.7      0.2   100.0          | | | +--Main:solveStep	(com.slowfrog.hexiom)
+    20      0.4      0.3     0.0          | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+    20      0.0      0.0     0.0          | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+    20      0.0      0.0     0.0          | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+    60      0.0      0.0     0.0          | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+     4      0.0      0.0     0.0          | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+    29      0.2      0.1     0.0          | | | | +--Main:playMove	(com.slowfrog.hexiom)
+    29      0.1      0.1     0.0          | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+    29      0.0      0.0     0.0          | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+    29      0.0      0.0     0.0          | | | | +--Main:solved	(com.slowfrog.hexiom)
+    29 397265.8      0.3   100.0          | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+    29      0.4      0.3     0.0          | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+    29      0.0      0.0     0.0          | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+    29      0.0      0.0     0.0          | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+   116      0.0      0.0     0.0          | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    49      0.0      0.0     0.0          | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+    65      0.2      0.1     0.0          | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+    65      0.1      0.1     0.0          | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+    65      0.0      0.0     0.0          | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+    65      2.1      0.8     0.0          | | | | | +--Main:solved	(com.slowfrog.hexiom)
+     7      0.0      0.0     0.0          | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+     7      0.0      0.0     0.0          | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+     7      0.0      0.0     0.0          | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+    13      0.1      0.1     0.0          | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+     4      0.0      0.0     0.0          | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+    12      0.2      0.2     0.0          | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    12      0.0      0.0     0.0          | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+     6      0.0      0.0     0.0          | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     1      0.9      0.8     0.0          | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+     7      0.0      0.0     0.0          | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+     7      0.0      0.0     0.0          | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     7      0.0      0.0     0.0          | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+     4      0.0      0.0     0.0          | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+    65      0.1      0.1     0.0          | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+    65      0.0      0.0     0.0          | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+    64 397262.7      0.5   100.0          | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+    64      0.4      0.3     0.0          | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+    64      0.0      0.0     0.0          | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+    64      0.0      0.0     0.0          | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+   201      0.0      0.0     0.0          | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    97      0.0      0.0     0.0          | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+   169      0.3      0.1     0.0          | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+   169      0.1      0.1     0.0          | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+   169      0.0      0.0     0.0          | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+   169      0.2      0.1     0.0          | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+    18      0.0      0.0     0.0          | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+    18      0.0      0.0     0.0          | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+    18      0.0      0.0     0.0          | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+    38      0.0      0.0     0.0          | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    14      0.0      0.0     0.0          | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+    36      0.0      0.0     0.0          | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    36      0.0      0.0     0.0          | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+    20      0.0      0.0     0.0          | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+   169 397261.1      1.6   100.0          | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+   169      1.2      0.9     0.0          | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+   169      0.0      0.0     0.0          | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+   167      0.0      0.0     0.0          | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+   696      0.2      0.2     0.0          | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+   378      0.0      0.0     0.0          | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+   561      0.8      0.3     0.0          | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+   561      0.5      0.4     0.0          | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+   561      0.1      0.1     0.0          | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+   561      0.3      0.3     0.0          | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+    25      0.0      0.0     0.0          | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+    25      0.0      0.0     0.0          | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+    25      0.0      0.0     0.0          | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+    61      0.0      0.0     0.0          | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    39      0.0      0.0     0.0          | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+    66      0.0      0.0     0.0          | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    66      0.0      0.0     0.0          | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+    36      0.0      0.0     0.0          | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+   561 397256.8      4.3   100.0          | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+   561      4.3      2.7     0.0          | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+   561      1.2      1.2     0.0          | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+   555      0.1      0.1     0.0          | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+  2470      0.2      0.2     0.0          | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+  1585      0.2      0.2     0.0          | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+  1775      2.4      1.0     0.0          | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+  1775      1.4      1.2     0.0          | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+  1775      0.2      0.2     0.0          | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+  1775      1.0      0.9     0.0          | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+    54      0.0      0.0     0.0          | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+    54      0.0      0.0     0.0          | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+    54      0.0      0.0     0.0          | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+   144      0.0      0.0     0.0          | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+   105      0.0      0.0     0.0          | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+   156      0.0      0.0     0.0          | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+   156      0.0      0.0     0.0          | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+    90      0.0      0.0     0.0          | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+  1775 397243.1     14.0   100.0          | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+  1775     11.2      9.7     0.0          | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+  1775      0.2      0.2     0.0          | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+  1761      0.2      0.2     0.0          | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+ 10179      0.6      0.6     0.0          | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+  7475      0.4      0.4     0.0          | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+  6079      7.8      4.2     0.0          | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+  6079      3.7      3.2     0.0          | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+  6079      0.4      0.4     0.0          | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+  6079      2.9      2.6     0.0          | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+    88      0.0      0.0     0.0          | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+    88      0.0      0.0     0.0          | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+    88      0.0      0.0     0.0          | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+   268      0.0      0.0     0.0          | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+   231      0.0      0.0     0.0          | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+   318      0.0      0.0     0.0          | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+   318      0.0      0.0     0.0          | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+   180      0.0      0.0     0.0          | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+  6079 397202.4     36.1   100.0          | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+  6079     26.7     23.7     0.0          | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+  6079      0.7      0.7     0.0          | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+  6048      0.5      0.5     0.0          | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+ 21251      0.9      0.9     0.0          | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+ 17784      0.9      0.9     0.0          | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+ 16653     18.9      8.0     0.0          | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+ 16653     10.8      9.0     0.0          | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+ 16653      1.9      1.9     0.0          | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+ 16653     10.3      8.3     0.0          | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+   415      0.1      0.1     0.0          | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+   415      0.0      0.0     0.0          | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+   415      0.0      0.0     0.0          | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+  1564      0.1      0.1     0.0          | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+  1505      0.1      0.1     0.0          | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+  2088      0.2      0.2     0.0          | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+  2088      0.3      0.3     0.0          | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+  1149      0.1      0.1     0.0          | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     2      1.1      1.0     0.0          | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    26      0.0      0.0     0.0          | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    26      0.0      0.0     0.0          | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    26      0.0      0.0     0.0          | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    33      0.0      0.0     0.0          | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+ 16651 397098.8    100.7    99.9          | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+ 16651     77.8     68.8     0.0          | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+ 16651      1.7      1.7     0.0          | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+ 16418      1.7      1.7     0.0          | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+ 78250      3.1      3.1     0.0          | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+ 45458      2.4      2.4     0.0          | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+ 51510     52.9     24.5     0.0          | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+ 51510     28.4     24.8     0.0          | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+ 51510      3.7      3.7     0.0          | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+ 51510     34.5     31.5     0.0          | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+  2798      0.2      0.2     0.0          | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+  2798      0.1      0.1     0.0          | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+  2798      0.2      0.2     0.0          | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+ 10824      0.4      0.4     0.0          | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+ 10749      0.6      0.6     0.0          | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+ 14454      0.5      0.5     0.0          | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+ 14454      0.5      0.5     0.0          | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+  8026      0.4      0.4     0.0          | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+ 51510 396802.4    270.8    99.9          | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+ 51510    291.0    263.7     0.1          | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+ 51510      3.8      3.8     0.0          | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+ 49786      3.4      3.4     0.0          | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+291824     11.4     11.4     0.0          | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+213616      8.7      8.7     0.0          | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+144355    145.4     70.0     0.0          | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+144355     75.4     66.1     0.0          | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+144355      9.3      9.3     0.0          | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+144355    147.3    134.8     0.0          | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+ 13240      0.8      0.8     0.0          | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+ 13240      0.6      0.6     0.0          | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+ 13240      0.6      0.6     0.0          | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+ 48699      2.0      2.0     0.0          | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+ 48603      2.1      2.1     0.0          | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+ 63324      2.3      2.3     0.0          | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+ 63324      2.6      2.6     0.0          | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+ 35459      1.5      1.5     0.0          | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+144355 395871.1    647.8    99.6     0.2  | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+144355    525.4    477.0     0.1     0.1  | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+144355      9.4      9.4     0.0          | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+136595      7.2      7.2     0.0          | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+522612     20.4     20.4     0.0          | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+286230     11.4     11.4     0.0          | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+343027    338.1    159.8     0.1          | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+343027    178.3    156.3     0.0          | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+343027     21.9     21.9     0.0          | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+343027    435.2    398.5     0.1     0.1  | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+ 41907      2.0      2.0     0.0          | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+ 41907      2.3      2.3     0.0          | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+ 41907      1.8      1.8     0.0          | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+146521      5.8      5.8     0.0          | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+146436      6.1      6.1     0.0          | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+185208      6.9      6.9     0.0          | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+185208      7.8      7.8     0.0          | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+104614      3.5      3.5     0.0          | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     1      0.5      0.5     0.0          | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    24      0.0      0.0     0.0          | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+343026 393746.0   1567.0    99.1     0.4  | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+343026   1719.4   1569.6     0.4     0.4  | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+343026     20.1     20.1     0.0          | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+319970     15.2     15.2     0.0          | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+1748833     68.8     68.8     0.0          | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+1166836     45.7     45.7     0.0          | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+829958    818.2    381.2     0.2          | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+829958    437.0    375.0     0.1          | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+829958     62.0     62.0     0.0          | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+829958   1333.2   1223.0     0.3     0.3  | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+137311      7.1      7.1     0.0          | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+137311      6.0      6.0     0.0          | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+137311      5.5      5.5     0.0          | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+457744     17.8     17.8     0.0          | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+457666     19.9     19.9     0.0          | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+566028     20.7     20.7     0.0          | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+566028     22.7     22.7     0.0          | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+320433     10.3     10.3     0.0          | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+829958 387870.8   2783.1    97.6     0.7  | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+829958   3440.5   3138.6     0.9     0.8  | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+829958     47.1     47.1     0.0          | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+757487     34.1     34.1     0.0          | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+2853067    111.6    111.6     0.0          | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+2759519    109.1    109.1     0.0          | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1439636   1402.0    663.3     0.4     0.2  | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+1439636    738.7    646.6     0.2     0.2  | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+1439636     92.1     92.1     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+1439636   3394.5   3109.7     0.9     0.8  | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+353272     15.7     15.7     0.0          | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+353272     17.7     17.7     0.0          | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+353272     15.1     15.1     0.0          | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+1167326     47.1     47.1     0.0          | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+1167233     49.5     49.5     0.0          | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1451652     54.5     54.5     0.0          | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+1451652     57.5     57.5     0.0          | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+814054     26.0     26.0     0.0          | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     3      1.6      1.6     0.0          | | | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    57      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    57      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    57      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    71      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1439633 376104.7   3321.9    94.7     0.8  | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+1439633   4404.6   3965.8     1.1     1.0  | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+1439633     81.4     81.4     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+1249170    118.3    118.3     0.0          | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+3896412    141.5    141.5     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+2509620     97.6     97.6     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1622626   1628.7    794.0     0.4     0.2  | | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+1622626    834.7    755.8     0.2     0.2  | | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+1622626     79.0     79.0     0.0          | | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+1622626   4205.4   3855.0     1.1     1.0  | | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+345843     17.2     17.2     0.0          | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+345843     18.5     18.5     0.0          | | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+345843     14.9     14.9     0.0          | | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+1382404     57.9     57.9     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+1382213     61.8     61.8     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1935282     65.9     65.9     0.0          | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+1935282     78.0     78.0     0.0          | | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+1036561     35.2     35.2     0.0          | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     2      1.1      1.1     0.0          | | | | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    38      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    38      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    38      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    48      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1622624 361669.6   3829.5    91.0     1.0  | | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+1622624   6689.2   6121.9     1.7     1.5  | | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+1622624     87.8     87.8     0.0          | | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+1377454     67.2     67.2     0.0          | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+6134501    226.6    226.6     0.1          | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+5125974    185.6    185.6     0.0          | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1841864   1843.7    901.6     0.5     0.2  | | | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+1841864    942.1    846.9     0.2     0.2  | | | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+1841864     95.2     95.2     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+1841864  20102.6  18357.9     5.1     4.6  | | | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+1722229     77.0     77.0     0.0          | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+1722229     93.2     93.2     0.0          | | | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+1722229     69.6     69.6     0.0          | | | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+6789945    287.9    287.9     0.1          | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+6789629    292.5    292.5     0.1          | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+9319860    378.5    378.5     0.1          | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+9319860    378.0    378.0     0.1          | | | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+5067716    166.0    166.0     0.0          | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     3      2.0      2.0     0.0          | | | | | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    57      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    57      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    57      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    82      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1841861 328219.2   3620.0    82.6     0.9  | | | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+1841861   4315.6   3924.9     1.1     1.0  | | | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+1841861    108.7    108.7     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+732169     36.6     36.6     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+4183232    164.1    164.1     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+2196481     81.4     81.4     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1679356   1659.7    774.4     0.4     0.2  | | | | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+1679356    885.3    784.6     0.2     0.2  | | | | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+1679356    100.7    100.7     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+1679356   7891.3   7217.6     2.0     1.8  | | | | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+658321     31.2     31.2     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+658321     32.4     32.4     0.0          | | | | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+658321     26.4     26.4     0.0          | | | | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+2677637    114.8    114.8     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+2677296    117.7    117.7     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+3613746    134.6    134.6     0.0          | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+3613746    148.3    148.3     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+2019316     67.6     67.6     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     1      0.6      0.6     0.0          | | | | | | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    24      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+1679355 309882.5   5630.0    78.0     1.4  | | | | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+1679355   5705.2   5207.6     1.4     1.3  | | | | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+1679355     97.6     97.6     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+1301065     58.8     58.8     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+5200362    200.2    200.2     0.1          | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+3899297    141.0    141.0     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+2906585   2845.1   1367.6     0.7     0.3  | | | | | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+2906585   1477.5   1312.9     0.4     0.3  | | | | | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+2906585    164.6    164.6     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+2906585  13346.9  12215.9     3.4     3.1  | | | | | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+1083254     51.5     51.5     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+1083254     52.5     52.5     0.0          | | | | | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+1083254     43.2     43.2     0.0          | | | | | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+4518653    192.9    192.9     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+4518401    196.2    196.2     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+6106320    228.3    228.3     0.1          | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+6106320    249.5    249.5     0.1          | | | | | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+3435399    115.7    115.7     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     2      1.1      1.1     0.0          | | | | | | | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    38      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    38      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    38      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    53      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+2906583 280871.1   8646.9    70.7     2.2  | | | | | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+2906583   8049.8   7351.6     2.0     1.9  | | | | | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+2906583    162.8    162.8     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+2284336    101.1    101.1     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+6857953    249.1    249.1     0.1          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+4573678    185.1    185.1     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+4443169   4293.5   2052.8     1.1     0.5  | | | | | | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+4443169   2240.8   1978.5     0.6     0.5  | | | | | | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+4443169    262.3    262.3     0.1          | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+4443169  25550.0  23408.8     6.4     5.9  | | | | | | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+2079099     86.6     86.6     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+2079099     97.9     97.9     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+2079099     84.7     84.7     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+8669613    370.8    370.8     0.1          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+8669437    361.6    361.6     0.1          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+11784000    439.5    439.5     0.1     0.1  | | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+11784000    478.5    478.5     0.1     0.1  | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+6590514    221.2    221.2     0.1          | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     1      0.5      0.5     0.0          | | | | | | | | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    19      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+    27      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+4443168 232051.4  12646.0    58.4     3.2  | | | | | | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+4443168  14281.5  13050.8     3.6     3.3  | | | | | | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+4443168    242.2    242.2     0.1          | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+3211133    149.5    149.5     0.0          | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+12839587    471.4    471.4     0.1     0.1  | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+9633399    367.6    367.6     0.1          | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+6315059   6141.7   2876.2     1.5     0.7  | | | | | | | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+6315059   3265.5   2913.8     0.8     0.7  | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+6315059    351.7    351.7     0.1          | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+6315059  54789.8  50180.1    13.8    12.6  | | | | | | | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+4466871    187.6    187.6     0.0          | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+4466871    204.0    204.0     0.1          | | | | | | | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+4466871    177.5    177.5     0.0          | | | | | | | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+18612129    786.2    786.2     0.2     0.2  | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+18612017    782.8    782.8     0.2     0.2  | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+25420656    952.2    952.2     0.2     0.2  | | | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+25420656   1048.0   1048.0     0.3     0.3  | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+14145258    471.4    471.4     0.1     0.1  | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+6315059 140989.6  11715.9    35.5     2.9  | | | | | | | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+6315059  15131.6  13814.3     3.8     3.5  | | | | | | | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+6315059    360.8    360.8     0.1          | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+3601157    168.7    168.7     0.0          | | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+10803471    373.7    373.7     0.1          | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+10803471    414.1    414.1     0.1     0.1  | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+5262127   5175.6   2392.9     1.3     0.6  | | | | | | | | | | | | | | | | | | | | | | +--Main:playMove	(com.slowfrog.hexiom)
+5262127   2782.7   2483.1     0.7     0.6  | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:addDone	(com.slowfrog.hexiom)
+5262127    299.6    299.6     0.1          | | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:adjustDone	(com.slowfrog.hexiom)
+5262127 101084.5  92555.7    25.4    23.3  | | | | | | | | | | | | | | | | | | | | | | +--Main:solved	(com.slowfrog.hexiom)
+8240564    342.6    342.6     0.1          | | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getById	(com.slowfrog.hexiom)
+8240564    395.8    395.8     0.1          | | | | | | | | | | | | | | | | | | | | | | | +--Main:pointX	(com.slowfrog.hexiom)
+8240564    329.0    329.0     0.1          | | | | | | | | | | | | | | | | | | | | | | | +--Main:pointY	(com.slowfrog.hexiom)
+34334433   1427.8   1427.8     0.4     0.4  | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+34334433   1411.3   1411.3     0.4     0.4  | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+47305548   1793.5   1793.5     0.5     0.5  | | | | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+47305548   1960.8   1960.8     0.5     0.5  | | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:containsPos	(com.slowfrog.hexiom)
+26093869    865.8    865.8     0.2     0.2  | | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+     4      2.2      2.2     0.0          | | | | | | | | | | | | | | | | | | | | | | | +--Main:printPos	(com.slowfrog.hexiom)
+    76      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | | | +--Main:makePoint	(com.slowfrog.hexiom)
+    76      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | | | +--Main$Hex:getByPos	(com.slowfrog.hexiom)
+    76      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:alreadyDone	(com.slowfrog.hexiom)
+   127      0.0      0.0     0.0          | | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:get	(com.slowfrog.hexiom)
+5262123   5114.0   2212.7     1.3     0.6  | | | | | | | | | | | | | | | | | | | | | | +--Main:solveStep	(com.slowfrog.hexiom)
+5262123   2901.3   2610.1     0.7     0.7  | | | | | | | | | | | | | | | | | | | | | | | +--Main:findMoves	(com.slowfrog.hexiom)
+5262123    291.2    291.2     0.1          | | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:nextCell	(com.slowfrog.hexiom)
+5262127   2768.0   2474.0     0.7     0.6  | | | | | | | | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+5262127    294.0    294.0     0.1          | | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+6315059   3202.7   2862.4     0.8     0.7  | | | | | | | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+6315059    340.3    340.3     0.1          | | | | | | | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+4443169   2279.4   2074.4     0.6     0.5  | | | | | | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+4443169    205.0    205.0     0.1          | | | | | | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+2906585   1484.2   1348.5     0.4     0.3  | | | | | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+2906585    135.7    135.7     0.0          | | | | | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+1679356    850.0    757.1     0.2     0.2  | | | | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+1679356     92.9     92.9     0.0          | | | | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+1841864    985.5    884.8     0.2     0.2  | | | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+1841864    100.7    100.7     0.0          | | | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+1622626    874.5    768.6     0.2     0.2  | | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+1622626    105.9    105.9     0.0          | | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+1439636    746.0    668.1     0.2     0.2  | | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+1439636     77.9     77.9     0.0          | | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+829958    437.4    400.8     0.1     0.1  | | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+829958     36.6     36.6     0.0          | | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+343027    178.7    161.6     0.0          | | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+343027     17.1     17.1     0.0          | | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+144355     76.8     68.2     0.0          | | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+144355      8.6      8.6     0.0          | | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+ 51510     30.5     26.0     0.0          | | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+ 51510      4.5      4.5     0.0          | | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+ 16653     11.6      9.5     0.0          | | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+ 16653      2.2      2.2     0.0          | | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+  6079      4.9      3.8     0.0          | | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+  6079      1.1      1.1     0.0          | | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+  1775      1.6      1.3     0.0          | | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+  1775      0.3      0.3     0.0          | | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+   561      0.5      0.4     0.0          | | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+   561      0.1      0.1     0.0          | | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+   169      0.2      0.1     0.0          | | | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+   169      0.0      0.0     0.0          | | | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+    29      0.1      0.1     0.0          | | | | +--Main:undoMove	(com.slowfrog.hexiom)
+    29      0.0      0.0     0.0          | | | | | +--Main$Done:removeDone	(com.slowfrog.hexiom)
+
++--------------------------------------
+| Most expensive methods (by net time)
+| Frame Count Limit: Unlimited
++--------------------------------------
+
+               Net
+          ------------
+ Count     Time    Pct  Location
+ =====     ====    ===  ========
+5262127  92555.7   23.3  com.slowfrog.hexiom.Main:solved
+6315059  50180.1   12.6  com.slowfrog.hexiom.Main:solved
+4443169  23408.8    5.9  com.slowfrog.hexiom.Main:solved
+1841864  18357.9    4.6  com.slowfrog.hexiom.Main:solved
+6315059  13814.3    3.5  com.slowfrog.hexiom.Main:findMoves
+4443168  13050.8    3.3  com.slowfrog.hexiom.Main:findMoves
+4443168  12646.0    3.2  com.slowfrog.hexiom.Main:solveStep
+2906585  12215.9    3.1  com.slowfrog.hexiom.Main:solved
+6315059  11715.9    2.9  com.slowfrog.hexiom.Main:solveStep
+2906583   8646.9    2.2  com.slowfrog.hexiom.Main:solveStep
+2906583   7351.6    1.9  com.slowfrog.hexiom.Main:findMoves
+1679356   7217.6    1.8  com.slowfrog.hexiom.Main:solved
+1622624   6121.9    1.5  com.slowfrog.hexiom.Main:findMoves
+1679355   5630.0    1.4  com.slowfrog.hexiom.Main:solveStep
+1679355   5207.6    1.3  com.slowfrog.hexiom.Main:findMoves
+1439633   3965.8    1.0  com.slowfrog.hexiom.Main:findMoves
+1841861   3924.9    1.0  com.slowfrog.hexiom.Main:findMoves
+1622626   3855.0    1.0  com.slowfrog.hexiom.Main:solved
+1622624   3829.5    1.0  com.slowfrog.hexiom.Main:solveStep
+1841861   3620.0    0.9  com.slowfrog.hexiom.Main:solveStep
+1439633   3321.9    0.8  com.slowfrog.hexiom.Main:solveStep
+829958   3138.6    0.8  com.slowfrog.hexiom.Main:findMoves
+1439636   3109.7    0.8  com.slowfrog.hexiom.Main:solved
+6315059   2913.8    0.7  com.slowfrog.hexiom.Main$Done:addDone
+6315059   2876.2    0.7  com.slowfrog.hexiom.Main:playMove
+6315059   2862.4    0.7  com.slowfrog.hexiom.Main:undoMove
+829958   2783.1    0.7  com.slowfrog.hexiom.Main:solveStep
+5262123   2610.1    0.7  com.slowfrog.hexiom.Main:findMoves
+5262127   2483.1    0.6  com.slowfrog.hexiom.Main$Done:addDone
+5262127   2474.0    0.6  com.slowfrog.hexiom.Main:undoMove
+5262127   2392.9    0.6  com.slowfrog.hexiom.Main:playMove
+5262123   2212.7    0.6  com.slowfrog.hexiom.Main:solveStep
+4443169   2074.4    0.5  com.slowfrog.hexiom.Main:undoMove
+4443169   2052.8    0.5  com.slowfrog.hexiom.Main:playMove
+4443169   1978.5    0.5  com.slowfrog.hexiom.Main$Done:addDone
+47305548   1960.8    0.5  com.slowfrog.hexiom.Main$Hex:containsPos
+47305548   1793.5    0.5  com.slowfrog.hexiom.Main:makePoint
+343026   1569.6    0.4  com.slowfrog.hexiom.Main:findMoves
+343026   1567.0    0.4  com.slowfrog.hexiom.Main:solveStep
+34334433   1427.8    0.4  com.slowfrog.hexiom.Main$Done:alreadyDone
+34334433   1411.3    0.4  com.slowfrog.hexiom.Main$Done:get
+2906585   1367.6    0.3  com.slowfrog.hexiom.Main:playMove
+2906585   1348.5    0.3  com.slowfrog.hexiom.Main:undoMove
+2906585   1312.9    0.3  com.slowfrog.hexiom.Main$Done:addDone
+829958   1223.0    0.3  com.slowfrog.hexiom.Main:solved
+25420656   1048.0    0.3  com.slowfrog.hexiom.Main$Hex:containsPos
+25420656    952.2    0.2  com.slowfrog.hexiom.Main:makePoint
+1841864    901.6    0.2  com.slowfrog.hexiom.Main:playMove
+1841864    884.8    0.2  com.slowfrog.hexiom.Main:undoMove
+26093869    865.8    0.2  com.slowfrog.hexiom.Main$Hex:getByPos
+1841864    846.9    0.2  com.slowfrog.hexiom.Main$Done:addDone
+1622626    794.0    0.2  com.slowfrog.hexiom.Main:playMove
+18612129    786.2    0.2  com.slowfrog.hexiom.Main$Done:alreadyDone
+1679356    784.6    0.2  com.slowfrog.hexiom.Main$Done:addDone
+18612017    782.8    0.2  com.slowfrog.hexiom.Main$Done:get
+1679356    774.4    0.2  com.slowfrog.hexiom.Main:playMove
+1622626    768.6    0.2  com.slowfrog.hexiom.Main:undoMove
+1679356    757.1    0.2  com.slowfrog.hexiom.Main:undoMove
+1622626    755.8    0.2  com.slowfrog.hexiom.Main$Done:addDone
+1439636    668.1    0.2  com.slowfrog.hexiom.Main:undoMove
+1439636    663.3    0.2  com.slowfrog.hexiom.Main:playMove
+144355    647.8    0.2  com.slowfrog.hexiom.Main:solveStep
+1439636    646.6    0.2  com.slowfrog.hexiom.Main$Done:addDone
+11784000    478.5    0.1  com.slowfrog.hexiom.Main$Hex:containsPos
+144355    477.0    0.1  com.slowfrog.hexiom.Main:findMoves
+14145258    471.4    0.1  com.slowfrog.hexiom.Main$Hex:getByPos
+12839587    471.4    0.1  com.slowfrog.hexiom.Main$Done:alreadyDone
+11784000    439.5    0.1  com.slowfrog.hexiom.Main:makePoint
+10803471    414.1    0.1  com.slowfrog.hexiom.Main$Done:get
+829958    400.8    0.1  com.slowfrog.hexiom.Main:undoMove
+343027    398.5    0.1  com.slowfrog.hexiom.Main:solved
+8240564    395.8    0.1  com.slowfrog.hexiom.Main:pointX
+829958    381.2    0.1  com.slowfrog.hexiom.Main:playMove
+9319860    378.5    0.1  com.slowfrog.hexiom.Main:makePoint
+9319860    378.0    0.1  com.slowfrog.hexiom.Main$Hex:containsPos
+829958    375.0    0.1  com.slowfrog.hexiom.Main$Done:addDone
+10803471    373.7    0.1  com.slowfrog.hexiom.Main$Done:alreadyDone
+8669613    370.8    0.1  com.slowfrog.hexiom.Main$Done:alreadyDone
+9633399    367.6    0.1  com.slowfrog.hexiom.Main$Done:get
+8669437    361.6    0.1  com.slowfrog.hexiom.Main$Done:get
+6315059    360.8    0.1  com.slowfrog.hexiom.Main$Done:nextCell
+6315059    351.7    0.1  com.slowfrog.hexiom.Main$Done:adjustDone
+8240564    342.6    0.1  com.slowfrog.hexiom.Main$Hex:getById
+6315059    340.3    0.1  com.slowfrog.hexiom.Main$Done:removeDone
+8240564    329.0    0.1  com.slowfrog.hexiom.Main:pointY
+5262127    299.6    0.1  com.slowfrog.hexiom.Main$Done:adjustDone
+5262127    294.0    0.1  com.slowfrog.hexiom.Main$Done:removeDone
+6789629    292.5    0.1  com.slowfrog.hexiom.Main$Done:get
+5262123    291.2    0.1  com.slowfrog.hexiom.Main$Done:nextCell
+6789945    287.9    0.1  com.slowfrog.hexiom.Main$Done:alreadyDone
+ 51510    270.8    0.1  com.slowfrog.hexiom.Main:solveStep
+ 51510    263.7    0.1  com.slowfrog.hexiom.Main:findMoves
+4443169    262.3    0.1  com.slowfrog.hexiom.Main$Done:adjustDone
+6106320    249.5    0.1  com.slowfrog.hexiom.Main$Hex:containsPos
+6857953    249.1    0.1  com.slowfrog.hexiom.Main$Done:alreadyDone
+4443168    242.2    0.1  com.slowfrog.hexiom.Main$Done:nextCell
+6106320    228.3    0.1  com.slowfrog.hexiom.Main:makePoint
+6134501    226.6    0.1  com.slowfrog.hexiom.Main$Done:alreadyDone
+6590514    221.2    0.1  com.slowfrog.hexiom.Main$Hex:getByPos
+4443169    205.0    0.1  com.slowfrog.hexiom.Main$Done:removeDone
+4466871    204.0    0.1  com.slowfrog.hexiom.Main:pointX
+5200362    200.2    0.1  com.slowfrog.hexiom.Main$Done:alreadyDone
+4518401    196.2    0.0  com.slowfrog.hexiom.Main$Done:get
+4518653    192.9    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+4466871    187.6    0.0  com.slowfrog.hexiom.Main$Hex:getById
+5125974    185.6    0.0  com.slowfrog.hexiom.Main$Done:get
+4573678    185.1    0.0  com.slowfrog.hexiom.Main$Done:get
+4466871    177.5    0.0  com.slowfrog.hexiom.Main:pointY
+3601157    168.7    0.0  com.slowfrog.hexiom.Main$Hex:getById
+5067716    166.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+2906585    164.6    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+4183232    164.1    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+2906583    162.8    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+343027    161.6    0.0  com.slowfrog.hexiom.Main:undoMove
+343027    159.8    0.0  com.slowfrog.hexiom.Main:playMove
+343027    156.3    0.0  com.slowfrog.hexiom.Main$Done:addDone
+3211133    149.5    0.0  com.slowfrog.hexiom.Main$Hex:getById
+3613746    148.3    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+3896412    141.5    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+3899297    141.0    0.0  com.slowfrog.hexiom.Main$Done:get
+2906585    135.7    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+144355    134.8    0.0  com.slowfrog.hexiom.Main:solved
+3613746    134.6    0.0  com.slowfrog.hexiom.Main:makePoint
+1249170    118.3    0.0  com.slowfrog.hexiom.Main$Hex:getById
+2677296    117.7    0.0  com.slowfrog.hexiom.Main$Done:get
+3435399    115.7    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+2677637    114.8    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+2853067    111.6    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+2759519    109.1    0.0  com.slowfrog.hexiom.Main$Done:get
+1841861    108.7    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+1622626    105.9    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+2284336    101.1    0.0  com.slowfrog.hexiom.Main$Hex:getById
+ 16651    100.7    0.0  com.slowfrog.hexiom.Main:solveStep
+1679356    100.7    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+1841864    100.7    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+2079099     97.9    0.0  com.slowfrog.hexiom.Main:pointX
+1679355     97.6    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+2509620     97.6    0.0  com.slowfrog.hexiom.Main$Done:get
+1841864     95.2    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+1722229     93.2    0.0  com.slowfrog.hexiom.Main:pointX
+1679356     92.9    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+1439636     92.1    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+1622624     87.8    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+2079099     86.6    0.0  com.slowfrog.hexiom.Main$Hex:getById
+2079099     84.7    0.0  com.slowfrog.hexiom.Main:pointY
+1439633     81.4    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+2196481     81.4    0.0  com.slowfrog.hexiom.Main$Done:get
+1622626     79.0    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+1935282     78.0    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+1439636     77.9    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+1722229     77.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+144355     70.0    0.0  com.slowfrog.hexiom.Main:playMove
+1722229     69.6    0.0  com.slowfrog.hexiom.Main:pointY
+1748833     68.8    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+ 16651     68.8    0.0  com.slowfrog.hexiom.Main:findMoves
+144355     68.2    0.0  com.slowfrog.hexiom.Main:undoMove
+2019316     67.6    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+1377454     67.2    0.0  com.slowfrog.hexiom.Main$Hex:getById
+144355     66.1    0.0  com.slowfrog.hexiom.Main$Done:addDone
+1935282     65.9    0.0  com.slowfrog.hexiom.Main:makePoint
+829958     62.0    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+1382213     61.8    0.0  com.slowfrog.hexiom.Main$Done:get
+1301065     58.8    0.0  com.slowfrog.hexiom.Main$Hex:getById
+1382404     57.9    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+1451652     57.5    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+1451652     54.5    0.0  com.slowfrog.hexiom.Main:makePoint
+1083254     52.5    0.0  com.slowfrog.hexiom.Main:pointX
+1083254     51.5    0.0  com.slowfrog.hexiom.Main$Hex:getById
+1167233     49.5    0.0  com.slowfrog.hexiom.Main$Done:get
+1167326     47.1    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+829958     47.1    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+1166836     45.7    0.0  com.slowfrog.hexiom.Main$Done:get
+1083254     43.2    0.0  com.slowfrog.hexiom.Main:pointY
+732169     36.6    0.0  com.slowfrog.hexiom.Main$Hex:getById
+829958     36.6    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+    20     36.2    0.0  com.slowfrog.hexiom.Main:readFile
+  6079     36.1    0.0  com.slowfrog.hexiom.Main:solveStep
+1036561     35.2    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+757487     34.1    0.0  com.slowfrog.hexiom.Main$Hex:getById
+658321     32.4    0.0  com.slowfrog.hexiom.Main:pointX
+ 51510     31.5    0.0  com.slowfrog.hexiom.Main:solved
+658321     31.2    0.0  com.slowfrog.hexiom.Main$Hex:getById
+658321     26.4    0.0  com.slowfrog.hexiom.Main:pointY
+ 51510     26.0    0.0  com.slowfrog.hexiom.Main:undoMove
+814054     26.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+ 51510     24.8    0.0  com.slowfrog.hexiom.Main$Done:addDone
+ 51510     24.5    0.0  com.slowfrog.hexiom.Main:playMove
+  6079     23.7    0.0  com.slowfrog.hexiom.Main:findMoves
+566028     22.7    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+343027     21.9    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+566028     20.7    0.0  com.slowfrog.hexiom.Main:makePoint
+522612     20.4    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+343026     20.1    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+457666     19.9    0.0  com.slowfrog.hexiom.Main$Done:get
+345843     18.5    0.0  com.slowfrog.hexiom.Main:pointX
+457744     17.8    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+353272     17.7    0.0  com.slowfrog.hexiom.Main:pointX
+345843     17.2    0.0  com.slowfrog.hexiom.Main$Hex:getById
+343027     17.1    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+353272     15.7    0.0  com.slowfrog.hexiom.Main$Hex:getById
+319970     15.2    0.0  com.slowfrog.hexiom.Main$Hex:getById
+353272     15.1    0.0  com.slowfrog.hexiom.Main:pointY
+345843     14.9    0.0  com.slowfrog.hexiom.Main:pointY
+    20     14.4    0.0  com.slowfrog.hexiom.Main$Hex:linkNodes
+  1775     14.0    0.0  com.slowfrog.hexiom.Main:solveStep
+286230     11.4    0.0  com.slowfrog.hexiom.Main$Done:get
+291824     11.4    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+320433     10.3    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+  1775      9.7    0.0  com.slowfrog.hexiom.Main:findMoves
+ 16653      9.5    0.0  com.slowfrog.hexiom.Main:undoMove
+144355      9.4    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+144355      9.3    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+ 16653      9.0    0.0  com.slowfrog.hexiom.Main$Done:addDone
+213616      8.7    0.0  com.slowfrog.hexiom.Main$Done:get
+144355      8.6    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+ 16653      8.3    0.0  com.slowfrog.hexiom.Main:solved
+ 16653      8.0    0.0  com.slowfrog.hexiom.Main:playMove
+185208      7.8    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+136595      7.2    0.0  com.slowfrog.hexiom.Main$Hex:getById
+137311      7.1    0.0  com.slowfrog.hexiom.Main$Hex:getById
+185208      6.9    0.0  com.slowfrog.hexiom.Main:makePoint
+146436      6.1    0.0  com.slowfrog.hexiom.Main$Done:get
+137311      6.0    0.0  com.slowfrog.hexiom.Main:pointX
+146521      5.8    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+137311      5.5    0.0  com.slowfrog.hexiom.Main:pointY
+ 51510      4.5    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+   561      4.3    0.0  com.slowfrog.hexiom.Main:solveStep
+  6079      4.2    0.0  com.slowfrog.hexiom.Main:playMove
+     1      4.1    0.0  com.slowfrog.hexiom.Main:main
+  6079      3.8    0.0  com.slowfrog.hexiom.Main:undoMove
+ 51510      3.8    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+ 51510      3.7    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+104614      3.5    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+ 49786      3.4    0.0  com.slowfrog.hexiom.Main$Hex:getById
+  6079      3.2    0.0  com.slowfrog.hexiom.Main$Done:addDone
+ 78250      3.1    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+   561      2.7    0.0  com.slowfrog.hexiom.Main:findMoves
+  6079      2.6    0.0  com.slowfrog.hexiom.Main:solved
+ 63324      2.6    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+ 45458      2.4    0.0  com.slowfrog.hexiom.Main$Done:get
+ 41907      2.3    0.0  com.slowfrog.hexiom.Main:pointX
+ 63324      2.3    0.0  com.slowfrog.hexiom.Main:makePoint
+     4      2.2    0.0  com.slowfrog.hexiom.Main:printPos
+ 16653      2.2    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+ 48603      2.1    0.0  com.slowfrog.hexiom.Main$Done:get
+    20      2.1    0.0  com.slowfrog.hexiom.Main$Hex:<init>
+ 41907      2.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+     3      2.0    0.0  com.slowfrog.hexiom.Main:printPos
+ 48699      2.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+ 16653      1.9    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+ 41907      1.8    0.0  com.slowfrog.hexiom.Main:pointY
+ 16418      1.7    0.0  com.slowfrog.hexiom.Main$Hex:getById
+ 16651      1.7    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+     3      1.6    0.0  com.slowfrog.hexiom.Main:printPos
+   169      1.6    0.0  com.slowfrog.hexiom.Main:solveStep
+ 35459      1.5    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+  1775      1.3    0.0  com.slowfrog.hexiom.Main:undoMove
+   561      1.2    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+  1775      1.2    0.0  com.slowfrog.hexiom.Main$Done:addDone
+  6079      1.1    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+     2      1.1    0.0  com.slowfrog.hexiom.Main:printPos
+     2      1.1    0.0  com.slowfrog.hexiom.Main:printPos
+     2      1.0    0.0  com.slowfrog.hexiom.Main:printPos
+  1775      1.0    0.0  com.slowfrog.hexiom.Main:playMove
+ 17784      0.9    0.0  com.slowfrog.hexiom.Main$Done:get
+ 21251      0.9    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+   169      0.9    0.0  com.slowfrog.hexiom.Main:findMoves
+  1775      0.9    0.0  com.slowfrog.hexiom.Main:solved
+ 13240      0.8    0.0  com.slowfrog.hexiom.Main$Hex:getById
+    65      0.8    0.0  com.slowfrog.hexiom.Main:solved
+     1      0.8    0.0  com.slowfrog.hexiom.Main:printPos
+  6079      0.7    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+  1560      0.7    0.0  com.slowfrog.hexiom.Main$Node:appendLink
+ 13240      0.6    0.0  com.slowfrog.hexiom.Main:pointX
+  2136      0.6    0.0  com.slowfrog.hexiom.Main:makePoint
+     1      0.6    0.0  com.slowfrog.hexiom.Main:printPos
+ 10749      0.6    0.0  com.slowfrog.hexiom.Main$Done:get
+ 13240      0.6    0.0  com.slowfrog.hexiom.Main:pointY
+ 10179      0.6    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+ 14454      0.5    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+ 14454      0.5    0.0  com.slowfrog.hexiom.Main:makePoint
+  6048      0.5    0.0  com.slowfrog.hexiom.Main$Hex:getById
+    64      0.5    0.0  com.slowfrog.hexiom.Main:solveStep
+     1      0.5    0.0  com.slowfrog.hexiom.Main:printPos
+     1      0.5    0.0  com.slowfrog.hexiom.Main:printPos
+  2136      0.4    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+ 10824      0.4    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+  6079      0.4    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+  7475      0.4    0.0  com.slowfrog.hexiom.Main$Done:get
+  2136      0.4    0.0  com.slowfrog.hexiom.Main:pointX
+   561      0.4    0.0  com.slowfrog.hexiom.Main$Done:addDone
+   561      0.4    0.0  com.slowfrog.hexiom.Main:undoMove
+  8026      0.4    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+  2136      0.4    0.0  com.slowfrog.hexiom.Main:pointY
+  1775      0.3    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+   561      0.3    0.0  com.slowfrog.hexiom.Main:playMove
+    64      0.3    0.0  com.slowfrog.hexiom.Main:findMoves
+    29      0.3    0.0  com.slowfrog.hexiom.Main:findMoves
+    20      0.3    0.0  com.slowfrog.hexiom.Main:findMoves
+  2088      0.3    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+   561      0.3    0.0  com.slowfrog.hexiom.Main:solved
+    29      0.3    0.0  com.slowfrog.hexiom.Main:solveStep
+  1775      0.2    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+  1775      0.2    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+  1761      0.2    0.0  com.slowfrog.hexiom.Main$Hex:getById
+  2798      0.2    0.0  com.slowfrog.hexiom.Main$Hex:getById
+    20      0.2    0.0  com.slowfrog.hexiom.Main:solveStep
+  2088      0.2    0.0  com.slowfrog.hexiom.Main:makePoint
+    12      0.2    0.0  com.slowfrog.hexiom.Main:makePoint
+  1585      0.2    0.0  com.slowfrog.hexiom.Main$Done:get
+  2470      0.2    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+   696      0.2    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+  2798      0.2    0.0  com.slowfrog.hexiom.Main:pointY
+   169      0.1    0.0  com.slowfrog.hexiom.Main:solved
+   169      0.1    0.0  com.slowfrog.hexiom.Main:undoMove
+   169      0.1    0.0  com.slowfrog.hexiom.Main:playMove
+   356      0.1    0.0  com.slowfrog.hexiom.Main$Node:<init>
+  2798      0.1    0.0  com.slowfrog.hexiom.Main:pointX
+    20      0.1    0.0  com.slowfrog.hexiom.Main:solveFile
+  1564      0.1    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+   555      0.1    0.0  com.slowfrog.hexiom.Main$Hex:getById
+  1505      0.1    0.0  com.slowfrog.hexiom.Main$Done:get
+   169      0.1    0.0  com.slowfrog.hexiom.Main$Done:addDone
+    20      0.1    0.0  com.slowfrog.hexiom.Main:solve
+   356      0.1    0.0  com.slowfrog.hexiom.Main:makePoint
+    20      0.1    0.0  com.slowfrog.hexiom.Main$Done:<init>
+    20      0.1    0.0  com.slowfrog.hexiom.Main$Pos:<init>
+   561      0.1    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+    65      0.1    0.0  com.slowfrog.hexiom.Main:undoMove
+  1149      0.1    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+   561      0.1    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+    65      0.1    0.0  com.slowfrog.hexiom.Main$Done:addDone
+    65      0.1    0.0  com.slowfrog.hexiom.Main:playMove
+    29      0.1    0.0  com.slowfrog.hexiom.Main:playMove
+    29      0.1    0.0  com.slowfrog.hexiom.Main$Done:addDone
+    86      0.1    0.0  com.slowfrog.hexiom.Main:makePoint
+    20      0.1    0.0  com.slowfrog.hexiom.Main:sumTiles
+   415      0.1    0.0  com.slowfrog.hexiom.Main$Hex:getById
+    13      0.1    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    20      0.1    0.0  com.slowfrog.hexiom.Main:checkValid
+    29      0.1    0.0  com.slowfrog.hexiom.Main:undoMove
+   318      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+   415      0.0    0.0  com.slowfrog.hexiom.Main:pointX
+    60      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+   169      0.0    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+   169      0.0    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+   318      0.0    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+    43      0.0    0.0  com.slowfrog.hexiom.Main$Done:addDone
+    29      0.0    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+     7      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    65      0.0    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+   167      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+   415      0.0    0.0  com.slowfrog.hexiom.Main:pointY
+   116      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    86      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    65      0.0    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+    49      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+   268      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+   378      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+   231      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    20      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+     7      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    29      0.0    0.0  com.slowfrog.hexiom.Main:solved
+    20      0.0    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+   201      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+     7      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    29      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+    29      0.0    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+     4      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+     7      0.0    0.0  com.slowfrog.hexiom.Main:pointX
+   180      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+   169      0.0    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+     7      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+   156      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    12      0.0    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+    20      0.0    0.0  com.slowfrog.hexiom.Main:makeTiles
+     6      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    29      0.0    0.0  com.slowfrog.hexiom.Main$Done:removeDone
+    64      0.0    0.0  com.slowfrog.hexiom.Main$Done:nextCell
+     7      0.0    0.0  com.slowfrog.hexiom.Main:pointY
+    97      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    33      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+   156      0.0    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+    26      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    64      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+    88      0.0    0.0  com.slowfrog.hexiom.Main:pointX
+    57      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    88      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+   144      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    54      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+   105      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    26      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    26      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    90      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    88      0.0    0.0  com.slowfrog.hexiom.Main:pointY
+    76      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+     4      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    54      0.0    0.0  com.slowfrog.hexiom.Main:pointX
+    57      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    54      0.0    0.0  com.slowfrog.hexiom.Main:pointY
+   127      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    43      0.0    0.0  com.slowfrog.hexiom.Main$Done:adjustDone
+    38      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    57      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    82      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    38      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    76      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    53      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    76      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    19      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    57      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    71      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    38      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    57      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    18      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+     4      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    19      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    66      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    19      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    19      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    25      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getById
+    38      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    48      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    66      0.0    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+    36      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    27      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    38      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    39      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    38      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    61      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    24      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    38      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    36      0.0    0.0  com.slowfrog.hexiom.Main:makePoint
+    20      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    25      0.0    0.0  com.slowfrog.hexiom.Main:pointX
+    25      0.0    0.0  com.slowfrog.hexiom.Main:pointY
+    57      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    18      0.0    0.0  com.slowfrog.hexiom.Main:pointX
+    24      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    14      0.0    0.0  com.slowfrog.hexiom.Main$Done:get
+    19      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    18      0.0    0.0  com.slowfrog.hexiom.Main:pointY
+    36      0.0    0.0  com.slowfrog.hexiom.Main$Hex:containsPos
+    19      0.0    0.0  com.slowfrog.hexiom.Main$Hex:getByPos
+    19      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    19      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+    19      0.0    0.0  com.slowfrog.hexiom.Main$Done:alreadyDone
+
++--------------------------------------+
+| Most expensive methods summarized    |
++--------------------------------------+
+
+               Net
+          ------------
+ Count     Time    Pct  Location
+ =====     ====    ===  ========
+26904603 212701.6   53.5  com.slowfrog.hexiom.Main:solved
+26904603  61602.6   15.5  com.slowfrog.hexiom.Main:findMoves
+26904603  57049.3   14.4  com.slowfrog.hexiom.Main:solveStep
+26904603  12509.7    3.1  com.slowfrog.hexiom.Main:undoMove
+26904603  12472.0    3.1  com.slowfrog.hexiom.Main:playMove
+26904646  12358.3    3.1  com.slowfrog.hexiom.Main$Done:addDone
+134263449   5355.5    1.3  com.slowfrog.hexiom.Main$Done:alreadyDone
+122057455   4953.9    1.2  com.slowfrog.hexiom.Main$Done:get
+107770890   4433.1    1.1  com.slowfrog.hexiom.Main$Hex:containsPos
+107771688   4078.8    1.0  com.slowfrog.hexiom.Main:makePoint
+59673142   1984.9    0.5  com.slowfrog.hexiom.Main$Hex:getByPos
+34190700   1582.5    0.4  com.slowfrog.hexiom.Main$Hex:getById
+26904646   1544.9    0.4  com.slowfrog.hexiom.Main$Done:adjustDone
+26904603   1517.0    0.4  com.slowfrog.hexiom.Main$Done:nextCell
+26904603   1423.0    0.4  com.slowfrog.hexiom.Main$Done:removeDone
+19147452    921.6    0.2  com.slowfrog.hexiom.Main:pointX
+19147452    768.8    0.2  com.slowfrog.hexiom.Main:pointY
+    20     36.2    0.0  com.slowfrog.hexiom.Main:readFile
+    20     14.4    0.0  com.slowfrog.hexiom.Main$Hex:linkNodes
+    20     11.2    0.0  com.slowfrog.hexiom.Main:printPos
+     1      4.1    0.0  com.slowfrog.hexiom.Main:main
+    20      2.1    0.0  com.slowfrog.hexiom.Main$Hex:<init>
+  1560      0.7    0.0  com.slowfrog.hexiom.Main$Node:appendLink
+   356      0.1    0.0  com.slowfrog.hexiom.Main$Node:<init>
+    20      0.1    0.0  com.slowfrog.hexiom.Main:solveFile
+    20      0.1    0.0  com.slowfrog.hexiom.Main:solve
+    20      0.1    0.0  com.slowfrog.hexiom.Main$Done:<init>
+    20      0.1    0.0  com.slowfrog.hexiom.Main$Pos:<init>
+    20      0.1    0.0  com.slowfrog.hexiom.Main:sumTiles
+    20      0.1    0.0  com.slowfrog.hexiom.Main:checkValid
+    20      0.0    0.0  com.slowfrog.hexiom.Main:makeTiles
