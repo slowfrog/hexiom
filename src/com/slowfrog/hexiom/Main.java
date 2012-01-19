@@ -211,30 +211,17 @@ public class Main {
   }
 
   // //////////////////////////////////////////////
-  static class Move {
-    public int cellId;
-
-    public int value;
-
-    public Move(int cellId, int value) {
-      this.cellId = cellId;
-      this.value = value;
-    }
-  }
-
-  // //////////////////////////////////////////////
-  private static final List<Move> NO_MOVES = new ArrayList<Move>();
-
-  private static List<Move> findMoves(Pos pos) {
+  private static int findMoves(Pos pos, int[] moves) {
+    int count = 0;
+    int index = 0;
     Hex hex = pos.hex;
     int[] tiles = pos.tiles;
     Done done = pos.done;
     int cellId = done.nextCell();
     if (cellId < 0) {
-      return NO_MOVES;
+      return count;
     }
 
-    List<Move> moves = new ArrayList<Move>();
     int[] cellsAround = null;
     int minPossible = 0;
     int maxPossible = 0;
@@ -262,27 +249,30 @@ public class Main {
           valid = (minPossible <= i) && (i <= maxPossible);
         }
         if (valid) {
-          moves.add(new Move(cellId, i));
+          moves[index] = cellId;
+          moves[index + 1] = i;
+          count += 1;
+          index += 2;
         }
       }
     }
-    return moves;
+    return count;
   }
 
-  private static void playMove(Pos pos, Move move) {
-    pos.tiles[move.value] -= 1;
-    if (move.value < 7) {
+  private static void playMove(Pos pos, int cellId, int value) {
+    pos.tiles[value] -= 1;
+    if (value < 7) {
       pos.sumTiles -= 1;
     }
-    pos.done.addDone(move.cellId, move.value);
+    pos.done.addDone(cellId, value);
   }
 
-  private static void undoMove(Pos pos, Move move) {
-    pos.tiles[move.value] += 1;
-    if (move.value < 7) {
+  private static void undoMove(Pos pos, int cellId, int value) {
+    pos.tiles[value] += 1;
+    if (value < 7) {
       pos.sumTiles += 1;
     }
-    pos.done.removeDone(move.cellId);
+    pos.done.removeDone(cellId);
   }
 
   private static final String SPACES = "                                                  ";
@@ -353,16 +343,19 @@ public class Main {
   }
 
   private static boolean solveStep(Pos pos) {
-    List<Move> moves = findMoves(pos);
-    for (Move move : moves) {
+    int[] moves = new int[16];
+    int count = findMoves(pos, moves);
+    for (int i = 0; i < count; ++i) {
+      int cellId = moves[2 * i];
+      int value = moves[2 * i + 1];
       boolean ret = false;
-      playMove(pos, move);
+      playMove(pos, cellId, value);
       if (solved(pos)) {
         ret = true;
       } else if (solveStep(pos)) {
         ret = true;
       }
-      undoMove(pos, move);
+      undoMove(pos, cellId, value);
       if (ret) {
         return ret;
       }
