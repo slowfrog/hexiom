@@ -10,6 +10,10 @@ import java.util.List;
 public class Main {
   private static final int NONE = -2;
 
+  private static int OPEN = 0;
+  private static int SOLVED = 1;
+  private static int IMPOSSIBLE = -1;
+  
   // //////////////////////////////////////////////
   public static int makePoint(int x, int y) {
     return ((x & 0xf) << 4) | (y & 0xf);
@@ -22,10 +26,6 @@ public class Main {
   public static int pointY(int point) {
     return point & 0xf;
   }
-
-  // //////////////////////////////////////////////
-  public static final int[][] DIRS = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 },
-      { -1, -1 } };
 
   // //////////////////////////////////////////////
   static class Done {
@@ -152,12 +152,14 @@ public class Main {
     }
 
     public void linkNodes() {
+      final int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { -1, -1 } };
+
       for (int i = 0; i < this.nodesById.length; ++i) {
         Node node = this.nodesById[i];
         int p = node.pos;
-        for (int d = 0; d < DIRS.length; ++d) {
-          int nx = pointX(p) + DIRS[d][0];
-          int ny = pointY(p) + DIRS[d][1];
+        for (int d = 0; d < dirs.length; ++d) {
+          int nx = pointX(p) + dirs[d][0];
+          int ny = pointY(p) + dirs[d][1];
           int ncode = makePoint(nx, ny);
           if (this.containsPos(ncode)) {
             node.appendLink(this.nodesByPos[ncode].id);
@@ -312,11 +314,11 @@ public class Main {
     }
   }
 
-  private static boolean solved(Pos pos) {
+  private static int solved(Pos pos) {
     Hex hex = pos.hex;
     Done done = pos.done;
     if (pos.sumTiles > 0) {
-      return false;
+      return OPEN;
     }
     for (int i = 0; i < hex.count; ++i) {
       int num = (done.alreadyDone(i) ? done.get(i) : 7);
@@ -329,33 +331,34 @@ public class Main {
           }
         }
         if (num != 0) {
-          return false;
+          return IMPOSSIBLE;
         }
       }
     }
     printPos(pos);
-    return true;
+    return SOLVED;
   }
 
-  private static boolean solveStep(Pos pos) {
+  private static int solveStep(Pos pos) {
     int[] moves = new int[16];
     int count = findMoves(pos, moves);
     for (int i = 0; i < count; ++i) {
       int cellId = moves[2 * i];
       int value = moves[2 * i + 1];
-      boolean ret = false;
+      int ret = OPEN;
       playMove(pos, cellId, value);
-      if (solved(pos)) {
-        ret = true;
-      } else if (solveStep(pos)) {
-        ret = true;
+      int curStatus = solved(pos);
+      if (curStatus != OPEN) {
+        ret = curStatus;
+      } else if (solveStep(pos) == SOLVED) {
+        ret = SOLVED;
       }
       undoMove(pos, cellId, value);
-      if (ret) {
+      if (ret == SOLVED) {
         return ret;
       }
     }
-    return false;
+    return IMPOSSIBLE;
   }
 
   private static void checkValid(Pos pos) {
@@ -378,7 +381,7 @@ public class Main {
     }
   }
 
-  private static boolean solve(Pos pos) {
+  private static int solve(Pos pos) {
     checkValid(pos);
     return solveStep(pos);
   }
