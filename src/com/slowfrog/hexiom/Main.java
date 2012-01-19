@@ -5,36 +5,30 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
   private static final int NONE = -2;
 
+  private static final int HASH_FACTOR = 15;
+
   // //////////////////////////////////////////////
   static class Point {
-    public int x;
-
-    public int y;
+    public final int x;
+    public final int y;
+    public final int code;
+    
 
     public Point(int x, int y) {
       this.x = x;
       this.y = y;
-    }
-
-    public boolean equals(Object other) {
-      if (!(other instanceof Point)) {
-        return false;
-      }
-      Point p2 = (Point) other;
-      return ((p2.x == this.x) && (p2.y == this.y));
-    }
-
-    public int hashCode() {
-      return this.x + this.y * 20;
+      this.code = code(this.x, this.y);
     }
     
+    public static int code(int x, int y) {
+      return x + y * HASH_FACTOR;
+    }
+
     public String toString() {
       return "(" + x + "," + y + ")";
     }
@@ -53,7 +47,7 @@ public class Main {
 
     public static final Dir[] ALL = { new Dir(1, 0), new Dir(-1, 0), new Dir(0, 1),
         new Dir(0, -1), new Dir(1, 1), new Dir(-1, -1) };
-    
+
     public String toString() {
       return "[" + x + "," + y + "]";
     }
@@ -134,7 +128,7 @@ public class Main {
       nlinks[this.links.length] = id;
       this.links = nlinks;
     }
-    
+
     public String toString() {
       String lstr = "[";
       for (int i = 0; i < this.links.length; ++i) {
@@ -156,19 +150,20 @@ public class Main {
 
     public Node[] nodesById;
 
-    public Map<Point, Node> nodesByPos;
+    public Node[] nodesByPos;
 
     public Hex(int size) {
       this.size = size;
       this.count = 3 * size * (size - 1) + 1;
       this.nodesById = new Node[this.count];
-      this.nodesByPos = new HashMap<Point, Node>();
+      int maxCode = (size + size - 1) * (HASH_FACTOR + 1);
+      this.nodesByPos = new Node[maxCode];
       int id = 0;
       for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size + y; ++x) {
           Point pos = new Point(x, y);
           Node node = new Node(pos, id, null);
-          this.nodesByPos.put(pos, node);
+          this.nodesByPos[pos.code] = node;
           this.nodesById[id] = node;
           id += 1;
         }
@@ -178,7 +173,7 @@ public class Main {
           int ry = size + y - 1;
           Point pos = new Point(x, ry);
           Node node = new Node(pos, id, null);
-          this.nodesByPos.put(pos, node);
+          this.nodesByPos[pos.code] = node;
           this.nodesById[id] = node;
           id += 1;
         }
@@ -193,19 +188,25 @@ public class Main {
           Dir dir = Dir.ALL[d];
           int nx = p.x + dir.x;
           int ny = p.y + dir.y;
-          if (this.containsPos(new Point(nx, ny))) {
-            node.appendLink(this.nodesByPos.get(new Point(nx, ny)).id);
+          int ncode = Point.code(nx, ny);
+          if (this.containsCode(ncode)) {
+            node.appendLink(this.nodesByPos[ncode].id);
           }
         }
       }
     }
 
     public boolean containsPos(Point pos) {
-      return this.nodesByPos.containsKey(pos);
+      return containsCode(pos.code);
+    }
+
+    public boolean containsCode(int code) {
+      return (code >= 0) && (code < this.nodesByPos.length)
+          && (this.nodesByPos[code] != null);
     }
 
     public Node getByPos(Point pos) {
-      return this.nodesByPos.get(pos);
+      return this.nodesByPos[pos.code];
     }
 
     public Node getById(int id) {
@@ -283,7 +284,7 @@ public class Main {
               }
             }
           }
-          
+
           valid = (minPossible <= i) && (i <= maxPossible);
         }
         if (valid) {
@@ -484,7 +485,7 @@ public class Main {
     hex.linkNodes();
     return new Pos(hex, tiles, done);
   }
-  
+
   private static void solveFile(String file) {
     try {
       Pos pos = readFile(file);
@@ -494,7 +495,7 @@ public class Main {
       e.printStackTrace(System.out);
     }
   }
-  
+
   public static void main(String[] args) {
     long start = System.currentTimeMillis();
     for (String f : args) {
@@ -509,6 +510,6 @@ public class Main {
     int sec = diffSeconds % 60;
     int min = diffSeconds / 60;
     System.out.printf("Real    %dm%d.%03ds\n", min, sec, milli);
-    
+
   }
 }
