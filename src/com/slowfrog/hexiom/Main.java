@@ -317,23 +317,36 @@ public class Main {
   private static int solved(Pos pos) {
     Hex hex = pos.hex;
     Done done = pos.done;
-    if (pos.sumTiles > 0) {
-      return OPEN;
-    }
+    boolean exact = true;
     for (int i = 0; i < hex.count; ++i) {
-      int num = (done.alreadyDone(i) ? done.get(i) : 7);
-      if (num < 7) {
-        int[] cellsAround = hex.getById(i).links;
-        for (int d = 0; d < cellsAround.length; ++d) {
-          int nid = cellsAround[d];
-          if (done.alreadyDone(nid) && (done.get(nid) < 7)) {
-            num -= 1;
+      if (done.alreadyDone(i)) {
+        int num = done.get(i);
+        int max = 0;
+        int min = 0;
+        if (num < 7) {
+          int[] cellsAround = hex.getById(i).links;
+          for (int d = 0; d < cellsAround.length; ++d) {
+            int nid = cellsAround[d];
+            if (done.alreadyDone(nid)) {
+              if (done.get(nid) < 7) {
+                min += 1;
+                max += 1;
+              }
+            } else {
+              max += 1;
+            }
+          }
+          if ((num < min) || (num > max)) {
+            return IMPOSSIBLE;
+          }
+          if (num != min) {
+            exact = false;
           }
         }
-        if (num != 0) {
-          return IMPOSSIBLE;
-        }
       }
+    }
+    if ((pos.sumTiles > 0) || !exact) {
+      return OPEN;
     }
     printPos(pos);
     return SOLVED;
