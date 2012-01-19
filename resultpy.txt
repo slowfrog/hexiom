@@ -1,0 +1,179 @@
+ File : level01.txt
+ 1 1 
+. . . 
+ . . 
+-------------------
+ File : level02.txt
+ 1 1 
+. . . 
+ 1 1 
+-------------------
+ File : level03.txt
+  2 2 2 
+ 2 . . 2 
+2 . . 2 . 
+ 2 2 . 2 
+  . 2 2 
+-------------------
+ File : level04.txt
+Adding locked tile: 6 at pos 2, 2, id=9
+  . . . 
+ . 3 3 . 
+. 3 6 3 . 
+ . 3 3 . 
+  . . . 
+-------------------
+ File : level05.txt
+Adding locked tile: 1 at pos 2, 0, id=2
+Adding locked tile: 2 at pos 2, 4, id=16
+  . 1 1 
+ . . . . 
+. . . . . 
+ 2 2 . . 
+  2 . . 
+-------------------
+ File : level06.txt
+Adding locked tile: 7 at pos 2, 2, id=9
+Adding locked tile: 1 at pos 1, 3, id=12
+Adding locked tile: 7 at pos 2, 3, id=13
+Adding locked tile: 7 at pos 2, 4, id=16
+Adding locked tile: 1 at pos 3, 4, id=17
+  . . . 
+ . 2 2 . 
+. 2 . 2 . 
+ 1 . 2 . 
+  . 1 . 
+-------------------
+ File : level07.txt
+Adding locked tile: 0 at pos 2, 1, id=5
+Adding locked tile: 0 at pos 2, 3, id=13
+  1 . . 
+ 2 . 0 . 
+1 . . . 1 
+ . 0 . 2 
+  . . 1 
+-------------------
+ File : level08.txt
+  1 . 1 
+ . 4 4 . 
+1 4 6 4 1 
+ . 4 4 . 
+  1 . 1 
+-------------------
+ File : level09.txt
+Adding locked tile: 1 at pos 0, 1, id=3
+Adding locked tile: 7 at pos 1, 1, id=4
+Adding locked tile: 7 at pos 2, 1, id=5
+Adding locked tile: 7 at pos 1, 2, id=8
+Adding locked tile: 7 at pos 3, 2, id=10
+Adding locked tile: 7 at pos 3, 3, id=14
+Adding locked tile: 1 at pos 4, 3, id=15
+  . . . 
+ 1 . . . 
+2 . 1 . . 
+ 3 4 . 1 
+  3 3 2 
+-------------------
+ File : level10.txt
+Adding locked tile: 7 at pos 0, 0, id=0
+Adding locked tile: 7 at pos 1, 0, id=1
+Adding locked tile: 7 at pos 0, 1, id=3
+Adding locked tile: 2 at pos 2, 2, id=9
+Adding locked tile: 7 at pos 4, 3, id=15
+Adding locked tile: 7 at pos 3, 4, id=17
+Adding locked tile: 7 at pos 4, 4, id=18
+  . . 0 
+ . 1 . . 
+1 . 2 . 0 
+ 2 2 . . 
+  . . . 
+-------------------
+ File : level11.txt
+Adding locked tile: 2 at pos 2, 0, id=2
+Adding locked tile: 7 at pos 2, 1, id=5
+Adding locked tile: 7 at pos 2, 2, id=9
+Adding locked tile: 7 at pos 2, 3, id=13
+Adding locked tile: 2 at pos 2, 4, id=16
+  1 2 2 
+ . . . 1 
+1 . . . . 
+ 2 . 2 1 
+  2 2 . 
+-------------------
+ File : level12.txt
+  1 1 . 
+ . . . 1 
+1 3 4 3 . 
+ . 3 3 . 
+  . . . 
+-------------------
+ File : level13.txt
+  2 2 . 
+ 3 . 3 . 
+2 3 4 4 . 
+ . . 3 2 
+  . . . 
+-------------------
+ File : level14.txt
+  2 3 . 
+ . 3 4 3 
+. . . 3 2 
+ . . . . 
+  . . . 
+-------------------
+ File : level15.txt
+  2 2 2 
+ 2 . . 3 
+. 2 . 4 3 
+ . 2 3 3 
+  . . . 
+-------------------
+ File : level16.txt
+  0 . 0 
+ . . . . 
+2 3 . 3 2 
+ 4 5 5 4 
+  3 4 3 
+-------------------
+ File : level17.txt
+Adding locked tile: 7 at pos 1, 1, id=4
+Adding locked tile: 7 at pos 1, 2, id=8
+Adding locked tile: 7 at pos 3, 2, id=10
+Adding locked tile: 7 at pos 3, 3, id=14
+  1 2 2 
+ . . . 2 
+. . . . 2 
+ 2 3 . 1 
+  3 2 . 
+-------------------
+ File : level18.txt
+Adding locked tile: 3 at pos 0, 2, id=7
+Adding locked tile: 7 at pos 2, 2, id=9
+Adding locked tile: 3 at pos 4, 2, id=11
+Adding locked tile: 7 at pos 3, 3, id=14
+Adding locked tile: 7 at pos 4, 4, id=18
+  2 . . 
+ 4 4 3 3 
+3 5 . 4 3 
+ 3 3 . 2 
+  . 1 . 
+-------------------
+ File : level19.txt
+  1 2 1 
+ . . . . 
+2 3 2 3 2 
+ 3 . . 3 
+  2 2 2 
+-------------------
+ File : level20.txt
+Adding locked tile: 7 at pos 2, 1, id=5
+Adding locked tile: 1 at pos 3, 1, id=6
+Adding locked tile: 2 at pos 2, 2, id=9
+Adding locked tile: 2 at pos 1, 3, id=12
+Adding locked tile: 7 at pos 2, 3, id=13
+  3 3 2 
+ 4 5 . 1 
+3 5 2 . . 
+ 2 . . . 
+  . . . 
+-------------------
