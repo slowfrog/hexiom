@@ -214,13 +214,9 @@ public class Main {
   }
 
   // //////////////////////////////////////////////
-  static class Tiles extends HashMap<Integer, Integer> {
-    public static Tiles make() {
-      Tiles ret = new Tiles();
-      for (int i = -1; i < 7; ++i) {
-        ret.put(i, 0);
-      }
-      return ret;
+  static abstract class Tiles {
+    public static int[] make() {
+      return new int[8];
     }
   }
 
@@ -228,11 +224,11 @@ public class Main {
   static class Pos {
     public Hex hex;
 
-    public Tiles tiles;
+    public int[] tiles;
 
     public Done done;
 
-    public Pos(Hex hex, Tiles tiles, Done done) {
+    public Pos(Hex hex, int[] tiles, Done done) {
       this.hex = hex;
       this.tiles = tiles;
       this.done = done;
@@ -256,7 +252,7 @@ public class Main {
 
   private static List<Move> findMoves(Pos pos) {
     Hex hex = pos.hex;
-    Tiles tiles = pos.tiles;
+    int[] tiles = pos.tiles;
     Done done = pos.done;
     int cellId = done.nextCell();
     if (cellId < 0) {
@@ -267,19 +263,20 @@ public class Main {
     int[] cellsAround = null;
     int minPossible = 0;
     int maxPossible = 0;
-    for (int i = -1; i < 7; ++i) {
-      if (tiles.get(i) > 0) {
+    for (int i = 0; i < 8; ++i) {
+      if (tiles[i] > 0) {
         boolean valid = true;
-        if (i >= 0) {
+        if (i < 7) {
           if (cellsAround == null) {
             cellsAround = hex.getById(cellId).links;
             maxPossible = cellsAround.length;
             for (int ca = 0; ca < cellsAround.length; ++ca) {
               int j = cellsAround[ca];
               if (done.alreadyDone(j)) {
-                if (done.get(j) > 0) {
+                int dj = done.get(j);
+                if ((dj > 0) && (dj < 7)) {
                   minPossible += 1;
-                } else if (done.get(j) == 0) {
+                } else if (dj == 0) {
                   maxPossible = 0;
                   minPossible += 1;
                 }
@@ -298,12 +295,12 @@ public class Main {
   }
 
   private static void playMove(Pos pos, Move move) {
-    pos.tiles.put(move.value, pos.tiles.get(move.value) - 1);
+    pos.tiles[move.value] -= 1;
     pos.done.addDone(move.cellId, move.value);
   }
 
   private static void undoMove(Pos pos, Move move) {
-    pos.tiles.put(move.value, pos.tiles.get(move.value) + 1);
+    pos.tiles[move.value] += 1;
     pos.done.removeDone(move.cellId);
   }
 
@@ -318,7 +315,7 @@ public class Main {
       for (int x = 0; x < size + y; ++x) {
         Point pos2 = new Point(x, y);
         int id = hex.getByPos(pos2).id;
-        if (done.alreadyDone(id) && (done.get(id) >= 0)) {
+        if (done.alreadyDone(id) && (done.get(id) < 7)) {
           System.out.print(done.get(id));
         } else {
           System.out.print(".");
@@ -333,7 +330,7 @@ public class Main {
         int ry = size + y - 1;
         Point pos2 = new Point(x, ry);
         int id = hex.getByPos(pos2).id;
-        if (done.alreadyDone(id) && (done.get(id) >= 0)) {
+        if (done.alreadyDone(id) && (done.get(id) < 7)) {
           System.out.print(done.get(id));
         } else {
           System.out.print(".");
@@ -346,11 +343,11 @@ public class Main {
 
   private static boolean solved(Pos pos) {
     Hex hex = pos.hex;
-    Tiles tiles = pos.tiles;
+    int[] tiles = pos.tiles;
     Done done = pos.done;
     int sum = 0;
     for (int i = 0; i < 7; ++i) {
-      sum += tiles.get(i);
+      sum += tiles[i];
     }
     if (sum > 0) {
       return false;
@@ -359,14 +356,14 @@ public class Main {
       Node node = hex.getById(i);
       int x = node.pos.x;
       int y = node.pos.y;
-      int num = (done.alreadyDone(i) ? done.get(i) : -1);
-      if (num >= 0) {
+      int num = (done.alreadyDone(i) ? done.get(i) : 7);
+      if (num < 7) {
         for (int d = 0; d < Dir.ALL.length; ++d) {
           Dir dir = Dir.ALL[d];
           Point npos = new Point(x + dir.x, y + dir.y);
           if (hex.containsPos(npos)) {
             int nid = hex.getByPos(npos).id;
-            if (done.alreadyDone(nid) && (done.get(nid) >= 0)) {
+            if (done.alreadyDone(nid) && (done.get(nid) < 7)) {
               num -= 1;
             }
           }
@@ -400,15 +397,15 @@ public class Main {
 
   private static void checkValid(Pos pos) {
     Hex hex = pos.hex;
-    Tiles tiles = pos.tiles;
+    int[] tiles = pos.tiles;
     Done done = pos.done;
     int tot = done.used;
     // Fill missing entries in tiles
-    for (int i = -1; i < 7; ++i) {
-      if (tiles.containsKey(i)) {
-        tot += tiles.get(i);
+    for (int i = 0; i < 8; ++i) {
+      if (tiles[i] > 0) {
+        tot += tiles[i];
       } else {
-        tiles.put(i, 0);
+        tiles[i] = 0;
       }
     }
     // Check total
@@ -437,7 +434,7 @@ public class Main {
     int size = Integer.parseInt(lines.get(0));
     Hex hex = new Hex(size);
     int linei = 1;
-    Tiles tiles = Tiles.make();
+    int[] tiles = Tiles.make();
     Done done = new Done(hex.count);
     for (int y = 0; y < size; ++y) {
       String line = lines.get(linei).substring(size - y - 1);
@@ -447,7 +444,7 @@ public class Main {
         p += 2;
         int inctile = 0;
         if (tile.charAt(1) == '.') {
-          inctile = -1;
+          inctile = 7;
         } else {
           inctile = Integer.parseInt(tile.substring(1));
         }
@@ -456,7 +453,7 @@ public class Main {
               hex.getByPos(new Point(x, y)).id);
           done.addDone(hex.getByPos(new Point(x, y)).id, inctile);
         } else {
-          tiles.put(inctile, tiles.get(inctile) + 1);
+          tiles[inctile] += 1;
         }
       }
       linei += 1;
@@ -470,7 +467,7 @@ public class Main {
         p += 2;
         int inctile = 0;
         if (tile.charAt(1) == '.') {
-          inctile = -1;
+          inctile = 7;
         } else {
           inctile = Integer.parseInt(tile.substring(1));
         }
@@ -479,7 +476,7 @@ public class Main {
               hex.getByPos(new Point(x, ry)).id);
           done.addDone(hex.getByPos(new Point(x, ry)).id, inctile);
         } else {
-          tiles.put(inctile, tiles.get(inctile) + 1);
+          tiles[inctile] += 1;
         }
       }
       linei += 1;
@@ -503,7 +500,7 @@ public class Main {
     for (String f : args) {
       System.out.println(" File : " + f);
       solveFile(f);
-      System.out.println("----------------");
+      System.out.println("-------------------");
     }
     long end = System.currentTimeMillis();
     long fullDiffMilli = end - start;

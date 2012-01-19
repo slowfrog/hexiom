@@ -119,19 +119,20 @@ def find_moves(pos):
     
     moves = []
     cells_around = None
-    for i in xrange(-1, 7):
+    for i in xrange(8):
         if tiles[i] > 0:
             valid = True
-            if i >= 0:
+            if i < 7:
                 if cells_around is None:
                     cells_around = hex.get_by_id(cell_id).links
                     max_possible = len(cells_around)
                     min_possible = 0
                     for j in cells_around:
                         if done.already_done(j):
-                            if done[j] > 0:
+                            dj = done[j]
+                            if (dj > 0) and (dj < 7):
                                 min_possible += 1
-                            elif done[j] == 0:
+                            elif dj == 0:
                                 max_possible = 0
                                 min_possible += 1
                     
@@ -160,7 +161,7 @@ def print_pos(pos):
         for x in xrange(size + y):
             pos2 = (x, y)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] < 7)) else "."),
                   end="")
         print()
     for y in xrange(1, size):
@@ -169,7 +170,7 @@ def print_pos(pos):
             ry = size + y - 1
             pos2 = (x, ry)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] >= 0)) else "."),
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] < 7)) else "."),
                   end="")
         print()
         
@@ -177,18 +178,18 @@ def solved(pos, verbose=False):
     hex = pos.hex
     tiles = pos.tiles
     done = pos.done
-    if sum(tiles[i] for i in xrange(0, 7)) > 0:
+    if sum(tiles[i] for i in xrange(7)) > 0:
         return False
     for i in xrange(hex.count):
         node = hex.get_by_id(i)
         (x, y) = node.pos
-        num = done[i] if done.already_done(i) else -1
-        if num >= 0:
+        num = done[i] if done.already_done(i) else 7
+        if num < 7:
             for dir in DIRS:
                 npos = (x + dir.x, y + dir.y)
                 if hex.contains_pos(npos):
                     nid = hex.get_by_pos(npos).id
-                    if done.already_done(nid) and (done[nid] >= 0):
+                    if done.already_done(nid) and (done[nid] < 7):
                         num -= 1
             if num != 0:
                 if verbose:
@@ -220,8 +221,8 @@ def check_valid(pos):
     done = pos.done
     # fill missing entries in tiles
     tot = done.used
-    for i in xrange(-1, 7):
-        if i in tiles:
+    for i in xrange(8):
+        if tiles[i] > 0:
             tot += tiles[i]
         else:
             tiles[i] = 0
@@ -243,7 +244,7 @@ def read_file(file):
     size = int(lines[0])
     hex = Hex(size)
     linei = 1
-    tiles = { -1: 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
+    tiles = 8 * [0]
     done = Done(hex.count)
     for y in xrange(size):
         line = lines[linei][size - y - 1:]
@@ -252,7 +253,7 @@ def read_file(file):
             tile = line[p:p + 2];
             p += 2
             if tile[1] == ".":
-                inctile = -1
+                inctile = 7
             else:
                 inctile = int(tile)
             # Look for locked tiles    
@@ -271,7 +272,7 @@ def read_file(file):
             tile = line[p:p + 2];
             p += 2
             if tile[1] == ".":
-                inctile = -1
+                inctile = 7
             else:
                 inctile = int(tile)
             # Look for locked tiles    
