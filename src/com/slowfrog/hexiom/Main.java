@@ -10,54 +10,34 @@ import java.util.List;
 public class Main {
   private static final int NONE = -2;
 
-  private static final int HASH_FACTOR = 15;
-
   // //////////////////////////////////////////////
-  static class Point {
-    public final int x;
-    public final int y;
-    public final int code;
-    
+  public static int makePoint(int x, int y) {
+    return ((x & 0xf) << 4) | (y & 0xf);
+  }
 
-    public Point(int x, int y) {
-      this.x = x;
-      this.y = y;
-      this.code = code(this.x, this.y);
-    }
-    
-    public static int code(int x, int y) {
-      return x + y * HASH_FACTOR;
-    }
+  public static int pointX(int point) {
+    return (point >> 4) & 0xf;
+  }
 
-    public String toString() {
-      return "(" + x + "," + y + ")";
-    }
+  public static int pointY(int point) {
+    return point & 0xf;
   }
 
   // //////////////////////////////////////////////
-  private static final int[][] DIRS = {
-    {1, 0},
-    {-1, 0},
-    {0, 1},
-    {0, -1},
-    {1, 1},
-    {-1, -1}
-  };
+  public static final int[][] DIRS = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 },
+      { -1, -1 } };
 
   // //////////////////////////////////////////////
   static class Done {
-    private int count;
-
     private int done;
 
     private int[] cells;
 
-    private int used;
+    public int used;
 
     public Done(int count) {
-      this.count = count;
       this.done = 0;
-      this.cells = new int[this.count];
+      this.cells = new int[count];
       Arrays.fill(this.cells, NONE);
       this.used = 0;
     }
@@ -75,7 +55,7 @@ public class Main {
     }
 
     private void adjustDone() {
-      for (int i = this.done; i < this.count; ++i) {
+      for (int i = this.done; i < this.cells.length; ++i) {
         if (this.cells[i] == NONE) {
           this.done = i;
           return;
@@ -101,13 +81,13 @@ public class Main {
 
   // //////////////////////////////////////////////
   static class Node {
-    public Point pos;
+    public int pos;
 
     public int id;
 
     public int[] links;
 
-    public Node(Point pos, int id, int[] links) {
+    public Node(int pos, int id, int[] links) {
       this.pos = pos;
       this.id = id;
       this.links = (links != null ? links : new int[0]);
@@ -147,14 +127,14 @@ public class Main {
       this.size = size;
       this.count = 3 * size * (size - 1) + 1;
       this.nodesById = new Node[this.count];
-      int maxCode = (size + size - 1) * (HASH_FACTOR + 1);
+      int maxCode = 256;
       this.nodesByPos = new Node[maxCode];
       int id = 0;
       for (int y = 0; y < size; ++y) {
         for (int x = 0; x < size + y; ++x) {
-          Point pos = new Point(x, y);
+          int pos = makePoint(x, y);
           Node node = new Node(pos, id, null);
-          this.nodesByPos[pos.code] = node;
+          this.nodesByPos[pos] = node;
           this.nodesById[id] = node;
           id += 1;
         }
@@ -162,9 +142,9 @@ public class Main {
       for (int y = 1; y < size; ++y) {
         for (int x = y; x < size * 2 - 1; ++x) {
           int ry = size + y - 1;
-          Point pos = new Point(x, ry);
+          int pos = makePoint(x, ry);
           Node node = new Node(pos, id, null);
-          this.nodesByPos[pos.code] = node;
+          this.nodesByPos[pos] = node;
           this.nodesById[id] = node;
           id += 1;
         }
@@ -174,29 +154,24 @@ public class Main {
     public void linkNodes() {
       for (int i = 0; i < this.nodesById.length; ++i) {
         Node node = this.nodesById[i];
-        Point p = node.pos;
+        int p = node.pos;
         for (int d = 0; d < DIRS.length; ++d) {
-          int nx = p.x + DIRS[d][0];
-          int ny = p.y + DIRS[d][1];
-          int ncode = Point.code(nx, ny);
-          if (this.containsCode(ncode)) {
+          int nx = pointX(p) + DIRS[d][0];
+          int ny = pointY(p) + DIRS[d][1];
+          int ncode = makePoint(nx, ny);
+          if (this.containsPos(ncode)) {
             node.appendLink(this.nodesByPos[ncode].id);
           }
         }
       }
     }
 
-    public boolean containsPos(Point pos) {
-      return containsCode(pos.code);
+    public boolean containsPos(int code) {
+      return (code >= 0) && (code < this.nodesByPos.length) && (this.nodesByPos[code] != null);
     }
 
-    public boolean containsCode(int code) {
-      return (code >= 0) && (code < this.nodesByPos.length)
-          && (this.nodesByPos[code] != null);
-    }
-
-    public Node getByPos(Point pos) {
-      return this.nodesByPos[pos.code];
+    public Node getByPos(int pos) {
+      return this.nodesByPos[pos];
     }
 
     public Node getById(int id) {
@@ -205,10 +180,16 @@ public class Main {
   }
 
   // //////////////////////////////////////////////
-  static abstract class Tiles {
-    public static int[] make() {
-      return new int[8];
+  private static int[] makeTiles() {
+    return new int[8];
+  }
+
+  public static int sumTiles(int[] tiles) {
+    int sum = 0;
+    for (int i = 0; i < 7; ++i) {
+      sum += tiles[i];
     }
+    return sum;
   }
 
   // //////////////////////////////////////////////
@@ -217,11 +198,14 @@ public class Main {
 
     public int[] tiles;
 
+    public int sumTiles;
+
     public Done done;
 
     public Pos(Hex hex, int[] tiles, Done done) {
       this.hex = hex;
       this.tiles = tiles;
+      this.sumTiles = sumTiles(tiles);
       this.done = done;
     }
   }
@@ -287,11 +271,17 @@ public class Main {
 
   private static void playMove(Pos pos, Move move) {
     pos.tiles[move.value] -= 1;
+    if (move.value < 7) {
+      pos.sumTiles -= 1;
+    }
     pos.done.addDone(move.cellId, move.value);
   }
 
   private static void undoMove(Pos pos, Move move) {
     pos.tiles[move.value] += 1;
+    if (move.value < 7) {
+      pos.sumTiles += 1;
+    }
     pos.done.removeDone(move.cellId);
   }
 
@@ -304,7 +294,7 @@ public class Main {
     for (int y = 0; y < size; ++y) {
       System.out.print(SPACES.substring(0, size - y - 1));
       for (int x = 0; x < size + y; ++x) {
-        Point pos2 = new Point(x, y);
+        int pos2 = makePoint(x, y);
         int id = hex.getByPos(pos2).id;
         if (done.alreadyDone(id) && (done.get(id) < 7)) {
           System.out.print(done.get(id));
@@ -319,7 +309,7 @@ public class Main {
       System.out.print(SPACES.substring(0, y));
       for (int x = y; x < size * 2 - 1; ++x) {
         int ry = size + y - 1;
-        Point pos2 = new Point(x, ry);
+        int pos2 = makePoint(x, ry);
         int id = hex.getByPos(pos2).id;
         if (done.alreadyDone(id) && (done.get(id) < 7)) {
           System.out.print(done.get(id));
@@ -334,23 +324,18 @@ public class Main {
 
   private static boolean solved(Pos pos) {
     Hex hex = pos.hex;
-    int[] tiles = pos.tiles;
     Done done = pos.done;
-    int sum = 0;
-    for (int i = 0; i < 7; ++i) {
-      sum += tiles[i];
-    }
-    if (sum > 0) {
+    if (pos.sumTiles > 0) {
       return false;
     }
     for (int i = 0; i < hex.count; ++i) {
       Node node = hex.getById(i);
-      int x = node.pos.x;
-      int y = node.pos.y;
+      int x = pointX(node.pos);
+      int y = pointY(node.pos);
       int num = (done.alreadyDone(i) ? done.get(i) : 7);
       if (num < 7) {
         for (int d = 0; d < DIRS.length; ++d) {
-          Point npos = new Point(x + DIRS[d][0], y + DIRS[d][1]);
+          int npos = makePoint(x + DIRS[d][0], y + DIRS[d][1]);
           if (hex.containsPos(npos)) {
             int nid = hex.getByPos(npos).id;
             if (done.alreadyDone(nid) && (done.get(nid) < 7)) {
@@ -424,7 +409,7 @@ public class Main {
     int size = Integer.parseInt(lines.get(0));
     Hex hex = new Hex(size);
     int linei = 1;
-    int[] tiles = Tiles.make();
+    int[] tiles = makeTiles();
     Done done = new Done(hex.count);
     for (int y = 0; y < size; ++y) {
       String line = lines.get(linei).substring(size - y - 1);
@@ -440,8 +425,8 @@ public class Main {
         }
         if (tile.charAt(0) == '+') {
           System.out.printf("Adding locked tile: %d at pos %d, %d, id=%d\n", inctile, x, y,
-              hex.getByPos(new Point(x, y)).id);
-          done.addDone(hex.getByPos(new Point(x, y)).id, inctile);
+              hex.getByPos(makePoint(x, y)).id);
+          done.addDone(hex.getByPos(makePoint(x, y)).id, inctile);
         } else {
           tiles[inctile] += 1;
         }
@@ -463,8 +448,8 @@ public class Main {
         }
         if (tile.charAt(0) == '+') {
           System.out.printf("Adding locked tile: %d at pos %d, %d, id=%d\n", inctile, x, ry,
-              hex.getByPos(new Point(x, ry)).id);
-          done.addDone(hex.getByPos(new Point(x, ry)).id, inctile);
+              hex.getByPos(makePoint(x, ry)).id);
+          done.addDone(hex.getByPos(makePoint(x, ry)).id, inctile);
         } else {
           tiles[inctile] += 1;
         }
