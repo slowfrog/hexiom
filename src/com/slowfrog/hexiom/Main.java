@@ -35,23 +35,14 @@ public class Main {
   }
 
   // //////////////////////////////////////////////
-  static class Dir {
-    public int x;
-
-    public int y;
-
-    public Dir(int x, int y) {
-      this.x = x;
-      this.y = y;
-    }
-
-    public static final Dir[] ALL = { new Dir(1, 0), new Dir(-1, 0), new Dir(0, 1),
-        new Dir(0, -1), new Dir(1, 1), new Dir(-1, -1) };
-
-    public String toString() {
-      return "[" + x + "," + y + "]";
-    }
-  }
+  private static final int[][] DIRS = {
+    {1, 0},
+    {-1, 0},
+    {0, 1},
+    {0, -1},
+    {1, 1},
+    {-1, -1}
+  };
 
   // //////////////////////////////////////////////
   static class Done {
@@ -184,10 +175,9 @@ public class Main {
       for (int i = 0; i < this.nodesById.length; ++i) {
         Node node = this.nodesById[i];
         Point p = node.pos;
-        for (int d = 0; d < Dir.ALL.length; ++d) {
-          Dir dir = Dir.ALL[d];
-          int nx = p.x + dir.x;
-          int ny = p.y + dir.y;
+        for (int d = 0; d < DIRS.length; ++d) {
+          int nx = p.x + DIRS[d][0];
+          int ny = p.y + DIRS[d][1];
           int ncode = Point.code(nx, ny);
           if (this.containsCode(ncode)) {
             node.appendLink(this.nodesByPos[ncode].id);
@@ -359,9 +349,8 @@ public class Main {
       int y = node.pos.y;
       int num = (done.alreadyDone(i) ? done.get(i) : 7);
       if (num < 7) {
-        for (int d = 0; d < Dir.ALL.length; ++d) {
-          Dir dir = Dir.ALL[d];
-          Point npos = new Point(x + dir.x, y + dir.y);
+        for (int d = 0; d < DIRS.length; ++d) {
+          Point npos = new Point(x + DIRS[d][0], y + DIRS[d][1]);
           if (hex.containsPos(npos)) {
             int nid = hex.getByPos(npos).id;
             if (done.alreadyDone(nid) && (done.get(nid) < 7)) {
