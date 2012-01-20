@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define NONE -2
 #define OPEN 0
@@ -31,13 +32,15 @@ void done_init(t_done *this, int count) {
   this->used = 0;
 }
 
-int already_done(t_done *this, int i) {
-  return (this->cells[i] != NONE);
-}
+#define already_done(this, i) (this->cells[i] != NONE)
+//int already_done(t_done *this, int i) {
+//  return (this->cells[i] != NONE);
+//}
 
-int next_cell(t_done *this) {
-  return this->done;
-}
+#define next_cell(this) (this->done)
+//int next_cell(t_done *this) {
+//  return this->done;
+//}
 
 void adjust_done(t_done *this) {
   int i;
@@ -137,9 +140,11 @@ void hex_init(t_hex *this, int size) {
   }
 }
 
-int contains_pos(t_hex *this, int code) {
-  return (code >= 0) && (code < MAX_CODE) && (this->nodes_by_pos[code] != NULL);
-}
+#define contains_pos(this, code) \
+  ((code >= 0) && (code < MAX_CODE) && (this->nodes_by_pos[code] != NULL))
+//int contains_pos(t_hex *this, int code) {
+//  return (code >= 0) && (code < MAX_CODE) && (this->nodes_by_pos[code] != NULL);
+//}
 
 void link_nodes(t_hex *this) {
   int i, p, d, nx, ny, ncode;
@@ -159,13 +164,15 @@ void link_nodes(t_hex *this) {
   }
 }
 
-t_node *get_by_pos(t_hex *this, int pos) {
-  return this->nodes_by_pos[pos];
-}
+#define get_by_pos(this, pos) (this->nodes_by_pos[pos])
+//t_node *get_by_pos(t_hex *this, int pos) {
+//  return this->nodes_by_pos[pos];
+//}
 
-t_node *get_by_id(t_hex *this, int id) {
-  return &this->nodes_by_id[id];
-}
+#define get_by_id(this, id) (this->nodes_by_id + id)
+//t_node *get_by_id(t_hex *this, int id) {
+//  return &this->nodes_by_id[id];
+//}
 
 ////////////////////////////////////////
 typedef int t_tiles[8];
@@ -173,7 +180,7 @@ typedef int t_tiles[8];
 void tiles_init(t_tiles *tiles) {
   int i;
 
-  for (i = 0; i < 7; ++i) {
+  for (i = 0; i < 8; ++i) {
     (*tiles)[i] = 0;
   }
 }
@@ -201,10 +208,79 @@ void pos_init(t_pos *this) {
 }
 
 ////////////////////////////////////////
-int solve(t_pos *pos) {
-  return IMPOSSIBLE;
+int find_moves(t_pos *pos, int *moves) {
+  int count = 0;
+  int index = 0;
+  t_hex *hex = &pos->hex;
+  t_tiles *tiles = &pos->tiles;
+  t_done *done = &pos->done;
+  int cell_id = next_cell(done);
+  int cells_count = -1;
+  int *cells_around = NULL;
+  int min_possible = 0;
+  int max_possible = 0;
+  int i, j, ca, dj, valid;
+  
+  if (cell_id < 0) {
+    return count;
+  }
+  
+  for (i = 0; i < 8; ++i) {
+    if ((*tiles)[i] > 0) {
+      valid = 1;
+      if (i < 7) {
+        if (cells_around == NULL) {
+          cells_around = get_by_id(hex, cell_id)->links;
+          cells_count = get_by_id(hex, cell_id)->link_count;
+          max_possible = cells_count;
+          for (ca = 0; ca < cells_count; ++ca) {
+            j = cells_around[ca];
+            if (already_done(done, j)) {
+              dj = done->cells[j];
+              if ((dj > 0) && (dj < 7)) {
+                min_possible += 1;
+              } else if (dj == 0) {
+                max_possible = 0;
+                min_possible += 1;
+              }
+            }
+          }
+        }
+
+        valid = (min_possible <= i) && (i <= max_possible);
+      }
+      if (valid) {
+        moves[index] = cell_id;
+        moves[index + 1] = i;
+        count += 1;
+        index += 2;
+      }
+    }
+  }
+  return count;
 }
 
+void play_move(t_pos *pos, int cell_id, int value) {
+  pos->tiles[value] -= 1;
+  if (value < 7) {
+    pos->sum_tiles -= 1;
+  }
+  add_done(&pos->done, cell_id, value);
+}
+
+void undo_move(t_pos *pos, int cell_id, int value) {
+  pos->tiles[value] += 1;
+  if (value < 7) {
+    pos->sum_tiles += 1;
+  }
+  remove_done(&pos->done, cell_id);
+}
+
+void print_tiles(t_tiles *tiles) {
+  printf("Tiles: -1:%d, 0:%d, 1:%d, 2:%d, 3:%d, 4:%d, 5:%d, 6:%d\n",
+         (*tiles)[7], (*tiles)[0], (*tiles)[1], (*tiles)[2],
+         (*tiles)[3], (*tiles)[4], (*tiles)[5], (*tiles)[6]);
+}
 
 void print_pos(t_pos *pos) {
   int i, x, y, ry, pos2, id;
@@ -245,25 +321,137 @@ void print_pos(t_pos *pos) {
     }
     putchar('\n');
   }
-  fflush(stdout);
+
+  //print_tiles(&pos->tiles);
+  //printf("Sum tiles: %d\n", pos->sum_tiles);
 }
+
+int solved(t_pos *pos) {
+  t_hex *hex = &pos->hex;
+  t_done *done = &pos->done;
+  int exact = 1;
+  int i, num, min, max, d, nid;
+  int cells_count;
+  int *cells_around;
+
+  for (i = 0; i < hex->count; ++i) {
+    if (already_done(done, i)) {
+      num = done->cells[i];
+      max = 0;
+      min = 0;
+      if (num < 7) {
+        cells_around = get_by_id(hex, i)->links;
+        cells_count = get_by_id(hex, i)->link_count;
+        for (d = 0; d < cells_count; ++d) {
+          nid = cells_around[d];
+          if (already_done(done, nid)) {
+            if (done->cells[nid] < 7) {
+              min += 1;
+              max += 1;
+            }
+          } else {
+            max += 1;
+          }
+        }
+        if ((num < min) || (num > max)) {
+          return IMPOSSIBLE;
+        }
+        if (num != min) {
+          exact = 0;
+        }
+      }
+    }
+  }
+  
+  if ((pos->sum_tiles > 0) || !exact) {
+    return OPEN;
+  }
+  
+  print_pos(pos);
+  return SOLVED;
+}
+
+void print_moves(int count, int *moves) {
+  int i;
+  printf("Moves: %d\n", count);
+  for (i = 0; i < count; ++i) {
+    printf("%d->%d\n", moves[2 * i], moves[2 * i + 1]);
+  }
+  printf("=====\n");
+}
+
+#define MAX_MOVES 8
+int solve_step(t_pos *pos) {
+  int moves[MAX_MOVES * 2];
+  int count = find_moves(pos, moves);
+  int i, cell_id, value, ret, cur_status;
+  //print_moves(count, moves);
+  for (i = 0; i < count; ++i) {
+    cell_id = moves[2 * i];
+    value = moves[2 * i + 1];
+    ret = OPEN;
+    play_move(pos, cell_id, value);
+    cur_status = solved(pos);
+    if (cur_status != OPEN) {
+      ret = cur_status;
+    } else if (solve_step(pos) == SOLVED) {
+      ret = SOLVED;
+    }
+    undo_move(pos, cell_id, value);
+    if (ret == SOLVED) {
+      return ret;
+    }
+  }
+  return IMPOSSIBLE;
+}
+
+int check_valid(t_pos *pos) {
+  t_hex *hex = &pos->hex;
+  t_tiles *tiles = &pos->tiles;
+  t_done *done = &pos->done;
+  int tot = done->used;
+  int i;
+  for (i = 0; i < 8; ++i) {
+    if ((*tiles)[i] > 0) {
+      tot += (*tiles)[i];
+    } else {
+      (*tiles)[i] = 0;
+    }
+  }
+  if (tot != hex->count) {
+    printf("Invalid input. Expected %d tiles, got %d.\n", hex->count, tot);
+    print_tiles(tiles);
+    return 0;
+  }
+  return 1;
+}
+
+int solve(t_pos *pos) {
+  if (check_valid(pos)) {
+    return solve_step(pos);
+  } else {
+    return IMPOSSIBLE;
+  }
+}
+
 
 #define MAX_LINE_SIZE 256
 
-t_pos read_file(char *file) {
+t_pos *read_file(char *file) {
   int size, x, y, ry, p, inctile;
   char line[MAX_LINE_SIZE];
-  t_pos ret;
-  t_hex *hex = &(ret.hex);
-  t_done *done = &(ret.done);
-  // MAKE TILES
+  t_pos *ret = (t_pos *) malloc(sizeof(t_pos));
+  t_hex *hex = &ret->hex;
+  t_tiles *tiles = &ret->tiles;
+  t_done *done = &ret->done;
 
+  tiles_init(tiles);
+  
   
   FILE *input = fopen(file, "rb");
   if (input == NULL) {
-    // TODO manage error cases
-    printf("ERROR OPENING FILE %s!", file);
-    return ret;
+    free(ret);
+    return NULL;
   }
 
   fgets(line, MAX_LINE_SIZE, input);
@@ -273,9 +461,9 @@ t_pos read_file(char *file) {
 
   for (y = 0; y < size; ++y) {
     if (fgets(line, MAX_LINE_SIZE, input) == NULL) {
-      // FAIL
-      printf("ERROR READING LINE %d!", y);
-      return ret;
+      printf("ERROR READING LINE %d!\n", y);
+      free(ret);
+      return NULL;
     }
     p = size - 1 - y;
     for (x = 0; x < size + y; ++x) {
@@ -291,15 +479,17 @@ t_pos read_file(char *file) {
         printf("Adding locked tile: %d at pos %d, %d, id=%d\n",
                inctile, x, y, get_by_pos(hex, make_point(x, y))->id);
         add_done(done, get_by_pos(hex, make_point(x, y))->id, inctile);
+      } else {
+        (*tiles)[inctile] += 1;
       }
     }
   }
   for (y = 1; y < size; ++y) {
     ry = size - 1 + y;
     if (fgets(line, MAX_LINE_SIZE, input) == NULL) {
-      // FAIL
-      printf("ERROR READING LINE %d!", ry);
-      return ret;
+      printf("ERROR READING LINE %d!\n", ry);
+      free(ret);
+      return NULL;
     }
     p = y;
     for (x = y; x < 2 * size - 1; ++x) {
@@ -315,27 +505,38 @@ t_pos read_file(char *file) {
         printf("Adding locked tile: %d at pos %d, %d, id=%d\n",
                inctile, x, ry, get_by_pos(hex, make_point(x, ry))->id);
         add_done(done, get_by_pos(hex, make_point(x, ry))->id, inctile);
+      } else {
+        (*tiles)[inctile] += 1;
       }
     }
   }
   fclose(input);
-  
+
+  pos_init(ret);
   link_nodes(hex);
   return ret;
 }
 
 void solve_file(char *file) {
-  t_pos pos = read_file(file);
-  print_pos(&pos);
-  solve(&pos);
+  t_pos *pos = read_file(file);
+  if (pos == NULL) {
+    printf("Cannot solve %s, error reading\n", file);
+    return;
+  }
+  //print_pos(pos);
+  //printf("++++++++++++++++\n");
+  solve(pos);
+  free(pos);
 }
 
 int main(int argc, char *argv[]) {
   int i;
   for (i = 1; i < argc; ++i) {
     printf(" File : %s\n", argv[i]);
+    fflush(stdout);
     solve_file(argv[i]);
     printf("-------------------\n");
+    fflush(stdout);
   }
   return 0;
 }
