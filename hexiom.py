@@ -173,47 +173,56 @@ def print_pos(pos):
             print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] < 7)) else "."),
                   end="")
         print()
+
+OPEN = 0
+SOLVED = 1
+IMPOSSIBLE = -1
         
 def solved(pos, verbose=False):
     hex = pos.hex
     tiles = pos.tiles
     done = pos.done
-    if sum(tiles[i] for i in xrange(7)) > 0:
-        return False
+    exact = True
     for i in xrange(hex.count):
-        node = hex.get_by_id(i)
-        (x, y) = node.pos
-        num = done[i] if done.already_done(i) else 7
-        if num < 7:
-            for dir in DIRS:
-                npos = (x + dir.x, y + dir.y)
-                if hex.contains_pos(npos):
-                    nid = hex.get_by_pos(npos).id
-                    if done.already_done(nid) and (done[nid] < 7):
-                        num -= 1
-            if num != 0:
-                if verbose:
-                    print("At pos %d,%d: %s, expected %d but was %d" %
-                          (x, y,
-                           "too many links" if num < 0 else "missing links",
-                           done[i], num - done[i]))
-                return False
+        if done.already_done(i):
+            num = done[i]
+            vmax = 0
+            vmin = 0
+            if num < 7:
+                cells_around = hex.get_by_id(i).links;
+                for nid in cells_around:
+                    if done.already_done(nid):
+                        if done[nid] < 7:
+                            vmin += 1
+                            vmax += 1
+                    else:
+                        vmax += 1
+
+                if (num < vmin) or (num > vmax):
+                    return IMPOSSIBLE
+                if num != vmin:
+                    exact = False
+
+    if (sum(tiles[i] for i in xrange(7)) > 0) or not exact:
+        return OPEN
+    
     print_pos(pos)
-    return True
+    return SOLVED
 
 def solve_step(pos):
     moves = find_moves(pos)
     for move in moves:
-        ret = False
+        ret = OPEN
         play_move(pos, move)
-        if solved(pos):
-            ret = True
-        elif solve_step(pos):
-            ret = True
+        cur_status = solved(pos)
+        if cur_status != OPEN:
+            ret = cur_status
+        elif solve_step(pos) == SOLVED:
+            ret = SOLVED
         undo_move(pos, move)
-        if ret:
+        if ret == SOLVED:
             return ret
-    return False
+    return IMPOSSIBLE
 
 def check_valid(pos):
     hex = pos.hex
@@ -288,7 +297,9 @@ def read_file(file):
 
 def solve_file(file):
     pos = read_file(file)
+    sys.stdout.flush()
     solve(pos)
+    sys.stdout.flush()
 
 def main():
     for f in sys.argv[1:]:
