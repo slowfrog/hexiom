@@ -523,10 +523,12 @@ void solve_file(char *file) {
     printf("Cannot solve %s, error reading\n", file);
     return;
   }
+  fflush(stdout);
   //print_pos(pos);
   //printf("++++++++++++++++\n");
   solve(pos);
   free(pos);
+  fflush(stdout);
 }
 
 int main(int argc, char *argv[]) {
