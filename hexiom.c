@@ -21,50 +21,50 @@ typedef struct done {
   int used;
 } t_done;
 
-void done_init(t_done *this, int count) {
+void done_init(t_done *self, int count) {
   int i;
   
-  this->done = 0;
-  this->count = count;
+  self->done = 0;
+  self->count = count;
   for (i = 0; i < count; ++i) {
-    this->cells[i] = NONE;
+    self->cells[i] = NONE;
   }
-  this->used = 0;
+  self->used = 0;
 }
 
-#define already_done(this, i) (this->cells[i] != NONE)
-//int already_done(t_done *this, int i) {
-//  return (this->cells[i] != NONE);
+#define already_done(self, i) (self->cells[i] != NONE)
+//int already_done(t_done *self, int i) {
+//  return (self->cells[i] != NONE);
 //}
 
-#define next_cell(this) (this->done)
-//int next_cell(t_done *this) {
-//  return this->done;
+#define next_cell(self) (self->done)
+//int next_cell(t_done *self) {
+//  return self->done;
 //}
 
-void adjust_done(t_done *this) {
+void adjust_done(t_done *self) {
   int i;
 
-  for (i = this->done; i < this->count; ++i) {
-    if (this->cells[i] == NONE) {
-      this->done = i;
+  for (i = self->done; i < self->count; ++i) {
+    if (self->cells[i] == NONE) {
+      self->done = i;
       return;
     }
   }
-  this->done = -1;
+  self->done = -1;
 }
 
-void add_done(t_done *this, int i, int v) {
-  this->cells[i] = v;
-  this->used += 1;
-  adjust_done(this);
+void add_done(t_done *self, int i, int v) {
+  self->cells[i] = v;
+  self->used += 1;
+  adjust_done(self);
 }
 
-void remove_done(t_done *this, int i) {
-  this->cells[i] = NONE;
-  this->used -= 1;
-  if ((this->done < 0) || (i < this->done)) {
-    this->done = i;
+void remove_done(t_done *self, int i) {
+  self->cells[i] = NONE;
+  self->used -= 1;
+  if ((self->done < 0) || (i < self->done)) {
+    self->done = i;
   }
 }
 
@@ -78,20 +78,20 @@ typedef struct node {
   int links[MAX_LINKS];
 } t_node;
 
-void node_init(t_node *this, int pos, int id, int link_count, int links[]) {
+void node_init(t_node *self, int pos, int id, int link_count, int links[]) {
   int i;
   
-  this->pos = pos;
-  this->id = id;
-  this->link_count = link_count;
+  self->pos = pos;
+  self->id = id;
+  self->link_count = link_count;
   for (i = 0; i < link_count; ++i) {
-    this->links[i] = links[i];
+    self->links[i] = links[i];
   }
 }
 
-void append_link(t_node *this, int id) {
-  this->links[this->link_count] = id;
-  this->link_count += 1;
+void append_link(t_node *self, int id) {
+  self->links[self->link_count] = id;
+  self->link_count += 1;
 }
 
 
@@ -109,22 +109,23 @@ typedef struct hex {
   t_node *nodes_by_pos[MAX_CODE];
 } t_hex;
 
-void hex_init(t_hex *this, int size) {
+void hex_init(t_hex *self, int size) {
   int i, x, y, ry, pos;
   int id = 0;
+  t_node *node;
 
   for (i = 0; i < MAX_CODE; ++i) {
-    this->nodes_by_pos[i] = NULL;
+    self->nodes_by_pos[i] = NULL;
   }
   
-  this->size = size;
-  this->count = 3 * size * (size - 1) + 1;
+  self->size = size;
+  self->count = 3 * size * (size - 1) + 1;
   for (y = 0; y < size; ++y) {
     for (x = 0; x < size + y; ++x) {
       pos = make_point(x, y);
-      t_node *node = &this->nodes_by_id[id];
+      node = &self->nodes_by_id[id];
       node_init(node, pos, id, 0, NULL);
-      this->nodes_by_pos[pos] = node;
+      self->nodes_by_pos[pos] = node;
       id += 1;
     }
   }
@@ -132,46 +133,46 @@ void hex_init(t_hex *this, int size) {
     ry = size - 1 + y;
     for (x = y; x < 2 * size - 1; ++x) {
       pos = make_point(x, ry);
-      t_node *node = &this->nodes_by_id[id];
+      node = &self->nodes_by_id[id];
       node_init(node, pos, id, 0, NULL);
-      this->nodes_by_pos[pos] = node;
+      self->nodes_by_pos[pos] = node;
       id += 1;
     }
   }
 }
 
-#define contains_pos(this, code) \
-  ((code >= 0) && (code < MAX_CODE) && (this->nodes_by_pos[code] != NULL))
-//int contains_pos(t_hex *this, int code) {
-//  return (code >= 0) && (code < MAX_CODE) && (this->nodes_by_pos[code] != NULL);
+#define contains_pos(self, code) \
+  ((code >= 0) && (code < MAX_CODE) && (self->nodes_by_pos[code] != NULL))
+//int contains_pos(t_hex *self, int code) {
+//  return (code >= 0) && (code < MAX_CODE) && (self->nodes_by_pos[code] != NULL);
 //}
 
-void link_nodes(t_hex *this) {
+void link_nodes(t_hex *self) {
   int i, p, d, nx, ny, ncode;
+  t_node *node;
 
-  // TODO rewrite with direct pointer iteration
-  for (i = 0; i < this->count; ++i) {
-    t_node *node = &this->nodes_by_id[i];
+  for (i = 0; i < self->count; ++i) {
+    node = &self->nodes_by_id[i];
     p = node->pos;
     for (d = 0; d < NB_DIRS; ++d) {
       nx = point_x(p) + DIRS[d][0];
       ny = point_y(p) + DIRS[d][1];
       ncode = make_point(nx, ny);
-      if (contains_pos(this, ncode)) {
-        append_link(node, this->nodes_by_pos[ncode]->id);
+      if (contains_pos(self, ncode)) {
+        append_link(node, self->nodes_by_pos[ncode]->id);
       }
     }
   }
 }
 
-#define get_by_pos(this, pos) (this->nodes_by_pos[pos])
-//t_node *get_by_pos(t_hex *this, int pos) {
-//  return this->nodes_by_pos[pos];
+#define get_by_pos(self, pos) (self->nodes_by_pos[pos])
+//t_node *get_by_pos(t_hex *self, int pos) {
+//  return self->nodes_by_pos[pos];
 //}
 
-#define get_by_id(this, id) (this->nodes_by_id + id)
-//t_node *get_by_id(t_hex *this, int id) {
-//  return &this->nodes_by_id[id];
+#define get_by_id(self, id) (self->nodes_by_id + id)
+//t_node *get_by_id(t_hex *self, int id) {
+//  return &self->nodes_by_id[id];
 //}
 
 ////////////////////////////////////////
@@ -203,8 +204,8 @@ typedef struct pos {
   t_done done;
 } t_pos;
 
-void pos_init(t_pos *this) {
-  this->sum_tiles = sum_tiles(&this->tiles);
+void pos_init(t_pos *self) {
+  self->sum_tiles = sum_tiles(&self->tiles);
 }
 
 ////////////////////////////////////////
@@ -212,7 +213,6 @@ int find_moves(t_pos *pos, int *moves) {
   int count = 0;
   int index = 0;
   t_hex *hex = &pos->hex;
-  t_tiles *tiles = &pos->tiles;
   t_done *done = &pos->done;
   int cell_id = next_cell(done);
   int cells_count = -1;
@@ -220,21 +220,22 @@ int find_moves(t_pos *pos, int *moves) {
   int min_possible = 0;
   int max_possible = 0;
   int i, j, ca, dj, valid;
+  int *ptile, *pcell;
   
   if (cell_id < 0) {
     return count;
   }
   
-  for (i = 0; i < 8; ++i) {
-    if ((*tiles)[i] > 0) {
+  for (i = 0, ptile = pos->tiles; i < 8; ++i, ++ptile) {
+    if (*ptile > 0) {
       valid = 1;
       if (i < 7) {
         if (cells_around == NULL) {
           cells_around = get_by_id(hex, cell_id)->links;
           cells_count = get_by_id(hex, cell_id)->link_count;
           max_possible = cells_count;
-          for (ca = 0; ca < cells_count; ++ca) {
-            j = cells_around[ca];
+          for (ca = 0, pcell = cells_around; ca < cells_count; ++ca, ++pcell) {
+            j = *pcell;
             if (already_done(done, j)) {
               dj = done->cells[j];
               if ((dj > 0) && (dj < 7)) {
@@ -327,21 +328,22 @@ void print_pos(t_pos *pos) {
 }
 
 int solved(t_pos *pos) {
-  t_hex *hex = &pos->hex;
   t_done *done = &pos->done;
   int exact = 1;
   int i, num, min, max, d, nid;
   int cells_count;
   int *cells_around;
+  int count = pos->hex.count;
+  t_node *nodes_by_id = pos->hex.nodes_by_id;
 
-  for (i = 0; i < hex->count; ++i) {
+  for (i = 0; i < count; ++i) {
     if (already_done(done, i)) {
       num = done->cells[i];
       max = 0;
       min = 0;
       if (num < 7) {
-        cells_around = get_by_id(hex, i)->links;
-        cells_count = get_by_id(hex, i)->link_count;
+        cells_around = nodes_by_id[i].links;
+        cells_count = nodes_by_id[i].link_count;
         for (d = 0; d < cells_count; ++d) {
           nid = cells_around[d];
           if (already_done(done, nid)) {
@@ -444,11 +446,12 @@ t_pos *read_file(char *file) {
   t_hex *hex = &ret->hex;
   t_tiles *tiles = &ret->tiles;
   t_done *done = &ret->done;
+  FILE *input;
 
   tiles_init(tiles);
   
   
-  FILE *input = fopen(file, "rb");
+  input = fopen(file, "rb");
   if (input == NULL) {
     free(ret);
     return NULL;
