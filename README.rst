@@ -13,7 +13,7 @@ If you have pypy in your path, you can also run ``. runpy.sh``. That will run th
 Java
 ----
 
-You should compile the source file to ``build/main/java``, or use the included Eclipse project. Then you can run an individual test with ``java -cp build/main/java com.slowflog.hexiom.Main level01.txt``.
+You should compile the source file to ``build/main/java``, or use the included Eclipse project. Then you can run an individual test with ``java -cp build/main/java com.slowfrog.hexiom.Main level01.txt``.
 You can also run ``. runj.sh`` to solve the 38 solvable levels.
 
 
