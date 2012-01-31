@@ -17,8 +17,8 @@ You should compile the source file to ``build/main/java``, or use the included E
 You can also run ``. runj.sh`` to solve the 38 solvable levels.
 
 
- C
----
+C
+-
 
 You can create a MSVC++ solution, for a console application, with only the ``hexiom.c`` source file. On Linux, or with Cygwin, you can simply compile with ``gcc -O3 -Wall -o hexiom hexiom.c``.
 You can solve one level with ``hexiom level01.txt`` or solve the 38 good levels with ``. runc.sh``
