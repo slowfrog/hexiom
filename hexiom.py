@@ -109,6 +109,8 @@ class Pos(object):
         self.done = Done(hex.count) if done is None else done
     
 ##################################
+EMPTY = 7
+
 def find_moves(pos):
     hex = pos.hex
     tiles = pos.tiles
@@ -118,27 +120,23 @@ def find_moves(pos):
         return []
     
     moves = []
-    cells_around = None
+    cells_around = hex.get_by_id(cell_id).links
+    max_possible = len(cells_around)
+    min_possible = 0
+    for j in cells_around:
+        if done.already_done(j):
+            dj = done[j]
+            if (dj > 0) and (dj != EMPTY):
+                min_possible += 1
+            elif dj == 0:
+                max_possible = 0
+                min_possible += 1
+            elif dj == EMPTY:
+                max_possible -= 1
+                
     for i in xrange(8):
         if tiles[i] > 0:
-            valid = True
-            if i < 7:
-                if cells_around is None:
-                    cells_around = hex.get_by_id(cell_id).links
-                    max_possible = len(cells_around)
-                    min_possible = 0
-                    for j in cells_around:
-                        if done.already_done(j):
-                            dj = done[j]
-                            if (dj > 0) and (dj < 7):
-                                min_possible += 1
-                            elif dj == 0:
-                                max_possible = 0
-                                min_possible += 1
-                    
-                valid = min_possible <= i <= max_possible
-
-            if valid:
+            if (i == EMPTY) or (min_possible <= i <= max_possible):
                 moves.append((cell_id, i))
     return moves
 
@@ -161,7 +159,7 @@ def print_pos(pos):
         for x in xrange(size + y):
             pos2 = (x, y)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] < 7)) else "."),
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] != EMPTY)) else "."),
                   end="")
         print()
     for y in xrange(1, size):
@@ -170,7 +168,7 @@ def print_pos(pos):
             ry = size + y - 1
             pos2 = (x, ry)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] < 7)) else "."),
+            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] != EMPTY)) else "."),
                   end="")
         print()
 
@@ -188,11 +186,11 @@ def solved(pos, verbose=False):
             num = done[i]
             vmax = 0
             vmin = 0
-            if num < 7:
+            if num != EMPTY:
                 cells_around = hex.get_by_id(i).links;
                 for nid in cells_around:
                     if done.already_done(nid):
-                        if done[nid] < 7:
+                        if done[nid] != EMPTY:
                             vmin += 1
                             vmax += 1
                     else:
@@ -245,7 +243,6 @@ def solve(pos):
 
 
 # TODO Write an 'iterator' to go over all x,y positions
-# TODO change the tiles structure to a simple array (-1 => 7)
 
 def read_file(file):
     with open(file, "rb") as input:
@@ -262,7 +259,7 @@ def read_file(file):
             tile = line[p:p + 2];
             p += 2
             if tile[1] == ".":
-                inctile = 7
+                inctile = EMPTY
             else:
                 inctile = int(tile)
             # Look for locked tiles    
@@ -281,7 +278,7 @@ def read_file(file):
             tile = line[p:p + 2];
             p += 2
             if tile[1] == ".":
-                inctile = 7
+                inctile = EMPTY
             else:
                 inctile = int(tile)
             # Look for locked tiles    

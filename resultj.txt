@@ -390,4 +390,4 @@ Adding locked tile: 2 at pos 6, 8, id=58
    2 . . 5 4 . 
     . . 2 3 . 
 -------------------
-Real    0m3.074s
+Real    0m1.966s
