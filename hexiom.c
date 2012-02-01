@@ -213,44 +213,40 @@ int find_moves(t_pos *pos, int *moves) {
   int count = 0;
   int index = 0;
   t_hex *hex = &pos->hex;
+  t_tiles *tiles = &pos->tiles;
   t_done *done = &pos->done;
   int cell_id = next_cell(done);
   int cells_count = -1;
   int *cells_around = NULL;
   int min_possible = 0;
   int max_possible = 0;
-  int i, j, ca, dj, valid;
-  int *ptile, *pcell;
+  int i, j, ca, dj;
   
   if (cell_id < 0) {
     return count;
   }
   
-  for (i = 0, ptile = pos->tiles; i < 8; ++i, ++ptile) {
-    if (*ptile > 0) {
-      valid = 1;
-      if (i < 7) {
-        if (cells_around == NULL) {
-          cells_around = get_by_id(hex, cell_id)->links;
-          cells_count = get_by_id(hex, cell_id)->link_count;
-          max_possible = cells_count;
-          for (ca = 0, pcell = cells_around; ca < cells_count; ++ca, ++pcell) {
-            j = *pcell;
-            if (already_done(done, j)) {
-              dj = done->cells[j];
-              if ((dj > 0) && (dj < 7)) {
-                min_possible += 1;
-              } else if (dj == 0) {
-                max_possible = 0;
-                min_possible += 1;
-              }
-            }
-          }
-        }
-
-        valid = (min_possible <= i) && (i <= max_possible);
+  cells_around = get_by_id(hex, cell_id)->links;
+  cells_count = get_by_id(hex, cell_id)->link_count;
+  max_possible = cells_count;
+  for (ca = 0; ca < cells_count; ++ca) {
+    j = cells_around[ca];
+    if (already_done(done, j)) {
+      dj = done->cells[j];
+      if ((dj > 0) && (dj < 7)) {
+        min_possible += 1;
+      } else if (dj == 0) {
+        max_possible = 0;
+        min_possible += 1;
+      } else if (dj == 7) {
+        max_possible -= 1;
       }
-      if (valid) {
+    }
+  }
+        
+  for (i = 0; i < 8; ++i) {
+    if ((*tiles)[i] > 0) {
+      if ((i == 7) || ((min_possible <= i) && (i <= max_possible))) {
         moves[index] = cell_id;
         moves[index + 1] = i;
         count += 1;

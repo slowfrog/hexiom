@@ -227,30 +227,27 @@ public class Main {
     int[] cellsAround = null;
     int minPossible = 0;
     int maxPossible = 0;
+    cellsAround = hex.getById(cellId).links;
+    maxPossible = cellsAround.length;
+    for (int ca = 0; ca < cellsAround.length; ++ca) {
+      int j = cellsAround[ca];
+      if (done.alreadyDone(j)) {
+        int dj = done.get(j);
+        if ((dj > 0) && (dj < 7)) {
+          minPossible += 1;
+        } else if (dj == 0) {
+          maxPossible = 0;
+          minPossible += 1;
+        } else if (dj == 7) {
+          maxPossible -= 1;
+        }
+      }
+    }
+    
     for (int i = 0; i < 8; ++i) {
       if (tiles[i] > 0) {
-        boolean valid = true;
-        if (i < 7) {
-          if (cellsAround == null) {
-            cellsAround = hex.getById(cellId).links;
-            maxPossible = cellsAround.length;
-            for (int ca = 0; ca < cellsAround.length; ++ca) {
-              int j = cellsAround[ca];
-              if (done.alreadyDone(j)) {
-                int dj = done.get(j);
-                if ((dj > 0) && (dj < 7)) {
-                  minPossible += 1;
-                } else if (dj == 0) {
-                  maxPossible = 0;
-                  minPossible += 1;
-                }
-              }
-            }
-          }
-
-          valid = (minPossible <= i) && (i <= maxPossible);
-        }
-        if (valid) {
+        
+        if ((i == 7) || ((minPossible <= i) && (i <= maxPossible))) {
           moves[index] = cellId;
           moves[index + 1] = i;
           count += 1;
