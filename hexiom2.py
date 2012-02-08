@@ -18,17 +18,24 @@ EMPTY = 7
 
 ##################################
 class Done(object):
-    def __init__(self, count):
+    def __init__(self, count, empty=False):
         self.count = count
-        self.done = 0
-        self.cells = [[0, 1, 2, 3, 4, 5, 6, EMPTY] for i in xrange(count)]
+        self.cells = None if empty else [[0, 1, 2, 3, 4, 5, 6, EMPTY] for i in xrange(count)]
         self.used = 0
+
+    def clone(self):
+        ret = Done(self.count, True)
+        ret.cells = [self.cells[i][:] for i in xrange(self.count)]
+        return ret
 
     def __getitem__(self, i):
         return self.cells[i]
 
     def set_done(self, i, v):
         self.cells[i] = [v]
+
+    def already_done(self, i):
+        return len(self.cells[i]) == 1
 
     def remove(self, i, v):
         if v in self.cells[i]:
@@ -45,13 +52,23 @@ class Done(object):
         changed = False
         for i in xrange(self.count):
             if len(self.cells[i]) > 1:
-                changed = changed or self.remove(i, v)
+                if self.remove(i, v):
+                    changed = True
         return changed
         
     def filter_tiles(self, tiles):
         for v in xrange(8):
             if tiles[v] == 0:
                 self.remove_all(v)
+
+    def next_cell(self):
+        minlen = 10
+        mini = -1
+        for i in xrange(len(self.cells)):
+            if 1 < len(self.cells[i]) < minlen:
+                minlen = len(self.cells[i])
+                mini = i
+        return mini
 
 ##################################
 class Node(object):
@@ -109,17 +126,58 @@ class Pos(object):
         self.hex = hex
         self.tiles = tiles
         self.done = Done(hex.count) if done is None else done
+
+    def clone(self):
+        return Pos(self.hex, self.tiles, self.done.clone())
     
 ##################################
-def constraint_pass(pos):
+def constraint_pass(pos, last_move = None):
     changed = False
     left = pos.tiles[:]
-    for c in pos.done.cells:
-        if len(c) == 1:
-            left[c[0]] -= 1
+    done = pos.done
+
+    # Remove impossible values from free cells
+    free_cells = (range(len(done.cells)) if last_move is None
+                  else pos.hex.get_by_id(last_move).links)
+    for i in free_cells:
+        if not done.already_done(i):
+            vmax = 0
+            vmin = 0
+            cells_around = pos.hex.get_by_id(i).links;
+            for nid in cells_around:
+                if done.already_done(nid):
+                    if done[nid][0] != EMPTY:
+                        vmin += 1
+                        vmax += 1
+                else:
+                    vmax += 1
+
+            for num in xrange(7):
+                if (num < vmin) or (num > vmax):
+                    if done.remove(i, num):
+                        changed = True
+            
+    # Computes how many of each value is still free
+    for cell in pos.done.cells:
+        if len(cell) == 1:
+            left[cell[0]] -= 1
+            
     for v in xrange(8):
-        if left[v] == 0:
-            changed = changed or pos.done.remove_unfixed(v)
+        # If there is none, remove the possibility from all tiles
+        if (pos.tiles[v] > 0) and (left[v] == 0):
+            if pos.done.remove_unfixed(v):
+                changed = True
+        else:
+            possible = sum((1 if v in cell else 0) for cell in pos.done.cells)
+            # If the number of possible cells for a value is exactly the number of available tiles
+            # put a tile in each cell
+            if pos.tiles[v] == possible:
+                for i in xrange(len(pos.done.cells)):
+                    cell = pos.done.cells[i]
+                    if (len(cell) > 1) and (v in cell):
+                        pos.done.set_done(i, v)
+                        changed = True
+                       
     return changed
         
 def find_moves(pos):
@@ -129,37 +187,12 @@ def find_moves(pos):
     cell_id = done.next_cell()
     if cell_id < 0:
         return []
-    
-    moves = []
-    cells_around = hex.get_by_id(cell_id).links
-    max_possible = len(cells_around)
-    min_possible = 0
-    for j in cells_around:
-        if done.already_done(j):
-            dj = done[j]
-            if (dj > 0) and (dj != EMPTY):
-                min_possible += 1
-            elif dj == 0:
-                max_possible = 0
-                min_possible += 1
-            elif dj == EMPTY:
-                max_possible -= 1
-                
-    for i in xrange(8):
-        if tiles[i] > 0:
-            if (i == EMPTY) or (min_possible <= i <= max_possible):
-                moves.append((cell_id, i))
-    return moves
+
+    return [(cell_id, v) for v in done[cell_id]]
 
 def play_move(pos, move):
     (cell_id, i) = move
-    pos.tiles[i] -= 1
-    pos.done.add_done(cell_id, i)
-
-def undo_move(pos, move):
-    (cell_id, i) = move
-    pos.tiles[i] += 1
-    pos.done.remove_done(cell_id)
+    pos.done.set_done(cell_id, i)
 
 def print_pos(pos):
     hex = pos.hex
@@ -170,7 +203,7 @@ def print_pos(pos):
         for x in xrange(size + y):
             pos2 = (x, y)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] != EMPTY)) else "."),
+            print("%s " % (str(done[id][0]) if (done.already_done(id) and (done[id][0] != EMPTY)) else "."),
                   end="")
         print()
     for y in xrange(1, size):
@@ -179,7 +212,7 @@ def print_pos(pos):
             ry = size + y - 1
             pos2 = (x, ry)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id]) if (done.already_done(id) and (done[id] != EMPTY)) else "."),
+            print("%s " % (str(done[id][0]) if (done.already_done(id) and (done[id][0] != EMPTY)) else "."),
                   end="")
         print()
 
@@ -192,16 +225,17 @@ def solved(pos, verbose=False):
     tiles = pos.tiles
     done = pos.done
     exact = True
+    all_done = True
     for i in xrange(hex.count):
         if done.already_done(i):
-            num = done[i]
+            num = done[i][0]
             vmax = 0
             vmin = 0
             if num != EMPTY:
                 cells_around = hex.get_by_id(i).links;
                 for nid in cells_around:
                     if done.already_done(nid):
-                        if done[nid] != EMPTY:
+                        if done[nid][0] != EMPTY:
                             vmin += 1
                             vmax += 1
                     else:
@@ -211,26 +245,35 @@ def solved(pos, verbose=False):
                     return IMPOSSIBLE
                 if num != vmin:
                     exact = False
+        else:
+            all_done = False
 
-    if (sum(tiles[i] for i in xrange(7)) > 0) or not exact:
+    if (not all_done) or (not exact):
         return OPEN
     
     print_pos(pos)
     return SOLVED
 
-def solve_step(pos):
+def solve_step(prev):
+    pos = prev
+    #pos = prev.clone()
+    #while constraint_pass(pos):
+    #    pass
+    
     moves = find_moves(pos)
     for move in moves:
         ret = OPEN
-        play_move(pos, move)
-        cur_status = solved(pos)
+        new_pos = pos.clone()
+        play_move(new_pos, move)
+        while constraint_pass(new_pos, move[0]):
+            pass
+        cur_status = solved(new_pos)
         if cur_status != OPEN:
             ret = cur_status
-        elif solve_step(pos) == SOLVED:
-            ret = SOLVED
-        undo_move(pos, move)
+        else:
+            ret = solve_step(new_pos)
         if ret == SOLVED:
-            return ret
+            return SOLVED
     return IMPOSSIBLE
 
 def check_valid(pos):
