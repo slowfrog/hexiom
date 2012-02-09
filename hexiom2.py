@@ -18,6 +18,10 @@ EMPTY = 7
 
 ##################################
 class Done(object):
+    MIN_CHOICE_STRATEGY = 0
+    MAX_CHOICE_STRATEGY = 1
+    HIGHEST_VALUE_STRATEGY = 2
+    
     def __init__(self, count, empty=False):
         self.count = count
         self.cells = None if empty else [[0, 1, 2, 3, 4, 5, 6, EMPTY] for i in xrange(count)]
@@ -61,7 +65,7 @@ class Done(object):
             if tiles[v] == 0:
                 self.remove_all(v)
 
-    def next_cell(self):
+    def next_cell_min_choice(self):
         minlen = 10
         mini = -1
         for i in xrange(len(self.cells)):
@@ -69,6 +73,34 @@ class Done(object):
                 minlen = len(self.cells[i])
                 mini = i
         return mini
+
+    def next_cell_max_choice(self):
+        maxlen = 1
+        maxi = -1
+        for i in xrange(len(self.cells)):
+            if maxlen < len(self.cells[i]):
+                maxlen = len(self.cells[i])
+                maxi = i
+        return maxi
+
+    def next_cell_highest_value(self):
+        maxval = 1
+        maxi = -1
+        for i in xrange(len(self.cells)):
+            if (not self.already_done(i)) and (maxval < max(self.cells[i])):
+                maxval = max(self.cells[i])
+                maxi = i
+        return maxi
+
+    def next_cell(self, strategy=HIGHEST_VALUE_STRATEGY):
+        if strategy == Done.HIGHEST_VALUE_STRATEGY:
+            return self.next_cell_highest_value()
+        elif strategy == Done.MIN_CHOICE_STRATEGY:
+            return self.next_cell_min_choice()
+        elif strategy == Done.MAX_CHOICE_STRATEGY:
+            return self.next_cell_max_choice()
+        else:
+            raise Exception("Wrong strategy: %d" % strategy)
 
 ##################################
 class Node(object):
@@ -179,16 +211,26 @@ def constraint_pass(pos, last_move = None):
                         changed = True
                        
     return changed
-        
-def find_moves(pos):
+
+ASCENDING = 1
+DESCENDING = -1
+
+def find_moves(pos, strategy, order):
     hex = pos.hex
     tiles = pos.tiles
     done = pos.done
-    cell_id = done.next_cell()
+    cell_id = done.next_cell(strategy)
     if cell_id < 0:
         return []
 
-    return [(cell_id, v) for v in done[cell_id]]
+    if order == ASCENDING:
+        return [(cell_id, v) for v in done[cell_id]]
+    else:
+        # Try higher values first and EMPTY last
+        moves = list(reversed([(cell_id, v) for v in done[cell_id] if v != EMPTY]))
+        if EMPTY in done[cell_id]:
+            moves.append((cell_id, EMPTY))
+        return moves
 
 def play_move(pos, move):
     (cell_id, i) = move
@@ -227,7 +269,9 @@ def solved(pos, verbose=False):
     exact = True
     all_done = True
     for i in xrange(hex.count):
-        if done.already_done(i):
+        if len(done[i]) == 0:
+            return IMPOSSIBLE
+        elif done.already_done(i):
             num = done[i][0]
             vmax = 0
             vmin = 0
@@ -254,13 +298,15 @@ def solved(pos, verbose=False):
     print_pos(pos)
     return SOLVED
 
-def solve_step(prev):
-    pos = prev
-    #pos = prev.clone()
-    #while constraint_pass(pos):
-    #    pass
+def solve_step(prev, strategy, order, first=False):
+    if first:
+        pos = prev.clone()
+        while constraint_pass(pos):
+            pass
+    else:
+        pos = prev
     
-    moves = find_moves(pos)
+    moves = find_moves(pos, strategy, order)
     for move in moves:
         ret = OPEN
         new_pos = pos.clone()
@@ -271,7 +317,7 @@ def solve_step(prev):
         if cur_status != OPEN:
             ret = cur_status
         else:
-            ret = solve_step(new_pos)
+            ret = solve_step(new_pos, strategy, order)
         if ret == SOLVED:
             return SOLVED
     return IMPOSSIBLE
@@ -291,9 +337,9 @@ def check_valid(pos):
     if tot != hex.count:
         raise Exception("Invalid input. Expected %d tiles, got %d." % (hex.count, tot))
 
-def solve(pos):
+def solve(pos, strategy, order):
     check_valid(pos)
-    return solve_step(pos)
+    return solve_step(pos, strategy, order, first=True)
 
 
 # TODO Write an 'iterator' to go over all x,y positions
@@ -346,17 +392,42 @@ def read_file(file):
     done.filter_tiles(tiles)
     return Pos(hex, tiles, done)
 
-def solve_file(file):
+def solve_file(file, strategy, order):
     pos = read_file(file)
     sys.stdout.flush()
-    solve(pos)
+    solve(pos, strategy, order)
     sys.stdout.flush()
 
 def main():
+    order = ASCENDING
+    strategy = Done.HIGHEST_VALUE_STRATEGY
     for f in sys.argv[1:]:
-        print(" File : %s" % f)
-        solve_file(f)
-        print("-------------------")
+        if f.startswith("-"):
+            if f == "-u":
+                print("Usage: -u     show usage")
+                print("       -smin  use 'minimum choices' strategy")
+                print("       -smax  use 'maximum choices' strategy")
+                print("       -shigh use 'highest value' strategy")
+                print("       -oasc  use ascending order")
+                print("       -odesc use descending order")
+                return
+            elif f == "-smin":
+                strategy = Done.MIN_CHOICE_STRATEGY
+            elif f == "-smax":
+                strategy = Done.MAX_CHOICE_STRATEGY
+            elif f == "-shigh":
+                strategy = Done.HIGHEST_VALUE_STRATEGY
+            elif f == "-oasc":
+                order = ASCENDING
+            elif f == "-odesc":
+                order = DESCENDING
+            else:
+                print("Ignoring unknown option: %s" % f)
+                print("Use -u to see available options")
+        else:
+            print(" File : %s" % f)
+            solve_file(f, strategy, order)
+            print("-------------------")
     
 if __name__ == "__main__":
     main()
