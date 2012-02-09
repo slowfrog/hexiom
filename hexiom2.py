@@ -25,7 +25,6 @@ class Done(object):
     def __init__(self, count, empty=False):
         self.count = count
         self.cells = None if empty else [[0, 1, 2, 3, 4, 5, 6, EMPTY] for i in xrange(count)]
-        self.used = 0
 
     def clone(self):
         ret = Done(self.count, True)
@@ -55,7 +54,7 @@ class Done(object):
     def remove_unfixed(self, v):
         changed = False
         for i in xrange(self.count):
-            if len(self.cells[i]) > 1:
+            if not self.already_done(i):
                 if self.remove(i, v):
                     changed = True
         return changed
@@ -68,7 +67,7 @@ class Done(object):
     def next_cell_min_choice(self):
         minlen = 10
         mini = -1
-        for i in xrange(len(self.cells)):
+        for i in xrange(self.count):
             if 1 < len(self.cells[i]) < minlen:
                 minlen = len(self.cells[i])
                 mini = i
@@ -77,17 +76,17 @@ class Done(object):
     def next_cell_max_choice(self):
         maxlen = 1
         maxi = -1
-        for i in xrange(len(self.cells)):
+        for i in xrange(self.count):
             if maxlen < len(self.cells[i]):
                 maxlen = len(self.cells[i])
                 maxi = i
         return maxi
 
     def next_cell_highest_value(self):
-        maxval = 1
+        maxval = -1
         maxi = -1
-        for i in xrange(len(self.cells)):
-            if (not self.already_done(i)) and (maxval < max(self.cells[i])):
+        for i in xrange(self.count):
+            if (not self.already_done(i)) and (maxval < max(k for k in self.cells[i] if k != EMPTY)):
                 maxval = max(self.cells[i])
                 maxi = i
         return maxi
@@ -190,24 +189,24 @@ def constraint_pass(pos, last_move = None):
                         changed = True
             
     # Computes how many of each value is still free
-    for cell in pos.done.cells:
+    for cell in done.cells:
         if len(cell) == 1:
             left[cell[0]] -= 1
             
     for v in xrange(8):
         # If there is none, remove the possibility from all tiles
         if (pos.tiles[v] > 0) and (left[v] == 0):
-            if pos.done.remove_unfixed(v):
+            if done.remove_unfixed(v):
                 changed = True
         else:
-            possible = sum((1 if v in cell else 0) for cell in pos.done.cells)
+            possible = sum((1 if v in cell else 0) for cell in done.cells)
             # If the number of possible cells for a value is exactly the number of available tiles
             # put a tile in each cell
             if pos.tiles[v] == possible:
-                for i in xrange(len(pos.done.cells)):
-                    cell = pos.done.cells[i]
-                    if (len(cell) > 1) and (v in cell):
-                        pos.done.set_done(i, v)
+                for i in xrange(done.count):
+                    cell = done.cells[i]
+                    if (not done.already_done(i)) and (v in cell):
+                        done.set_done(i, v)
                         changed = True
                        
     return changed
@@ -216,8 +215,6 @@ ASCENDING = 1
 DESCENDING = -1
 
 def find_moves(pos, strategy, order):
-    hex = pos.hex
-    tiles = pos.tiles
     done = pos.done
     cell_id = done.next_cell(strategy)
     if cell_id < 0:
@@ -338,7 +335,7 @@ def check_valid(pos):
     tiles = pos.tiles
     done = pos.done
     # fill missing entries in tiles
-    tot = done.used
+    tot = 0
     for i in xrange(8):
         if tiles[i] > 0:
             tot += tiles[i]
