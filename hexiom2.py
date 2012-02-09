@@ -245,8 +245,11 @@ def print_pos(pos):
         for x in xrange(size + y):
             pos2 = (x, y)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id][0]) if (done.already_done(id) and (done[id][0] != EMPTY)) else "."),
-                  end="")
+            if done.already_done(id):
+                c = str(done[id][0]) if done[id][0] != EMPTY else "."
+            else:
+                c = "?"
+            print("%s " % c, end="")
         print()
     for y in xrange(1, size):
         print(" " * y, end="")
@@ -254,8 +257,11 @@ def print_pos(pos):
             ry = size + y - 1
             pos2 = (x, ry)
             id = hex.get_by_pos(pos2).id
-            print("%s " % (str(done[id][0]) if (done.already_done(id) and (done[id][0] != EMPTY)) else "."),
-                  end="")
+            if done.already_done(id):
+                c = str(done[id][0]) if done[id][0] != EMPTY else "."
+            else:
+                c = "?"
+            print("%s " % c, end="")
         print()
 
 OPEN = 0
@@ -264,7 +270,7 @@ IMPOSSIBLE = -1
         
 def solved(pos, verbose=False):
     hex = pos.hex
-    tiles = pos.tiles
+    tiles = pos.tiles[:]
     done = pos.done
     exact = True
     all_done = True
@@ -273,6 +279,9 @@ def solved(pos, verbose=False):
             return IMPOSSIBLE
         elif done.already_done(i):
             num = done[i][0]
+            tiles[num] -= 1
+            if (tiles[num] < 0):
+                return IMPOSSIBLE
             vmax = 0
             vmin = 0
             if num != EMPTY:
@@ -308,9 +317,11 @@ def solve_step(prev, strategy, order, first=False):
     
     moves = find_moves(pos, strategy, order)
     for move in moves:
+        #print("Trying (%d, %d)" % (move[0], move[1]))
         ret = OPEN
         new_pos = pos.clone()
         play_move(new_pos, move)
+        #print_pos(new_pos)
         while constraint_pass(new_pos, move[0]):
             pass
         cur_status = solved(new_pos)
@@ -399,7 +410,7 @@ def solve_file(file, strategy, order):
     sys.stdout.flush()
 
 def main():
-    order = ASCENDING
+    order = DESCENDING
     strategy = Done.HIGHEST_VALUE_STRATEGY
     for f in sys.argv[1:]:
         if f.startswith("-"):
@@ -407,9 +418,9 @@ def main():
                 print("Usage: -u     show usage")
                 print("       -smin  use 'minimum choices' strategy")
                 print("       -smax  use 'maximum choices' strategy")
-                print("       -shigh use 'highest value' strategy")
+                print("       -shigh use 'highest value' strategy [default]")
                 print("       -oasc  use ascending order")
-                print("       -odesc use descending order")
+                print("       -odesc use descending order [default]")
                 return
             elif f == "-smin":
                 strategy = Done.MIN_CHOICE_STRATEGY
