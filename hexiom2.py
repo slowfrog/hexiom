@@ -21,6 +21,7 @@ class Done(object):
     MIN_CHOICE_STRATEGY = 0
     MAX_CHOICE_STRATEGY = 1
     HIGHEST_VALUE_STRATEGY = 2
+    FIRST_STRATEGY = 3
     
     def __init__(self, count, empty=False):
         self.count = count
@@ -86,10 +87,17 @@ class Done(object):
         maxval = -1
         maxi = -1
         for i in xrange(self.count):
-            if (not self.already_done(i)) and (maxval < max(k for k in self.cells[i] if k != EMPTY)):
-                maxval = max(self.cells[i])
-                maxi = i
+            if (not self.already_done(i)):
+                maxvali = max(k for k in self.cells[i] if k != EMPTY)
+                if maxval < maxvali:
+                    maxval = maxvali
+                    maxi = i
         return maxi
+
+    def next_cell_first(self):
+        for i in xrange(self.count):
+            if (not self.already_done(i)):
+                return i
 
     def next_cell(self, strategy=HIGHEST_VALUE_STRATEGY):
         if strategy == Done.HIGHEST_VALUE_STRATEGY:
@@ -98,6 +106,8 @@ class Done(object):
             return self.next_cell_min_choice()
         elif strategy == Done.MAX_CHOICE_STRATEGY:
             return self.next_cell_max_choice()
+        elif strategy == Done.FIRST_STRATEGY:
+            return self.next_cell_first()
         else:
             raise Exception("Wrong strategy: %d" % strategy)
 
@@ -412,12 +422,13 @@ def main():
     for f in sys.argv[1:]:
         if f.startswith("-"):
             if f == "-u":
-                print("Usage: -u     show usage")
-                print("       -smin  use 'minimum choices' strategy")
-                print("       -smax  use 'maximum choices' strategy")
-                print("       -shigh use 'highest value' strategy [default]")
-                print("       -oasc  use ascending order")
-                print("       -odesc use descending order [default]")
+                print("Usage: -u      show usage")
+                print("       -smin   use 'minimum choices' strategy")
+                print("       -smax   use 'maximum choices' strategy")
+                print("       -shigh  use 'highest value' strategy [default]")
+                print("       -sfirst use 'first' strategy")
+                print("       -oasc   use ascending order")
+                print("       -odesc  use descending order [default]")
                 return
             elif f == "-smin":
                 strategy = Done.MIN_CHOICE_STRATEGY
@@ -425,6 +436,8 @@ def main():
                 strategy = Done.MAX_CHOICE_STRATEGY
             elif f == "-shigh":
                 strategy = Done.HIGHEST_VALUE_STRATEGY
+            elif f == "-sfirst":
+                strategy = Done.FIRST_STRATEGY
             elif f == "-oasc":
                 order = ASCENDING
             elif f == "-odesc":

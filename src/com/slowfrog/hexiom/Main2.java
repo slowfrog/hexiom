@@ -34,6 +34,7 @@ public class Main2 {
     public static final int MIN_CHOICE_STRATEGY = 0;
     public static final int MAX_CHOICE_STRATEGY = 1;
     public static final int HIGHEST_VALUE_STRATEGY = 2;
+    public static final int FIRST_STRATEGY = 3;
 
     private static final int[] BITCOUNT = new int[256];
 
@@ -176,18 +177,29 @@ public class Main2 {
       int maxval = -1;
       int maxi = -1;
       for (int i = 0; i < this.count; ++i) {
-        int maxvali = 0;
-        for (int j = 0; j < 7; ++j) {
-          if (this.isSet(i, j)) {
-            maxvali = j;
+        if (!this.alreadyDone(i)) {
+          int maxvali = 0;
+          for (int j = 0; j < 7; ++j) {
+            if (this.isSet(i, j)) {
+              maxvali = j;
+            }
           }
-        }
-        if ((!this.alreadyDone(i)) && (maxval < maxvali)) {
-          maxval = maxvali;
-          maxi = i;
+          if (maxval < maxvali) {
+            maxval = maxvali;
+            maxi = i;
+          }
         }
       }
       return maxi;
+    }
+
+    public int nextCellFirst() {
+      for (int i = 0; i < this.count; ++i) {
+        if (!this.alreadyDone(i)) {
+          return i;
+        }
+      }
+      throw new RuntimeException("Impossible to get here... I hope!");
     }
 
     public int nextCell(int strategy) {
@@ -198,9 +210,30 @@ public class Main2 {
         return this.nextCellMaxChoice();
       case HIGHEST_VALUE_STRATEGY:
         return this.nextCellHighestValue();
+      case FIRST_STRATEGY:
+        return this.nextCellFirst();
       default:
         throw new RuntimeException("Wrong strategy: " + strategy);
       }
+    }
+
+    public String toString() {
+      String str = "Cells=[";
+      for (int i = 0; i < this.count; ++i) {
+        if (i > 0) {
+          str += ", ";
+        }
+        str += "[ ";
+        for (int v = 0; v < 8; ++v) {
+          if (this.isSet(i, v)) {
+            str += v + " ";
+          }
+        }
+        str += "]";
+      }
+
+      str += "]";
+      return str;
     }
   }
 
@@ -277,8 +310,7 @@ public class Main2 {
     }
 
     public void linkNodes() {
-      final int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
-                            { 1, 1 }, { -1, -1 } };
+      final int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { -1, -1 } };
 
       for (int i = 0; i < this.nodesById.length; ++i) {
         Node node = this.nodesById[i];
@@ -295,8 +327,7 @@ public class Main2 {
     }
 
     public boolean containsPos(int code) {
-      return (code >= 0) && (code < this.nodesByPos.length) &&
-             (this.nodesByPos[code] != null);
+      return (code >= 0) && (code < this.nodesByPos.length) && (this.nodesByPos[code] != null);
     }
 
     public Node getByPos(int pos) {
@@ -604,8 +635,8 @@ public class Main2 {
     }
     // Check total
     if (tot != hex.count) {
-      throw new RuntimeException("Invalid input. Expected " + hex.count +
-                                 " tiles, got " + tot + ".");
+      throw new RuntimeException("Invalid input. Expected " + hex.count + " tiles, got " + tot +
+                                 ".");
     }
   }
 
@@ -638,16 +669,15 @@ public class Main2 {
         p += 2;
         int inctile = 0;
         if (tile.charAt(1) == '.') {
-          inctile = 7;
+          inctile = EMPTY;
         } else {
           inctile = Integer.parseInt(tile.substring(1));
         }
+        tiles[inctile] += 1;
         if (tile.charAt(0) == '+') {
-          System.out.printf("Adding locked tile: %d at pos %d, %d, id=%d\n",
-              inctile, x, y, hex.getByPos(makePoint(x, y)).id);
+          System.out.printf("Adding locked tile: %d at pos %d, %d, id=%d\n", inctile, x, y,
+              hex.getByPos(makePoint(x, y)).id);
           done.setDone(hex.getByPos(makePoint(x, y)).id, inctile);
-        } else {
-          tiles[inctile] += 1;
         }
       }
       linei += 1;
@@ -661,16 +691,15 @@ public class Main2 {
         p += 2;
         int inctile = 0;
         if (tile.charAt(1) == '.') {
-          inctile = 7;
+          inctile = EMPTY;
         } else {
           inctile = Integer.parseInt(tile.substring(1));
         }
+        tiles[inctile] += 1;
         if (tile.charAt(0) == '+') {
-          System.out.printf("Adding locked tile: %d at pos %d, %d, id=%d\n",
-              inctile, x, ry, hex.getByPos(makePoint(x, ry)).id);
+          System.out.printf("Adding locked tile: %d at pos %d, %d, id=%d\n", inctile, x, ry,
+              hex.getByPos(makePoint(x, ry)).id);
           done.setDone(hex.getByPos(makePoint(x, ry)).id, inctile);
-        } else {
-          tiles[inctile] += 1;
         }
       }
       linei += 1;
@@ -698,13 +727,13 @@ public class Main2 {
     for (String f : args) {
       if (f.startsWith("-")) {
         if (f.equals("-u")) {
-          System.out.println("Usage: -u     show usage");
-          System.out.println("       -smin  use 'minimum choices' strategy");
-          System.out.println("       -smax  use 'maximum choices' strategy");
-          System.out
-              .println("       -shigh use 'highest value' strategy [default]");
-          System.out.println("       -oasc  use ascending order");
-          System.out.println("       -odesc use descending order [default]");
+          System.out.println("Usage: -u      show usage");
+          System.out.println("       -smin   use 'minimum choices' strategy");
+          System.out.println("       -smax   use 'maximum choices' strategy");
+          System.out.println("       -shigh  use 'highest value' strategy [default]");
+          System.out.println("       -sfirst use 'first' strategy");
+          System.out.println("       -oasc   use ascending order");
+          System.out.println("       -odesc  use descending order [default]");
           return;
         } else if (f.equals("-smin")) {
           strategy = Done.MIN_CHOICE_STRATEGY;
@@ -712,6 +741,8 @@ public class Main2 {
           strategy = Done.MAX_CHOICE_STRATEGY;
         } else if (f.equals("-shigh")) {
           strategy = Done.HIGHEST_VALUE_STRATEGY;
+        } else if (f.equals("-sfirst")) {
+          strategy = Done.FIRST_STRATEGY;
         } else if (f.equals("-oasc")) {
           order = ASCENDING;
         } else if (f.equals("-odesc")) {
