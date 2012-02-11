@@ -199,7 +199,7 @@ public class Main2 {
           return i;
         }
       }
-      throw new RuntimeException("Impossible to get here... I hope!");
+      return -1;
     }
 
     public int nextCell(int strategy) {
@@ -450,6 +450,56 @@ public class Main2 {
         }
       }
     }
+    
+    // Force empty or non-empty around filled cells
+    int[] filledCells;
+    if (lastMove >= 0) {
+      filledCells = new int[] { lastMove };
+    } else {
+      filledCells = new int[pos.done.count];
+      for (int i = 0; i < filledCells.length; ++i) {
+        filledCells[i] = i;
+      }
+    }
+    
+    for (int ii = 0; ii < filledCells.length; ++ii) {
+      int i = filledCells[ii];
+      if (done.alreadyDone(i)) {
+        int num = done.getVal(i);
+        int empties = 0;
+        int filled = 0;
+        List<Integer> unknown = new ArrayList<Integer>(6);
+        int[] cellsAround = pos.hex.getById(i).links;
+        for (int c = 0; c < cellsAround.length; ++c) {
+          int nid = cellsAround[c];
+          if (done.alreadyDone(nid)) {
+            if (done.getVal(nid) == EMPTY) {
+              empties += 1;
+            } else {
+              filled += 1;
+            }
+          } else {
+            unknown.add(nid);
+          }
+        }
+        if (unknown.size() > 0) {
+          if (num == filled) {
+            for (int u : unknown) {
+              if (done.isSet(u, EMPTY)) {
+                done.setDone(u, EMPTY);
+                changed = true;
+              }
+            }
+          } else if (num == filled + unknown.size()) {
+            for (int u : unknown) {
+              if (done.remove(u, EMPTY)) {
+                changed = true;
+              }
+            }
+          }
+        }
+      }
+    }
 
     return changed;
   }
@@ -600,22 +650,26 @@ public class Main2 {
 
     int[] moves = new int[16];
     int count = findMoves(pos, moves, strategy, order);
-    for (int i = 0; i < count; ++i) {
-      int cellId = moves[2 * i];
-      int value = moves[2 * i + 1];
-      int ret = OPEN;
-      Pos newPos = pos.clone();
-      playMove(newPos, cellId, value);
-      while (constraintPass(newPos, cellId)) {
-      }
-      int curStatus = solved(newPos);
-      if (curStatus != OPEN) {
-        ret = curStatus;
-      } else {
-        ret = solveStep(newPos, strategy, order, false);
-      }
-      if (ret == SOLVED) {
-        return ret;
+    if (count == 0) {
+      return solved(pos);
+    } else {
+      for (int i = 0; i < count; ++i) {
+        int cellId = moves[2 * i];
+        int value = moves[2 * i + 1];
+        int ret = OPEN;
+        Pos newPos = pos.clone();
+        playMove(newPos, cellId, value);
+        while (constraintPass(newPos, cellId)) {
+        }
+        int curStatus = solved(newPos);
+        if (curStatus != OPEN) {
+          ret = curStatus;
+        } else {
+          ret = solveStep(newPos, strategy, order, false);
+        }
+        if (ret == SOLVED) {
+          return ret;
+        }
       }
     }
     return IMPOSSIBLE;

@@ -98,6 +98,7 @@ class Done(object):
         for i in xrange(self.count):
             if (not self.already_done(i)):
                 return i
+        return -1
 
     def next_cell(self, strategy=HIGHEST_VALUE_STRATEGY):
         if strategy == Done.HIGHEST_VALUE_STRATEGY:
@@ -178,7 +179,7 @@ def constraint_pass(pos, last_move = None):
     done = pos.done
 
     # Remove impossible values from free cells
-    free_cells = (range(len(done.cells)) if last_move is None
+    free_cells = (range(done.count) if last_move is None
                   else pos.hex.get_by_id(last_move).links)
     for i in free_cells:
         if not done.already_done(i):
@@ -197,7 +198,7 @@ def constraint_pass(pos, last_move = None):
                 if (num < vmin) or (num > vmax):
                     if done.remove(i, num):
                         changed = True
-            
+
     # Computes how many of each value is still free
     for cell in done.cells:
         if len(cell) == 1:
@@ -219,6 +220,37 @@ def constraint_pass(pos, last_move = None):
                         done.set_done(i, v)
                         changed = True
                        
+    # Force empty or non-empty around filled cells
+    filled_cells = (range(done.count) if last_move is None
+                    else [last_move])
+    for i in filled_cells:
+        if done.already_done(i):
+            num = done[i][0]
+            empties = 0
+            filled = 0
+            unknown = []
+            cells_around = pos.hex.get_by_id(i).links;
+            for nid in cells_around:
+                if done.already_done(nid):
+                    if done[nid][0] == EMPTY:
+                        empties += 1
+                    else:
+                        filled += 1
+                else:
+                    unknown.append(nid)
+            if len(unknown) > 0:
+                if num == filled:
+                    for u in unknown:
+                        if EMPTY in done[u]:
+                            done.set_done(u, EMPTY)
+                            changed = True
+                        #else:
+                        #    raise Exception("Houston, we've got a problem")
+                elif num == filled + len(unknown):
+                    for u in unknown:
+                        if done.remove(u, EMPTY):
+                            changed = True
+            
     return changed
 
 ASCENDING = 1
@@ -323,21 +355,24 @@ def solve_step(prev, strategy, order, first=False):
         pos = prev
     
     moves = find_moves(pos, strategy, order)
-    for move in moves:
-        #print("Trying (%d, %d)" % (move[0], move[1]))
-        ret = OPEN
-        new_pos = pos.clone()
-        play_move(new_pos, move)
-        #print_pos(new_pos)
-        while constraint_pass(new_pos, move[0]):
-            pass
-        cur_status = solved(new_pos)
-        if cur_status != OPEN:
-            ret = cur_status
-        else:
-            ret = solve_step(new_pos, strategy, order)
-        if ret == SOLVED:
-            return SOLVED
+    if len(moves) == 0:
+        return solved(pos)
+    else:
+        for move in moves:
+            #print("Trying (%d, %d)" % (move[0], move[1]))
+            ret = OPEN
+            new_pos = pos.clone()
+            play_move(new_pos, move)
+            #print_pos(new_pos)
+            while constraint_pass(new_pos, move[0]):
+                pass
+            cur_status = solved(new_pos)
+            if cur_status != OPEN:
+                ret = cur_status
+            else:
+                ret = solve_step(new_pos, strategy, order)
+            if ret == SOLVED:
+                return SOLVED
     return IMPOSSIBLE
 
 def check_valid(pos):
