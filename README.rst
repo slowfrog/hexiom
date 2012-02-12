@@ -47,6 +47,14 @@ Running ``java -cp build/main/classes com.slowfrog.hexiom.Main2 -u`` will show y
 You can also run ``. runj2.sh`` to solve the 38 solvable levels.
 
 
+Sikuli Game-playing Bot
+=======================
+
+Everything relative to the bot is in the hexiom.sikuli subdirectory. You should be able to run the thing from the toplevel, after setting environment variables ``JAVA_HOME`` and ``SIKULI_HOME``, with ``autorun.sh 4``.
+
+You can see a video in my post at http://slowfrog.blogspot.com/2012/02/sikuli-plays-hexiom-for-me-size-4.html
+
+
 Data
 ====
 
