@@ -70,7 +70,13 @@
 <h2>hexiom.sikuli\hexiom.sikuli</h2> <a href="hexiom.sikuli\hexiom.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
+<span class="kw">import</span> sys
 <span class="kw">import</span> random
+<span class="kw">from</span> com.slowfrog.hexiom <span class="kw">import</span> Main2
+<span class="kw">from</span> org.sikuli.script.natives <span class="kw">import</span> Vision
+
+<span class="kw">print</span>(<span class="str">"MinTargetSize=%d"</span> % Vision.getParameter(<span class="str">"MinTargetSize"</span>))
+Vision.setParameter(<span class="str">"MinTargetSize"</span>, <span class="dig">12</span>)
 
 <span class="cmt"># Game logic
 </span>ORIG_X = <span class="dig">200</span>
@@ -94,6 +100,7 @@ HEX_DY = [None, None, <span class="dig">28</span>, <span class="dig">28</span>, 
 
 <span class="cmt"># Game graphics
 </span>PLAY = Pattern(<img src="play.png" />).similar(<span class="dig">0.85</span>)
+
 EMPTY4 = Pattern(<img src="empty4.png" />).similar(<span class="dig">0.75</span>)
 ZERO4 = Pattern(<img src="zero4.png" />).similar(<span class="dig">0.95</span>)
 ONE4 = Pattern(<img src="one4.png" />).similar(<span class="dig">0.85</span>)
@@ -105,6 +112,47 @@ SIX4 = Pattern(<img src="six4.png" />).similar(<span class="dig">0.95</span>)
 CLAW4 = Pattern(<img src="claw4.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">18</span>)
 CLAW4RED = Pattern(<img src="claw4red.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">18</span>)
 CLAW4YELLOW = Pattern(<img src="claw4yellow.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">18</span>)
+
+EMPTY6 = Pattern(<img src="empty6.png" />).similar(<span class="dig">0.75</span>)
+ZERO6 = Pattern(<img src="zero6.png" />).similar(<span class="dig">0.85</span>)
+ONE6 = Pattern(<img src="one6.png" />).similar(<span class="dig">0.90</span>)
+TWO6 = Pattern(<img src="two6.png" />).similar(<span class="dig">0.92</span>)
+THREE6 = Pattern(<img src="three6.png" />).similar(<span class="dig">0.80</span>)
+FOUR6 = Pattern(<img src="four6.png" />).similar(<span class="dig">0.87</span>)
+FIVE6 = <img src="five6.png" />
+SIX6 = Pattern(<img src="six6.png" />).similar(<span class="dig">0.80</span>)
+ONE6YELLOW = Pattern(<img src="one6yellow.png" />).similar(<span class="dig">0.90</span>)
+TWO6YELLOW = Pattern(<img src="two6yellow.png" />).similar(<span class="dig">0.95</span>)
+THREE6YELLOW = Pattern(<img src="three6yellow.png" />).similar(<span class="dig">0.82</span>)
+FOUR6YELLOW = Pattern(<img src="four6yellow.png" />).similar(<span class="dig">0.85</span>)
+FIVE6YELLOW = Pattern(<img src="five6yellow.png" />).similar(<span class="dig">0.79</span>)
+SIX6YELLOW = Pattern(<img src="six6yellow.png" />).similar(<span class="dig">0.90</span>)
+CLAW6 = Pattern(<img src="claw6.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">12</span>)
+CLAW6RED = Pattern(<img src="claw6red.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">12</span>)
+CLAW6YELLOW = Pattern(<img src="claw6yellow.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">12</span>)
+
+ALL_PATTERNS = {
+    <span class="dig">4</span>: { <span class="str">"0"</span>: ZERO4,
+         <span class="str">"1"</span>: ONE4,
+         <span class="str">"2"</span>: TWO4,
+         <span class="str">"3"</span>: THREE4,
+         <span class="str">"4"</span>: FOUR4,
+         <span class="str">"5"</span>: FIVE4,
+         <span class="str">"6"</span>: SIX4,
+         <span class="str">"."</span>: EMPTY4,
+         <span class="str">"+"</span>: [ CLAW4, CLAW4RED, CLAW4YELLOW ]
+         },
+    <span class="dig">6</span>: { <span class="str">"0"</span>: ZERO6,
+         <span class="str">"1"</span>: [ ONE6, ONE6YELLOW ],
+         <span class="str">"2"</span>: [ TWO6, TWO6YELLOW ],
+         <span class="str">"3"</span>: [ THREE6, THREE6YELLOW ],
+         <span class="str">"4"</span>: [ FOUR6, FOUR6YELLOW ],
+         <span class="str">"5"</span>: [ FIVE6, FIVE6YELLOW ],
+         <span class="str">"6"</span>: [ SIX6, SIX6YELLOW ],
+         <span class="str">"."</span>: EMPTY6,
+         <span class="str">"+"</span>: [ CLAW6, CLAW6RED, CLAW6YELLOW ]
+         }
+    }
 
 RANDOM_X = [None, None, None, <span class="dig">126</span>, <span class="dig">176</span>, <span class="dig">225</span>, <span class="dig">275</span>]
 
@@ -131,11 +179,20 @@ EMPTY = <span class="dig">7</span>
     <span class="kw">if</span> cell == <span class="str">""</span>:
         <span class="kw">return</span> <span class="str">"+."</span>
     ret = <span class="str">"+"</span> <span class="kw">if</span> <span class="str">"+"</span> <span class="kw">in</span> cell <span class="kw">else</span> <span class="str">" "</span>
+    val = None
     <span class="kw">for</span> i <span class="kw">in</span> cell:
         <span class="kw">if</span> i <span class="kw">in</span> <span class="str">".0123456"</span>:
+            <span class="kw">if</span> (val <span class="kw">is</span> <span class="kw">not</span> None) <span class="kw">and</span> (val != i):
+                <span class="kw">print</span>(<span class="str">"Warning: %s!-%s"</span> % (val, i))
             ret += i
     ret = (ret + <span class="str">"?"</span>)[:<span class="dig">2</span>]
     <span class="kw">return</span> ret
+
+<span class="kw">def</span> find_next(pb, locked, fromi, val):
+    <span class="kw">for</span> i <span class="kw">in</span> xrange(fromi, pb.count):
+        <span class="kw">if</span> (pb.getVal(i) == val) <span class="kw">and</span> <span class="kw">not</span> locked[i]:
+            <span class="kw">return</span> i
+    <span class="kw">raise</span> Exception(<span class="str">"Not found: %d"</span> % val)
 
 <span class="kw">class</span> Context(object):
     <span class="kw">def</span> start_game(self):
@@ -156,45 +213,66 @@ EMPTY = <span class="dig">7</span>
             <span class="kw">return</span>
 
         self.goff = Location(match.x - <span class="dig">170</span>, match.y - <span class="dig">270</span>)
+        self.reg = Region(self.goff.x, self.goff.y, <span class="dig">400</span>, <span class="dig">400</span>)
         self.reg.<span class="skw">click</span>(Location(self.goff.x + <span class="dig">200</span>, self.goff.y + <span class="dig">285</span>))
+        self.reg.highlight()
         <span class="skw">sleep</span>(<span class="dig">6</span>)
+        self.reg.highlight()
 
     <span class="kw">def</span> start_random_game(self, size):
         self.size = size
         random_loc = Location(self.goff.x + <span class="dig">200</span>, self.goff.y + <span class="dig">328</span>)
         self.reg.<span class="skw">click</span>(random_loc)
-        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
         self.reg.<span class="skw">click</span>(Location(self.goff.x + RANDOM_X[size], self.goff.y + <span class="dig">195</span>))
 
 
-    <span class="kw">def</span> print_board(self, board):
-        size = self.size
-        <span class="kw">for</span> y <span class="kw">in</span> xrange(size):
-            line = <span class="str">" "</span> * (size - y - <span class="dig">1</span>)
-            <span class="kw">for</span> x <span class="kw">in</span> xrange(size + y):
-                line += <span class="str">"%s"</span> % cleanup(board[y][x])
-            <span class="kw">print</span> line
-        <span class="kw">for</span> y <span class="kw">in</span> xrange(<span class="dig">1</span>, size):
-            ry = size + y - <span class="dig">1</span>
-            line = <span class="str">" "</span> * y
-            <span class="kw">for</span> x <span class="kw">in</span> xrange(y, size * <span class="dig">2</span> - <span class="dig">1</span>):
-                line += <span class="str">"%s"</span> % cleanup(board[ry][x])
-            <span class="kw">print</span> line
+    <span class="kw">def</span> print_board(self, board, filename):
+        count = <span class="dig">3</span> * self.size * (self.size - <span class="dig">1</span>) + <span class="dig">1</span>
+        ret = Main2.Done(count, False)
+        locked = [False] * count
+        <span class="kw">with</span> open(filename, <span class="str">"wb"</span>) <span class="kw">as</span> out:
+            size = self.size
+            <span class="kw">print</span> &gt;&gt; out, size
+            i = <span class="dig">0</span>
+            <span class="kw">for</span> y <span class="kw">in</span> xrange(size):
+                line = <span class="str">" "</span> * (size - y - <span class="dig">1</span>)
+                <span class="kw">for</span> x <span class="kw">in</span> xrange(size + y):
+                    val = cleanup(board[y][x])
+                    line += <span class="str">"%s"</span> % val
+                    <span class="kw">if</span> val[<span class="dig">1</span>] == <span class="str">"."</span>:
+                        ret.setDone(i, EMPTY)
+                    <span class="kw">else</span>:
+                        ret.setDone(i, int(val[<span class="dig">1</span>]))
+                    locked[i] = (val[<span class="dig">0</span>] == <span class="str">"+"</span>)
+                    i += <span class="dig">1</span>
+                <span class="kw">print</span> &gt;&gt; out, line
+            <span class="kw">for</span> y <span class="kw">in</span> xrange(<span class="dig">1</span>, size):
+                ry = size + y - <span class="dig">1</span>
+                line = <span class="str">" "</span> * y
+                <span class="kw">for</span> x <span class="kw">in</span> xrange(y, size * <span class="dig">2</span> - <span class="dig">1</span>):
+                    val = cleanup(board[ry][x])
+                    line += <span class="str">"%s"</span> % val
+                    <span class="kw">if</span> val[<span class="dig">1</span>] == <span class="str">"."</span>:
+                        ret.setDone(i, EMPTY)
+                    <span class="kw">else</span>:
+                        ret.setDone(i, int(val[<span class="dig">1</span>]))
+                    locked[i] = (val[<span class="dig">0</span>] == <span class="str">"+"</span>)
+                    i += <span class="dig">1</span>
+                <span class="kw">print</span> &gt;&gt; out, line
+        <span class="kw">return</span> (ret, locked)
+
+    <span class="kw">def</span> drag_drop(self, x0, y0, x1, y1):
+        (hx0, hy0) = get_hex_pos(self.size, x0, y0)
+        (hx1, hy1) = get_hex_pos(self.size, x1, y1)
+        self.reg.<span class="skw">dragDrop</span>(Location(self.goff.x + hx0, self.goff.y + hy0),
+                          Location(self.goff.x + hx1, self.goff.y + hy1))
 
 
 
     <span class="kw">def</span> find_elements(self):
         board = [[<span class="str">""</span>] * (<span class="dig">2</span> * self.size - <span class="dig">1</span>) <span class="kw">for</span> y <span class="kw">in</span> xrange(<span class="dig">2</span> * self.size - <span class="dig">1</span>)]
-        key_pats = { <span class="str">"0"</span>: ZERO4,
-                     <span class="str">"1"</span>: ONE4,
-                     <span class="str">"2"</span>: TWO4,
-                     <span class="str">"3"</span>: THREE4,
-                     <span class="str">"4"</span>: FOUR4,
-                     <span class="str">"5"</span>: FIVE4,
-                     <span class="str">"6"</span>: SIX4,
-                     <span class="str">"."</span>: EMPTY4,
-                     <span class="str">"+"</span>: [ CLAW4, CLAW4RED, CLAW4YELLOW ]
-               }
+        key_pats = ALL_PATTERNS[self.size]
         <span class="kw">for</span> key <span class="kw">in</span> key_pats:
             pats = key_pats[key]
             <span class="kw">if</span> <span class="kw">not</span> isinstance(pats, list):
@@ -216,28 +294,77 @@ EMPTY = <span class="dig">7</span>
 </span>                    <span class="cmt">#        match.highlight()        
 </span>                <span class="kw">except</span> FindFailed:
                     <span class="kw">pass</span>
-        self.print_board(board)
+        (pb, locked) = self.print_board(board, <span class="str">"input.txt"</span>)
+        Main2.main([<span class="str">"-sfirst"</span>, <span class="str">"input.txt"</span>])
+        sol = Main2.solution;
 
-<span class="kw">def</span> main():
+        i = <span class="dig">0</span>
+        size = self.size
+        i_to_xy = {}
+        xy_to_i = {}
+        <span class="kw">for</span> y <span class="kw">in</span> xrange(size):
+            <span class="kw">for</span> x <span class="kw">in</span> xrange(size + y):
+                i_to_xy[i] = (x, y)
+                xy_to_i[(x, y)] = i
+                i += <span class="dig">1</span>
+        <span class="kw">for</span> y <span class="kw">in</span> xrange(<span class="dig">1</span>, size):
+            ry = size + y - <span class="dig">1</span>
+            <span class="kw">for</span> x <span class="kw">in</span> xrange(y, size * <span class="dig">2</span> - <span class="dig">1</span>):
+                i_to_xy[i] = (x, ry)
+                xy_to_i[(x, ry)] = i
+                i += <span class="dig">1</span>
+
+        i = <span class="dig">0</span>
+        <span class="kw">for</span> y <span class="kw">in</span> xrange(size):
+            <span class="kw">for</span> x <span class="kw">in</span> xrange(size + y):
+                v = sol.getVal(i)
+                <span class="kw">if</span> pb.getVal(i) != v:
+                    j = find_next(pb, locked, i + <span class="dig">1</span>, v)
+                    (x1, y1) = i_to_xy[j]
+                    <span class="kw">if</span> v == EMPTY:
+                        self.drag_drop(x, y, x1, y1)
+                    <span class="kw">else</span>:
+                        self.drag_drop(x1, y1, x, y)
+                    pb.setDone(j, pb.getVal(i))
+                    pb.setDone(i, v)
+                i += <span class="dig">1</span>
+        <span class="kw">for</span> y <span class="kw">in</span> xrange(<span class="dig">1</span>, size):
+            ry = size + y - <span class="dig">1</span>
+            <span class="kw">for</span> x <span class="kw">in</span> xrange(y, size * <span class="dig">2</span> - <span class="dig">1</span>):
+                v = sol.getVal(i)
+                <span class="kw">if</span> pb.getVal(i) != v:
+                    j = find_next(pb, locked, i + <span class="dig">1</span>, v)
+                    (x1, y1) = i_to_xy[j]
+                    <span class="kw">if</span> v == EMPTY:
+                        self.drag_drop(x, ry, x1, y1)
+                    <span class="kw">else</span>:
+                        self.drag_drop(x1, y1, x, ry)
+                    pb.setDone(j, pb.getVal(i))
+                    pb.setDone(i, v)
+                i += <span class="dig">1</span>
+
+
+<span class="kw">def</span> main(size):
+    Settings.ActionLogs = False
+    Settings.MoveMouseDelay = <span class="dig">0</span>
+    Settings.DelayAfterDrag = <span class="dig">0</span>
+    Settings.DelayBeforfeDrop = <span class="dig">0</span>
     ctx = Context()
     ctx.start_game()
-    ctx.start_random_game(<span class="dig">4</span>)
+    ctx.start_random_game(size)
     ctx.find_elements()
     <span class="skw">sleep</span>(<span class="dig">1</span>)
-    <span class="kw">return</span>
 
+DEFAULT_SIZE = <span class="dig">4</span>
+<span class="kw">print</span>(<span class="str">"ARGS=%s"</span> % sys.argv)
+<span class="kw">if</span> len(sys.argv) &gt; <span class="dig">1</span>:
+    size = int(sys.argv[<span class="dig">1</span>])
+    sys.argv = [sys.argv[<span class="dig">0</span>]]
+<span class="kw">else</span>:
+    size = DEFAULT_SIZE
+<span class="kw">print</span>(<span class="str">"ARGS=%s"</span> % sys.argv)
 
-
-    <span class="kw">for</span> turn <span class="kw">in</span> xrange(<span class="dig">15</span>):
-        y0 = random.randint(<span class="dig">0</span>, <span class="dig">2</span> * size - <span class="dig">2</span>)
-        x0 = random.randint(<span class="dig">0</span>, size + y0 - <span class="dig">1</span>) <span class="kw">if</span> (y0 &lt; size) <span class="kw">else</span> random.randint(y0, size * <span class="dig">2</span> - <span class="dig">2</span>)
-        y1 = random.randint(<span class="dig">0</span>, <span class="dig">2</span> * size - <span class="dig">2</span>)
-        x1 = random.randint(<span class="dig">0</span>, size + y1 - <span class="dig">1</span>) <span class="kw">if</span> (y1 &lt; size) <span class="kw">else</span> random.randint(y1, size * <span class="dig">2</span> - <span class="dig">2</span>)
-        (hx0, hy0) = get_hex_pos(size, x0, y0)
-        (hx1, hy1) = get_hex_pos(size, x1, y1)
-        reg.<span class="skw">dragDrop</span>(Location(goff.x + hx0, goff.y + hy0), Location(goff.x + hx1, goff.y + hy1))
-
-main()
+main(size)
 </pre>
 </body>
 </html>

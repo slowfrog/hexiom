@@ -1,5 +1,10 @@
+import sys
 import random
 from com.slowfrog.hexiom import Main2
+from org.sikuli.script.natives import Vision
+
+print("MinTargetSize=%d" % Vision.getParameter("MinTargetSize"))
+Vision.setParameter("MinTargetSize", 12)
 
 # Game logic
 ORIG_X = 200
@@ -23,6 +28,7 @@ def get_nearest_xy(size, hx, hy):
 
 # Game graphics
 PLAY = Pattern("play.png").similar(0.85)
+
 EMPTY4 = Pattern("empty4.png").similar(0.75)
 ZERO4 = Pattern("zero4.png").similar(0.95)
 ONE4 = Pattern("one4.png").similar(0.85)
@@ -34,6 +40,47 @@ SIX4 = Pattern("six4.png").similar(0.95)
 CLAW4 = Pattern("claw4.png").similar(0.85).targetOffset(0, 18)
 CLAW4RED = Pattern("claw4red.png").similar(0.85).targetOffset(0, 18)
 CLAW4YELLOW = Pattern("claw4yellow.png").similar(0.85).targetOffset(0, 18)
+
+EMPTY6 = Pattern("empty6.png").similar(0.75)
+ZERO6 = Pattern("zero6.png").similar(0.85)
+ONE6 = Pattern("one6.png").similar(0.90)
+TWO6 = Pattern("two6.png").similar(0.92)
+THREE6 = Pattern("three6.png").similar(0.80)
+FOUR6 = Pattern("four6.png").similar(0.87)
+FIVE6 = "five6.png"
+SIX6 = Pattern("six6.png").similar(0.80)
+ONE6YELLOW = Pattern("one6yellow.png").similar(0.90)
+TWO6YELLOW = Pattern("two6yellow.png").similar(0.95)
+THREE6YELLOW = Pattern("three6yellow.png").similar(0.82)
+FOUR6YELLOW = Pattern("four6yellow.png").similar(0.85)
+FIVE6YELLOW = Pattern("five6yellow.png").similar(0.79)
+SIX6YELLOW = Pattern("six6yellow.png").similar(0.90)
+CLAW6 = Pattern("claw6.png").similar(0.85).targetOffset(0, 12)
+CLAW6RED = Pattern("claw6red.png").similar(0.85).targetOffset(0, 12)
+CLAW6YELLOW = Pattern("claw6yellow.png").similar(0.85).targetOffset(0, 12)
+
+ALL_PATTERNS = {
+    4: { "0": ZERO4, 
+         "1": ONE4,
+         "2": TWO4, 
+         "3": THREE4, 
+         "4": FOUR4, 
+         "5": FIVE4, 
+         "6": SIX4, 
+         ".": EMPTY4, 
+         "+": [ CLAW4, CLAW4RED, CLAW4YELLOW ]
+         },
+    6: { "0": ZERO6, 
+         "1": [ ONE6, ONE6YELLOW ],
+         "2": [ TWO6, TWO6YELLOW ],
+         "3": [ THREE6, THREE6YELLOW ],
+         "4": [ FOUR6, FOUR6YELLOW ],
+         "5": [ FIVE6, FIVE6YELLOW ],
+         "6": [ SIX6, SIX6YELLOW ],
+         ".": EMPTY6, 
+         "+": [ CLAW6, CLAW6RED, CLAW6YELLOW ]
+         }
+    }
 
 RANDOM_X = [None, None, None, 126, 176, 225, 275]
 
@@ -60,8 +107,11 @@ def cleanup(cell):
     if cell == "":
         return "+."
     ret = "+" if "+" in cell else " "
+    val = None
     for i in cell:
         if i in ".0123456":
+            if (val is not None) and (val != i):
+                print("Warning: %s!-%s" % (val, i))
             ret += i
     ret = (ret + "?")[:2]
     return ret
@@ -91,8 +141,11 @@ class Context(object):
             return
     
         self.goff = Location(match.x - 170, match.y - 270)
+        self.reg = Region(self.goff.x, self.goff.y, 400, 400)
         self.reg.click(Location(self.goff.x + 200, self.goff.y + 285))
+        self.reg.highlight()
         sleep(6)
+        self.reg.highlight()
 
     def start_random_game(self, size):
         self.size = size
@@ -147,16 +200,7 @@ class Context(object):
                 
     def find_elements(self):
         board = [[""] * (2 * self.size - 1) for y in xrange(2 * self.size - 1)]
-        key_pats = { "0": ZERO4, 
-                     "1": ONE4,
-                     "2": TWO4, 
-                     "3": THREE4, 
-                     "4": FOUR4, 
-                     "5": FIVE4, 
-                     "6": SIX4, 
-                     ".": EMPTY4, 
-                     "+": [ CLAW4, CLAW4RED, CLAW4YELLOW ]
-               }
+        key_pats = ALL_PATTERNS[self.size]
         for key in key_pats:
             pats = key_pats[key]
             if not isinstance(pats, list):
@@ -228,15 +272,24 @@ class Context(object):
                 i += 1
 
 
-def main():
+def main(size):
     Settings.ActionLogs = False
     Settings.MoveMouseDelay = 0
     Settings.DelayAfterDrag = 0
     Settings.DelayBeforfeDrop = 0
     ctx = Context()
     ctx.start_game()
-    ctx.start_random_game(4)
+    ctx.start_random_game(size)
     ctx.find_elements()
     sleep(1)
 
-main()
+DEFAULT_SIZE = 4
+print("ARGS=%s" % sys.argv)
+if len(sys.argv) > 1:
+    size = int(sys.argv[1])
+    sys.argv = [sys.argv[0]]
+else:
+    size = DEFAULT_SIZE
+print("ARGS=%s" % sys.argv)
+    
+main(size)
