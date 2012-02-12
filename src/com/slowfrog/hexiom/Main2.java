@@ -30,11 +30,13 @@ public class Main2 {
   }
 
   // ///////////////////////////////////////////////
-  static class Done implements Cloneable {
+  public static class Done implements Cloneable {
     public static final int MIN_CHOICE_STRATEGY = 0;
     public static final int MAX_CHOICE_STRATEGY = 1;
     public static final int HIGHEST_VALUE_STRATEGY = 2;
     public static final int FIRST_STRATEGY = 3;
+    public static final int MAX_NEIGHBORS_STRATEGY = 4;
+    public static final int MIN_NEIGHBORS_STRATEGY = 5;
 
     private static final int[] BITCOUNT = new int[256];
 
@@ -50,7 +52,7 @@ public class Main2 {
       }
     }
 
-    private int count;
+    public int count;
     private int[] cells;
 
     public Done(int count, boolean empty) {
@@ -201,8 +203,52 @@ public class Main2 {
       }
       return -1;
     }
+    
+    public int nextCellMaxNeighbors(Pos pos) {
+      int maxn = -1;
+      int maxi = -1;
+      for (int i = 0; i < this.count; ++i) {
+        if (!this.alreadyDone(i)) {
+          int n = 0;
+          int[] cellsAround = pos.hex.getById(i).links;
+          for (int c = 0; c < cellsAround.length; ++c) {
+            int nid = cellsAround[c];
+            if (this.alreadyDone(nid) && (this.getVal(nid) != EMPTY)) {
+              n += 1;
+            }
+          }
+          if (n > maxn) {
+            maxn = n;
+            maxi = i;
+          }
+        }
+      }
+      return maxi;
+    }
 
-    public int nextCell(int strategy) {
+    public int nextCellMinNeighbors(Pos pos) {
+      int minn = 7;
+      int mini = -1;
+      for (int i = 0; i < this.count; ++i) {
+        if (!this.alreadyDone(i)) {
+          int n = 0;
+          int[] cellsAround = pos.hex.getById(i).links;
+          for (int c = 0; c < cellsAround.length; ++c) {
+            int nid = cellsAround[c];
+            if (this.alreadyDone(nid) && (this.getVal(nid) != EMPTY)) {
+              n += 1;
+            }
+          }
+          if (n < minn) {
+            minn = n;
+            mini = i;
+          }
+        }
+      }
+      return mini;
+    }
+
+    public int nextCell(Pos pos, int strategy) {
       switch (strategy) {
       case MIN_CHOICE_STRATEGY:
         return this.nextCellMinChoice();
@@ -212,6 +258,10 @@ public class Main2 {
         return this.nextCellHighestValue();
       case FIRST_STRATEGY:
         return this.nextCellFirst();
+      case MIN_NEIGHBORS_STRATEGY:
+        return this.nextCellMinNeighbors(pos);
+      case MAX_NEIGHBORS_STRATEGY:
+        return this.nextCellMaxNeighbors(pos);
       default:
         throw new RuntimeException("Wrong strategy: " + strategy);
       }
@@ -353,7 +403,7 @@ public class Main2 {
   }
 
   // //////////////////////////////////////////////
-  static class Pos implements Cloneable {
+  public static class Pos implements Cloneable {
     public Hex hex;
 
     public int[] tiles;
@@ -372,6 +422,21 @@ public class Main2 {
     public Pos clone() {
       return new Pos(this.hex, this.tiles, this.done.clone());
     }
+    
+    public int getVal(int i) {
+      return this.done.getVal(i);
+    }
+  }
+  
+  public static Pos problem;
+  public static Pos solution;
+  
+  public static Pos getSolution() {
+    System.out.println("Getting solution");
+    if (solution == null) {
+      System.out.println("NULL!!!!");
+    }
+    return solution;
   }
 
   // ////////////////////////////////////////////////////
@@ -508,7 +573,7 @@ public class Main2 {
     int count = 0;
     int index = 0;
     Done done = pos.done;
-    int cellId = done.nextCell(strategy);
+    int cellId = done.nextCell(pos, strategy);
     if (cellId < 0) {
       return count;
     }
@@ -634,6 +699,7 @@ public class Main2 {
     if ((!allDone) || (!exact)) {
       return OPEN;
     }
+    solution = pos;
     printPos(pos);
     return SOLVED;
   }
@@ -696,6 +762,7 @@ public class Main2 {
 
   private static int solve(Pos pos, int strategy, int order) {
     checkValid(pos);
+    problem = pos;
     return solveStep(pos, strategy, order, true);
   }
 
@@ -786,6 +853,8 @@ public class Main2 {
           System.out.println("       -smax   use 'maximum choices' strategy");
           System.out.println("       -shigh  use 'highest value' strategy [default]");
           System.out.println("       -sfirst use 'first' strategy");
+          System.out.println("       -sminnb use 'minimum neighbors' strategy");
+          System.out.println("       -smaxnb use 'maximum neighbors' strategy");
           System.out.println("       -oasc   use ascending order");
           System.out.println("       -odesc  use descending order [default]");
           return;
@@ -797,6 +866,10 @@ public class Main2 {
           strategy = Done.HIGHEST_VALUE_STRATEGY;
         } else if (f.equals("-sfirst")) {
           strategy = Done.FIRST_STRATEGY;
+        } else if (f.equals("-sminnb")) {
+          strategy = Done.MIN_NEIGHBORS_STRATEGY;
+        } else if (f.equals("-smaxnb")) {
+          strategy = Done.MAX_NEIGHBORS_STRATEGY;
         } else if (f.equals("-oasc")) {
           order = ASCENDING;
         } else if (f.equals("-odesc")) {

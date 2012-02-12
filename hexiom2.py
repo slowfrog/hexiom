@@ -22,6 +22,8 @@ class Done(object):
     MAX_CHOICE_STRATEGY = 1
     HIGHEST_VALUE_STRATEGY = 2
     FIRST_STRATEGY = 3
+    MAX_NEIGHBORS_STRATEGY = 4
+    MIN_NEIGHBORS_STRATEGY = 5
     
     def __init__(self, count, empty=False):
         self.count = count
@@ -100,7 +102,34 @@ class Done(object):
                 return i
         return -1
 
-    def next_cell(self, strategy=HIGHEST_VALUE_STRATEGY):
+    def next_cell_max_neighbors(self, pos):
+        maxn = -1;
+        maxi = -1;
+        for i in xrange(self.count):
+            if not self.already_done(i):
+                cells_around = pos.hex.get_by_id(i).links;
+                n = sum(1 if (self.already_done(nid) and (self[nid][0] != EMPTY)) else 0
+                        for nid in cells_around)
+                if n > maxn:
+                    maxn = n
+                    maxi = i
+        return maxi
+
+    def next_cell_min_neighbors(self, pos):
+        minn = 7;
+        mini = -1;
+        for i in xrange(self.count):
+            if not self.already_done(i):
+                cells_around = pos.hex.get_by_id(i).links;
+                n = sum(1 if (self.already_done(nid) and (self[nid][0] != EMPTY)) else 0
+                        for nid in cells_around)
+                if n < minn:
+                    minn = n
+                    mini = i
+        return mini
+
+
+    def next_cell(self, pos, strategy=HIGHEST_VALUE_STRATEGY):
         if strategy == Done.HIGHEST_VALUE_STRATEGY:
             return self.next_cell_highest_value()
         elif strategy == Done.MIN_CHOICE_STRATEGY:
@@ -109,6 +138,10 @@ class Done(object):
             return self.next_cell_max_choice()
         elif strategy == Done.FIRST_STRATEGY:
             return self.next_cell_first()
+        elif strategy == Done.MAX_NEIGHBORS_STRATEGY:
+            return self.next_cell_max_neighbors(pos)
+        elif strategy == Done.MIN_NEIGHBORS_STRATEGY:
+            return self.next_cell_min_neighbors(pos)
         else:
             raise Exception("Wrong strategy: %d" % strategy)
 
@@ -258,7 +291,7 @@ DESCENDING = -1
 
 def find_moves(pos, strategy, order):
     done = pos.done
-    cell_id = done.next_cell(strategy)
+    cell_id = done.next_cell(pos, strategy)
     if cell_id < 0:
         return []
 
@@ -462,6 +495,8 @@ def main():
                 print("       -smax   use 'maximum choices' strategy")
                 print("       -shigh  use 'highest value' strategy [default]")
                 print("       -sfirst use 'first' strategy")
+                print("       -sminnb use 'minimum neighbors' strategy")
+                print("       -smaxnb use 'maximum neighbors' strategy")
                 print("       -oasc   use ascending order")
                 print("       -odesc  use descending order [default]")
                 return
@@ -473,6 +508,10 @@ def main():
                 strategy = Done.HIGHEST_VALUE_STRATEGY
             elif f == "-sfirst":
                 strategy = Done.FIRST_STRATEGY
+            elif f == "-sminnb":
+                strategy = Done.MIN_NEIGHBORS_STRATEGY
+            elif f == "-smaxnb":
+                strategy = Done.MAX_NEIGHBORS_STRATEGY
             elif f == "-oasc":
                 order = ASCENDING
             elif f == "-odesc":
