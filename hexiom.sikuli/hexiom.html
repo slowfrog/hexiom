@@ -1,0 +1,243 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }  
+         
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>hexiom.sikuli\hexiom.sikuli</h2> <a href="hexiom.sikuli\hexiom.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">import</span> random
+
+<span class="cmt"># Game logic
+</span>ORIG_X = <span class="dig">200</span>
+ORIG_Y = [None, None, <span class="dig">144</span>, <span class="dig">87</span>, <span class="dig">59</span>, <span class="dig">54</span>, <span class="dig">51</span>]
+HEX_DX = [None, None, <span class="dig">48</span>, <span class="dig">48</span>, <span class="dig">40</span>, <span class="dig">31</span>, <span class="dig">25</span>]
+HEX_DY = [None, None, <span class="dig">28</span>, <span class="dig">28</span>, <span class="dig">23</span>, <span class="dig">18</span>, <span class="dig">15</span>]
+
+<span class="kw">def</span> get_hex_pos(size, x, y):
+    x0 = ORIG_X
+    y0 = ORIG_Y[size]
+    hx = x0 + HEX_DX[size] * (x - y)
+    hy = y0 + HEX_DY[size] * (x + y)
+    <span class="kw">return</span> (hx, hy)
+
+<span class="kw">def</span> get_nearest_xy(size, hx, hy):
+    x0 = ORIG_X
+    y0 = ORIG_Y[size]
+    diff_xy = int(round(float(hx - x0) / HEX_DX[size]))
+    sum_xy = int(round(float(hy - y0) / HEX_DY[size]))
+    <span class="kw">return</span> ((sum_xy + diff_xy) / <span class="dig">2</span>, (sum_xy - diff_xy) / <span class="dig">2</span>)
+
+<span class="cmt"># Game graphics
+</span>PLAY = Pattern(<img src="play.png" />).similar(<span class="dig">0.85</span>)
+EMPTY4 = Pattern(<img src="empty4.png" />).similar(<span class="dig">0.75</span>)
+ZERO4 = Pattern(<img src="zero4.png" />).similar(<span class="dig">0.95</span>)
+ONE4 = Pattern(<img src="one4.png" />).similar(<span class="dig">0.85</span>)
+TWO4 = Pattern(<img src="two4.png" />).similar(<span class="dig">0.85</span>)
+THREE4 = Pattern(<img src="three4.png" />).similar(<span class="dig">0.85</span>)
+FOUR4 = Pattern(<img src="four4.png" />).similar(<span class="dig">0.85</span>)
+FIVE4 = Pattern(<img src="five4.png" />).similar(<span class="dig">0.85</span>)
+SIX4 = Pattern(<img src="six4.png" />).similar(<span class="dig">0.95</span>)
+CLAW4 = Pattern(<img src="claw4.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">18</span>)
+CLAW4RED = Pattern(<img src="claw4red.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">18</span>)
+CLAW4YELLOW = Pattern(<img src="claw4yellow.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">18</span>)
+
+RANDOM_X = [None, None, None, <span class="dig">126</span>, <span class="dig">176</span>, <span class="dig">225</span>, <span class="dig">275</span>]
+
+
+<span class="kw">def</span> new_browser_tab(browser_name, url):
+    browser = App(browser_name)
+    reg = browser.window()
+    browser.focus()
+    <span class="skw">type</span>(<span class="str">"t"</span>, KeyModifier.CTRL)
+    paste(url)
+    <span class="skw">type</span>(Key.ENTER)
+    <span class="kw">return</span> reg
+
+<span class="kw">def</span> new_firefox_tab(url):
+    <span class="kw">return</span> new_browser_tab(<span class="str">"Firefox"</span>, url)
+
+<span class="kw">def</span> new_game_tab():
+    <span class="kw">return</span> new_firefox_tab(<span class="str">"http://www.kongregate.com/games/Moonkey/hexiom"</span>)
+
+NONE = -<span class="dig">1</span>
+EMPTY = <span class="dig">7</span>
+
+<span class="kw">def</span> cleanup(cell):
+    <span class="kw">if</span> cell == <span class="str">""</span>:
+        <span class="kw">return</span> <span class="str">"+."</span>
+    ret = <span class="str">"+"</span> <span class="kw">if</span> <span class="str">"+"</span> <span class="kw">in</span> cell <span class="kw">else</span> <span class="str">" "</span>
+    <span class="kw">for</span> i <span class="kw">in</span> cell:
+        <span class="kw">if</span> i <span class="kw">in</span> <span class="str">".0123456"</span>:
+            ret += i
+    ret = (ret + <span class="str">"?"</span>)[:<span class="dig">2</span>]
+    <span class="kw">return</span> ret
+
+<span class="kw">class</span> Context(object):
+    <span class="kw">def</span> start_game(self):
+        loops_left = <span class="dig">10</span>
+        self.reg = new_game_tab()
+        match = None
+        <span class="kw">while</span> loops_left &gt; <span class="dig">0</span>:
+            loops_left -= <span class="dig">1</span>
+            <span class="kw">try</span>:
+                match = self.reg.<span class="skw">find</span>(PLAY)
+                <span class="kw">print</span>(<span class="str">"Match %s"</span> % match)
+                <span class="kw">break</span>
+            <span class="kw">except</span> FindFailed:
+                <span class="kw">print</span>(<span class="str">"No match"</span>)
+                <span class="skw">sleep</span>(<span class="dig">3</span>)
+
+        <span class="kw">if</span> match <span class="kw">is</span> None:
+            <span class="kw">return</span>
+
+        self.goff = Location(match.x - <span class="dig">170</span>, match.y - <span class="dig">270</span>)
+        self.reg.<span class="skw">click</span>(Location(self.goff.x + <span class="dig">200</span>, self.goff.y + <span class="dig">285</span>))
+        <span class="skw">sleep</span>(<span class="dig">6</span>)
+
+    <span class="kw">def</span> start_random_game(self, size):
+        self.size = size
+        random_loc = Location(self.goff.x + <span class="dig">200</span>, self.goff.y + <span class="dig">328</span>)
+        self.reg.<span class="skw">click</span>(random_loc)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        self.reg.<span class="skw">click</span>(Location(self.goff.x + RANDOM_X[size], self.goff.y + <span class="dig">195</span>))
+
+
+    <span class="kw">def</span> print_board(self, board):
+        size = self.size
+        <span class="kw">for</span> y <span class="kw">in</span> xrange(size):
+            line = <span class="str">" "</span> * (size - y - <span class="dig">1</span>)
+            <span class="kw">for</span> x <span class="kw">in</span> xrange(size + y):
+                line += <span class="str">"%s"</span> % cleanup(board[y][x])
+            <span class="kw">print</span> line
+        <span class="kw">for</span> y <span class="kw">in</span> xrange(<span class="dig">1</span>, size):
+            ry = size + y - <span class="dig">1</span>
+            line = <span class="str">" "</span> * y
+            <span class="kw">for</span> x <span class="kw">in</span> xrange(y, size * <span class="dig">2</span> - <span class="dig">1</span>):
+                line += <span class="str">"%s"</span> % cleanup(board[ry][x])
+            <span class="kw">print</span> line
+
+
+
+    <span class="kw">def</span> find_elements(self):
+        board = [[<span class="str">""</span>] * (<span class="dig">2</span> * self.size - <span class="dig">1</span>) <span class="kw">for</span> y <span class="kw">in</span> xrange(<span class="dig">2</span> * self.size - <span class="dig">1</span>)]
+        key_pats = { <span class="str">"0"</span>: ZERO4,
+                     <span class="str">"1"</span>: ONE4,
+                     <span class="str">"2"</span>: TWO4,
+                     <span class="str">"3"</span>: THREE4,
+                     <span class="str">"4"</span>: FOUR4,
+                     <span class="str">"5"</span>: FIVE4,
+                     <span class="str">"6"</span>: SIX4,
+                     <span class="str">"."</span>: EMPTY4,
+                     <span class="str">"+"</span>: [ CLAW4, CLAW4RED, CLAW4YELLOW ]
+               }
+        <span class="kw">for</span> key <span class="kw">in</span> key_pats:
+            pats = key_pats[key]
+            <span class="kw">if</span> <span class="kw">not</span> isinstance(pats, list):
+                pats = [pats]
+            <span class="kw">for</span> pat <span class="kw">in</span> pats:
+                <span class="kw">print</span>(<span class="str">"Looking for %s"</span> % key)
+                <span class="kw">try</span>:
+                    matches = list(self.reg.findAll(pat))
+                    <span class="kw">for</span> match <span class="kw">in</span> matches:
+                        <span class="kw">if</span> match.getScore() &gt; <span class="dig">0.8</span>:
+                            loc = match.getTarget()
+                            (x, y) = get_nearest_xy(self.size, loc.x - self.goff.x, loc.y - self.goff.y)
+                            <span class="kw">print</span>(<span class="str">"[%d, %d]=&gt;(%d, %d)-&gt;%s"</span> % (loc.x, loc.y, x, y, key))
+                            board[y][x] += key
+                            <span class="cmt">#match.highlight()        
+</span>                    <span class="cmt">#sleep(2)
+</span>                    <span class="cmt">#for match in matches:
+</span>                    <span class="cmt">#    if match.getScore() &gt; 0.8:
+</span>                    <span class="cmt">#        match.highlight()        
+</span>                <span class="kw">except</span> FindFailed:
+                    <span class="kw">pass</span>
+        self.print_board(board)
+
+<span class="kw">def</span> main():
+    ctx = Context()
+    ctx.start_game()
+    ctx.start_random_game(<span class="dig">4</span>)
+    ctx.find_elements()
+    <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="kw">return</span>
+
+
+
+    <span class="kw">for</span> turn <span class="kw">in</span> xrange(<span class="dig">15</span>):
+        y0 = random.randint(<span class="dig">0</span>, <span class="dig">2</span> * size - <span class="dig">2</span>)
+        x0 = random.randint(<span class="dig">0</span>, size + y0 - <span class="dig">1</span>) <span class="kw">if</span> (y0 &lt; size) <span class="kw">else</span> random.randint(y0, size * <span class="dig">2</span> - <span class="dig">2</span>)
+        y1 = random.randint(<span class="dig">0</span>, <span class="dig">2</span> * size - <span class="dig">2</span>)
+        x1 = random.randint(<span class="dig">0</span>, size + y1 - <span class="dig">1</span>) <span class="kw">if</span> (y1 &lt; size) <span class="kw">else</span> random.randint(y1, size * <span class="dig">2</span> - <span class="dig">2</span>)
+        (hx0, hy0) = get_hex_pos(size, x0, y0)
+        (hx1, hy1) = get_hex_pos(size, x1, y1)
+        reg.<span class="skw">dragDrop</span>(Location(goff.x + hx0, goff.y + hy0), Location(goff.x + hx1, goff.y + hy1))
+
+main()
+</pre>
+</body>
+</html>
