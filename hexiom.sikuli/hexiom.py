@@ -44,20 +44,22 @@ CLAW4YELLOW = Pattern("claw4yellow.png").similar(0.85).targetOffset(0, 18)
 EMPTY6 = Pattern("empty6.png").similar(0.75)
 ZERO6 = Pattern("zero6.png").similar(0.85)
 ONE6 = Pattern("one6.png").similar(0.90)
-TWO6 = Pattern("two6.png").similar(0.92)
-THREE6 = Pattern("three6.png").similar(0.80)
-FOUR6 = Pattern("four6.png").similar(0.87)
-FIVE6 = "five6.png"
-SIX6 = Pattern("six6.png").similar(0.80)
 ONE6YELLOW = Pattern("one6yellow.png").similar(0.90)
+TWO6 = Pattern("two6.png").similar(0.92)
 TWO6YELLOW = Pattern("two6yellow.png").similar(0.95)
+TWO6RED = "two6red.png"
+THREE6 = Pattern("three6.png").similar(0.80)
 THREE6YELLOW = Pattern("three6yellow.png").similar(0.82)
+FOUR6 = Pattern("four6.png").similar(0.87)
 FOUR6YELLOW = Pattern("four6yellow.png").similar(0.85)
+FIVE6 = "five6.png"
 FIVE6YELLOW = Pattern("five6yellow.png").similar(0.79)
+FIVE6RED = Pattern("five6red.png").similar(0.79)
+SIX6 = Pattern("six6.png").similar(0.80)
 SIX6YELLOW = Pattern("six6yellow.png").similar(0.90)
-CLAW6 = Pattern("claw6.png").similar(0.85).targetOffset(0, 12)
-CLAW6RED = Pattern("claw6red.png").similar(0.85).targetOffset(0, 12)
-CLAW6YELLOW = Pattern("claw6yellow.png").similar(0.85).targetOffset(0, 12)
+CLAW6 = Pattern("claw6.png").similar(0.75).targetOffset(0, 12)
+CLAW6RED = Pattern("claw6red.png").similar(0.75).targetOffset(0, 12)
+CLAW6YELLOW = Pattern("claw6yellow.png").similar(0.75).targetOffset(0, 12)
 
 ALL_PATTERNS = {
     4: { "0": ZERO4, 
@@ -72,10 +74,10 @@ ALL_PATTERNS = {
          },
     6: { "0": ZERO6, 
          "1": [ ONE6, ONE6YELLOW ],
-         "2": [ TWO6, TWO6YELLOW ],
+         "2": [ TWO6, TWO6YELLOW, TWO6RED ],
          "3": [ THREE6, THREE6YELLOW ],
          "4": [ FOUR6, FOUR6YELLOW ],
-         "5": [ FIVE6, FIVE6YELLOW ],
+         "5": [ FIVE6, FIVE6YELLOW, FIVE6RED ],
          "6": [ SIX6, SIX6YELLOW ],
          ".": EMPTY6, 
          "+": [ CLAW6, CLAW6RED, CLAW6YELLOW ]
@@ -111,7 +113,8 @@ def cleanup(cell):
     for i in cell:
         if i in ".0123456":
             if (val is not None) and (val != i):
-                print("Warning: %s!-%s" % (val, i))
+                print("WARNING: %s!-%s" % (val, i))
+            val = i
             ret += i
     ret = (ret + "?")[:2]
     return ret

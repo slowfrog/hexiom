@@ -116,16 +116,18 @@ CLAW4YELLOW = Pattern(<img src="claw4yellow.png" />).similar(<span class="dig">0
 EMPTY6 = Pattern(<img src="empty6.png" />).similar(<span class="dig">0.75</span>)
 ZERO6 = Pattern(<img src="zero6.png" />).similar(<span class="dig">0.85</span>)
 ONE6 = Pattern(<img src="one6.png" />).similar(<span class="dig">0.90</span>)
-TWO6 = Pattern(<img src="two6.png" />).similar(<span class="dig">0.92</span>)
-THREE6 = Pattern(<img src="three6.png" />).similar(<span class="dig">0.80</span>)
-FOUR6 = Pattern(<img src="four6.png" />).similar(<span class="dig">0.87</span>)
-FIVE6 = <img src="five6.png" />
-SIX6 = Pattern(<img src="six6.png" />).similar(<span class="dig">0.80</span>)
 ONE6YELLOW = Pattern(<img src="one6yellow.png" />).similar(<span class="dig">0.90</span>)
+TWO6 = Pattern(<img src="two6.png" />).similar(<span class="dig">0.92</span>)
 TWO6YELLOW = Pattern(<img src="two6yellow.png" />).similar(<span class="dig">0.95</span>)
+TWO6RED = <img src="two6red.png" />
+THREE6 = Pattern(<img src="three6.png" />).similar(<span class="dig">0.80</span>)
 THREE6YELLOW = Pattern(<img src="three6yellow.png" />).similar(<span class="dig">0.82</span>)
+FOUR6 = Pattern(<img src="four6.png" />).similar(<span class="dig">0.87</span>)
 FOUR6YELLOW = Pattern(<img src="four6yellow.png" />).similar(<span class="dig">0.85</span>)
+FIVE6 = <img src="five6.png" />
 FIVE6YELLOW = Pattern(<img src="five6yellow.png" />).similar(<span class="dig">0.79</span>)
+FIVE6YELLOW = Pattern(<img src="five6yellow.png" />).similar(<span class="dig">0.79</span>)
+SIX6 = Pattern(<img src="six6.png" />).similar(<span class="dig">0.80</span>)
 SIX6YELLOW = Pattern(<img src="six6yellow.png" />).similar(<span class="dig">0.90</span>)
 CLAW6 = Pattern(<img src="claw6.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">12</span>)
 CLAW6RED = Pattern(<img src="claw6red.png" />).similar(<span class="dig">0.85</span>).targetOffset(<span class="dig">0</span>, <span class="dig">12</span>)
@@ -144,7 +146,7 @@ ALL_PATTERNS = {
          },
     <span class="dig">6</span>: { <span class="str">"0"</span>: ZERO6,
          <span class="str">"1"</span>: [ ONE6, ONE6YELLOW ],
-         <span class="str">"2"</span>: [ TWO6, TWO6YELLOW ],
+         <span class="str">"2"</span>: [ TWO6, TWO6YELLOW, TWO6RED ],
          <span class="str">"3"</span>: [ THREE6, THREE6YELLOW ],
          <span class="str">"4"</span>: [ FOUR6, FOUR6YELLOW ],
          <span class="str">"5"</span>: [ FIVE6, FIVE6YELLOW ],
