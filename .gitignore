@@ -5,3 +5,7 @@ build
 *.o
 *.stackdump
 input.txt
+*.mzn
+*.fzn
+*.ozn
+*.res
