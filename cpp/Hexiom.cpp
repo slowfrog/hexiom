@@ -47,6 +47,15 @@ Hexiom::Hexiom(t_pos *pos) :
 		rel(*this, used[i], BOT_IMP, goodSums[i], 1);
 	}
 
+	// Fixed tiles
+	for (int i = 0; i < count; ++i) 
+	{
+		if (pos->done.cells[i] != NONE) 
+		{
+			rel(*this, cells[i], IRT_EQ, pos->done.cells[i]);
+		}
+	}
+
 	// Branching
 	branch(*this, cells, INT_VAR_SIZE_MIN, INT_VAL_MAX);
 }
